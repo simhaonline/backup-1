@@ -1,0 +1,5 @@
+/app/vendor/*
+/build/*
+
+!/app/vendor/.gitkeep
+!/build/.gitkeep
