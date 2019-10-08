@@ -17,8 +17,9 @@ declare(strict_types = 1);
 
 $start = microtime(true);
 
-define('PHAR_FILE', __DIR__ . DIRECTORY_SEPARATOR . 'build' . DIRECTORY_SEPARATOR . 'backup-agent.phar');
-define('PHAR_FILE_COMP', __DIR__ . DIRECTORY_SEPARATOR . 'build' . DIRECTORY_SEPARATOR . 'backup-agent.phar.bz2');
+define('PHAR_ROOT', __DIR__ . DIRECTORY_SEPARATOR);
+define('PHAR_FILE', PHAR_ROOT . 'build' . DIRECTORY_SEPARATOR . 'backup-agent.phar');
+define('PHAR_FILE_COMP', PHAR_ROOT . 'build' . DIRECTORY_SEPARATOR . 'backup-agent.phar.bz2');
 
 // Remove existing Phar file
 if (is_file(PHAR_FILE)) {
@@ -34,7 +35,7 @@ if (is_file(PHAR_FILE_COMP)) {
 $phar = new Phar(PHAR_FILE);
 
 // Add sourcecode
-$phar->buildFromDirectory(__DIR__ . DIRECTORY_SEPARATOR . 'app');
+$phar->buildFromDirectory(PHAR_ROOT . 'app');
 
 // Define initial script
 $phar->setDefaultStub('index.php');
