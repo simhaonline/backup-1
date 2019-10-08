@@ -9,6 +9,12 @@
  * file that was distributed with this source code.
  */
 
+declare(strict_types = 1);
+
+/**
+ * Phar Compiler
+ */
+
 $start = microtime(true);
 
 define('PHAR_FILE', __DIR__ . DIRECTORY_SEPARATOR . 'build' . DIRECTORY_SEPARATOR . 'backup-agent.phar');
