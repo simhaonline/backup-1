@@ -9,4 +9,22 @@
  * file that was distributed with this source code.
  */
 
-echo 'Backup Agent is running';
+declare(strict_types = 1);
+
+use Backup\Exceptions\BackupAgent as BackupAgentException;
+
+define('ROOT_DIR', __DIR__);
+
+require_once ROOT_DIR . DIRECTORY_SEPARATOR . 'vendor' . DIRECTORY_SEPARATOR . 'autoload.php';
+
+try {
+    new BackupAgent\Bootstrap();
+
+    // Todo: Do backup
+
+    echo 'Backup Agent is running.';
+} catch (BackupAgentException $e) {
+    echo $e->getMessage();
+
+    exit();
+}
