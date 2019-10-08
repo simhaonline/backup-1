@@ -13,6 +13,6 @@
     ],
     "minimum-stability": "dev",
     "autoload": {
-        "psr-4": {"Backup\\": "src/"}
+        "psr-4": {"BackupAgent\\": "src/"}
     }
 }
