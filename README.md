@@ -1,7 +1,7 @@
-# Backup Agent
+# Backup
 
-A backup agent who creates backups of files and databases (incl. Docker container).  
-Works together with the Backup Server as comprehensive backup tool.
+The backup agent who creates backups of files and databases (incl. Docker container).  
+Works together with the backup server as comprehensive backup tool.
 
 ## Getting Started
 
@@ -21,7 +21,7 @@ Place the Phar file somewhere on your disk.
 Add an entry into the crontab to execute this script periodically.
 
 ```bash
-0 4 * * * php /anywhere/on/your/disk/backup-agent.phar
+0 4 * * * php /anywhere/on/your/disk/backup-agent.phar.bz2 config.json
 ```
 
 In this example the script would run every day at 4am.

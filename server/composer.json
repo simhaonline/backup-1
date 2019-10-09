@@ -1,6 +1,6 @@
 {
-    "name": "backup/agent",
-    "description": "Backup Agent",
+    "name": "backup/server",
+    "description": "Backup Server",
     "require": {
         "vection-framework/di-container": "dev-master"
     },
@@ -8,11 +8,11 @@
     "authors": [
         {
             "name": "BloodhunterD",
-            "email": "backup-agent@bloodhunterd.com"
+            "email": "backup@bloodhunterd.com"
         }
     ],
     "minimum-stability": "dev",
     "autoload": {
-        "psr-4": {"BackupAgent\\": "src/"}
+        "psr-4": {"Backup\\": "src/"}
     }
 }

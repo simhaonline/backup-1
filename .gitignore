@@ -1,5 +1,7 @@
-/app/vendor/*
+/agent/vendor/*
 /build/*
+/server/vendor/*
 
-!/app/vendor/.gitkeep
+!/agent/vendor/.gitkeep
 !/build/.gitkeep
+!/server/vendor/.gitkeep
