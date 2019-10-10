@@ -161,7 +161,7 @@ class Agent
         $absolutePath = $this->config->getTargetDirectory() . $path;
 
         if (!is_dir($absolutePath)) {
-            $cmd = sprintf('mkdir -p %s', $absolutePath);
+            $cmd = sprintf('mkdir -p %s', escapeshellarg($absolutePath));
 
             $r = $this->execute($cmd);
 
@@ -180,13 +180,13 @@ class Agent
      */
     private function createDump(Database $database): bool
     {
-        $database->setSource('/tmp/' . $this->sanitize($database->getName()) . '.sql');
+        $database->setSource($this->sanitize($database->getName()) . '.sql');
 
         if ($database->getType() === 'docker') {
             $cmd = sprintf(
-                'docker exec %s sh -c \'exec mysqldump -uroot -p"\$MYSQL_ROOT_PASSWORD" \$MYSQL_DATABASE\' > %s',
-                $database->getDockerContainer(),
-                $database->getSource()
+                'docker exec %s sh -c \'exec mysqldump -uroot -p"$MYSQL_ROOT_PASSWORD" $MYSQL_DATABASE\' > %s',
+                escapeshellarg($database->getDockerContainer()),
+                escapeshellarg($database->getSource())
             );
         } else {
             $excludedDatabases = ['information_schema', 'mysql', 'performance_schema'];
@@ -199,12 +199,12 @@ class Agent
             );
 
             $cmd = sprintf(
-                'mysqldump -h %s -u %s -p "%s" --databases `%s` > %s',
-                $database->getHost(),
-                $database->getUser(),
+                'mysqldump -h%s -u%s -p"%s" --databases `%s` > %s',
+                escapeshellarg($database->getHost()),
+                escapeshellarg($database->getUser()),
                 $database->getPassword(),
                 $databaseNameSql,
-                $database->getSource()
+                escapeshellarg($database->getSource())
             );
         }
 
@@ -223,7 +223,11 @@ class Agent
     {
         $target = $object->getTarget() . DIRECTORY_SEPARATOR . $object->getArchive();
 
-        $cmd = sprintf('tar -cjf %s %s', $this->config->getTargetDirectory() . $target, $object->getSource());
+        $cmd = sprintf(
+            'tar -cjf %s %s',
+            escapeshellarg($this->config->getTargetDirectory() . $target),
+            escapeshellarg($object->getSource())
+        );
 
         return $this->execute($cmd);
     }
@@ -237,7 +241,7 @@ class Agent
      */
     private function execute(string $command): bool
     {
-        exec(escapeshellcmd($command), $output, $return);
+        exec($command, $output, $return);
 
         unset($output);
 
