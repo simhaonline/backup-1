@@ -11,7 +11,7 @@
 
 declare(strict_types = 1);
 
-use Backup\Exceptions\BackupAgent as BackupAgentException;
+use Backup\Exceptions\Agent as AgentException;
 
 error_reporting(E_ALL ^ E_NOTICE | E_DEPRECATED);
 
@@ -21,7 +21,7 @@ require_once ROOT_DIR . DIRECTORY_SEPARATOR . 'vendor' . DIRECTORY_SEPARATOR . '
 
 try {
     (new Backup\Bootstrap())->init()->run();
-} catch (BackupAgentException $e) {
+} catch (AgentException $e) {
     echo $e->getMessage() . "\n";
 
     exit();
