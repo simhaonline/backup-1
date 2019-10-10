@@ -21,7 +21,7 @@ namespace Backup\Exceptions;
  *
  * @package Backup\Exceptions
  */
-class Directory extends BackupAgent
+class Directory extends Agent
 {
 
 }

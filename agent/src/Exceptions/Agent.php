@@ -14,16 +14,16 @@ declare(strict_types = 1);
 
 namespace Backup\Exceptions;
 
-use RuntimeException;
+use Exception;
 
 /**
- * Class BackupAgent
+ * Class Agent
  *
  * @author BloodhunterD
  *
  * @package Backup\Exceptions
  */
-class BackupAgent extends RuntimeException
+class Agent extends Exception
 {
 
 }
