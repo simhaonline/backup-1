@@ -70,16 +70,6 @@ class Configuration
     }
 
     /**
-     * Get the configuration settings
-     *
-     * @return object
-     */
-    public function getSettings(): object
-    {
-        return $this->settings;
-    }
-
-    /**
      * Get the timezone
      *
      * @return string
@@ -106,7 +96,7 @@ class Configuration
      */
     public function getDirectories(): array
     {
-        return $this->settings->sources->directories;
+        return $this->settings->sources->directories ?? [];
     }
 
     /**
@@ -116,7 +106,7 @@ class Configuration
      */
     public function getDatabases(): array
     {
-        return $this->settings->sources->databases;
+        return $this->settings->sources->databases ?? [];
     }
 
     /**

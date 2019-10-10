@@ -14,10 +14,9 @@ declare(strict_types = 1);
 
 namespace Backup;
 
+use Backup\Exceptions\Agent as AgentException;
 use Backup\Exceptions\Configuration as ConfigurationException;
 use Locale;
-use Phar;
-use PharException;
 use Vection\Component\DI\Container;
 
 /**
@@ -50,7 +49,7 @@ class Bootstrap
      * Initialize the agent
      *
      * @return Agent
-     * @throws ConfigurationException
+     * @throws AgentException | ConfigurationException
      */
     public function init(): object
     {
@@ -63,7 +62,11 @@ class Bootstrap
         $this->setTimezone($config->getTimezone());
         $this->setLanguage($config->getLanguage());
 
-        return $this->container->get(Agent::class);
+        /** @var Agent $agent */
+        $agent = $this->container->get(Agent::class);
+        $agent->mountDirectory($config->getTargetDirectory());
+
+        return $agent;
     }
 
     /**
@@ -93,25 +96,6 @@ class Bootstrap
             $msg = 'The language "%s" is not supported or not installed.';
 
             throw new ConfigurationException(sprintf($msg, $language));
-        }
-    }
-
-    /**
-     * Mount backup target directory
-     *
-     * @throws ConfigurationException
-     */
-    private function mountTargetDirectory(): void
-    {
-        /** @var Configuration $config */
-        $config = $this->container->get(Configuration::class);
-
-        try {
-            Phar::mount($config->getTargetDirectory(), $config->getTargetDirectory());
-        } catch (PharException $e) {
-            $msg = 'Failed to mount the target directory "%s". Please check %s.';
-
-            throw new ConfigurationException(sprintf($msg, $config->getTargetDirectory(), $e->getMessage()));
         }
     }
 }
