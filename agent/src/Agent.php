@@ -43,21 +43,31 @@ class Agent
 
     /**
      * Run backup agent
-     *
-     * @throws AgentException | DatabaseException | DirectoryException
      */
     public function run(): void
     {
         $directories = $this->config->getDirectories();
 
         foreach ($directories as $directory) {
-            $this->backupDirectory(new Directory($directory));
+            try {
+                $this->backupDirectory(new Directory($directory));
+            } catch (AgentException $e) {
+                echo $e->getMessage() . "\n";
+
+                continue;
+            }
         }
 
         $databases = $this->config->getDatabases();
 
         foreach ($databases as $database) {
-            $this->backupDatabase(new Database($database));
+            try {
+                $this->backupDatabase(new Database($database));
+            } catch (AgentException $e) {
+                echo $e->getMessage() . "\n";
+
+                continue;
+            }
         }
     }
 
