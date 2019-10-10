@@ -22,7 +22,7 @@ require_once ROOT_DIR . DIRECTORY_SEPARATOR . 'vendor' . DIRECTORY_SEPARATOR . '
 try {
     (new Backup\Bootstrap())->init()->run();
 } catch (BackupAgentException $e) {
-    echo $e->getMessage();
+    echo $e->getMessage() . "\n";
 
     exit();
 }
