@@ -16,6 +16,8 @@ namespace Backup;
 
 use Backup\Exceptions\Configuration as ConfigurationException;
 use Locale;
+use Phar;
+use PharException;
 use Vection\Component\DI\Container;
 
 /**
@@ -68,6 +70,7 @@ class Bootstrap
      * Set the timezone
      *
      * @param string $timezone
+     * @throws ConfigurationException
      */
     private function setTimezone(string $timezone): void
     {
@@ -82,6 +85,7 @@ class Bootstrap
      * Set the language
      *
      * @param string $language
+     * @throws ConfigurationException
      */
     private function setLanguage(string $language): void
     {
@@ -89,6 +93,25 @@ class Bootstrap
             $msg = 'The language "%s" is not supported or not installed.';
 
             throw new ConfigurationException(sprintf($msg, $language));
+        }
+    }
+
+    /**
+     * Mount backup target directory
+     *
+     * @throws ConfigurationException
+     */
+    private function mountTargetDirectory(): void
+    {
+        /** @var Configuration $config */
+        $config = $this->container->get(Configuration::class);
+
+        try {
+            Phar::mount($config->getTargetDirectory(), $config->getTargetDirectory());
+        } catch (PharException $e) {
+            $msg = 'Failed to mount the target directory "%s". Please check %s.';
+
+            throw new ConfigurationException(sprintf($msg, $config->getTargetDirectory(), $e->getMessage()));
         }
     }
 }

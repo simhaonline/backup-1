@@ -65,9 +65,7 @@ class Agent
     {
         $backupName = $directory->getName();
 
-        $targetDirectory = $this->config->getTargetDirectory() . $directory->getTarget();
-
-        if (!$this->createDirectory($targetDirectory)) {
+        if (!$this->createDirectory($directory->getTarget())) {
             $msg = sprintf('Failed to create target directory for directory backup "%s".', $backupName);
 
             throw new DirectoryException($msg);
@@ -89,9 +87,7 @@ class Agent
     {
         $backupName = $database->getName();
 
-        $targetDirectory = $this->config->getTargetDirectory() . $database->getTarget();
-
-        if (!$this->createDirectory($targetDirectory)) {
+        if (!$this->createDirectory($database->getTarget())) {
             $msg = sprintf('Failed to create target directory for database backup "%s".', $backupName);
 
             throw new DatabaseException($msg);
@@ -117,14 +113,16 @@ class Agent
      *
      * @return bool
      */
-    public function createDirectory(string $path): bool
+    private function createDirectory(string $path): bool
     {
-        if (!is_dir($path)) {
-            $cmd = sprintf('mkdir -p %s', $path);
+        $absolutePath = $this->config->getTargetDirectory() . $path;
+
+        if (!is_dir($absolutePath)) {
+            $cmd = sprintf('mkdir -p %s', $absolutePath);
 
             $r = $this->execute($cmd);
 
-            return $r && !is_dir($path);
+            return $r && !is_dir($absolutePath);
         }
 
         return true;
@@ -137,7 +135,7 @@ class Agent
      *
      * @return bool
      */
-    public function createDump(Database $database): bool
+    private function createDump(Database $database): bool
     {
         $sqlFile = $database->getName() . '.sql';
 
@@ -177,7 +175,7 @@ class Agent
      *
      * @return bool
      */
-    public function createArchive(Compressible $object): bool
+    private function createArchive(Compressible $object): bool
     {
         $cmd = sprintf('tar -cjf %s %s', $object->getArchive(), $object->getSource());
 
@@ -191,7 +189,7 @@ class Agent
      *
      * @return bool
      */
-    public function execute(string $command): bool
+    private function execute(string $command): bool
     {
         exec(escapeshellcmd($command), $output, $return);
 
