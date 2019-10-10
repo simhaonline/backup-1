@@ -33,6 +33,11 @@ class Directory implements Compressible
     /**
      * @var string
      */
+    private $archive;
+
+    /**
+     * @var string
+     */
     private $source;
 
     /**
@@ -105,11 +110,21 @@ class Directory implements Compressible
     /**
      * Get target
      *
-     * @return string|null
+     * @return string
      */
-    public function getTarget(): ?string
+    public function getTarget(): string
     {
-        return $this->target;
+        return $this->target ?? DIRECTORY_SEPARATOR;
+    }
+
+    /**
+     * Set archive
+     *
+     * @param string $name
+     */
+    public function setArchive(string $name): void
+    {
+        $this->archive = $name . '.tar.bz2';
     }
 
     /**
@@ -119,6 +134,6 @@ class Directory implements Compressible
      */
     public function getArchive(): string
     {
-        return $this->getName() . '.tar.bz2';
+        return $this->archive;
     }
 }

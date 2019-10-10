@@ -36,7 +36,14 @@ interface Compressible
     public function getSource(): string;
 
     /**
-     * Get the archive path
+     * Get the target directory
+     *
+     * @return string
+     */
+    public function getTarget(): string;
+
+    /**
+     * Get the archive name
      *
      * @return string
      */
