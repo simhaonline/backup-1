@@ -2,6 +2,10 @@
     "name": "backup/agent",
     "description": "Backup Agent",
     "require": {
+        "ext-bz2": "*",
+        "ext-cli": "*",
+        "ext-intl": "*",
+        "ext-json": "*",
         "vection-framework/di-container": "dev-master"
     },
     "license": "MIT",
