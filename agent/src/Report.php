@@ -41,8 +41,8 @@ class Report
     /**
      * Add sender
      *
-     * @param string      $mail
-     * @param string|null $address
+     * @param string      $address
+     * @param string|null $name
      */
     public function setSender(string $address, string $name = null): void
     {

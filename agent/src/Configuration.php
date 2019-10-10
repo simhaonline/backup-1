@@ -58,7 +58,7 @@ class Configuration
     {
         $json = file_get_contents(ROOT_DIR . DIRECTORY_SEPARATOR . 'config.json');
 
-        $config = json_decode($json);
+        $config = json_decode($json, false, 512, JSON_THROW_ON_ERROR);
 
         if (json_last_error()) {
             $msg = 'The configuration is invalid. Please check %s.';

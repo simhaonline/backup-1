@@ -41,7 +41,7 @@ class Bootstrap
     {
         $this->container = new Container();
         $this->container->registerNamespace([
-            'Backup',
+            'Backup'
         ]);
     }
 

@@ -217,7 +217,6 @@ class Agent
      * @param Compressible $object
      *
      * @return bool
-     * @throws AgentException
      */
     private function createArchive(Compressible $object): bool
     {

@@ -73,7 +73,7 @@ class Database implements Compressible
     /**
      * Database constructor
      *
-     * @param object $directory
+     * @param object $database
      *
      */
     public function __construct(object $database)
