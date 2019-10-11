@@ -31,16 +31,17 @@ Upload the backup-agent.phar.bz2 anywhere on your server and create a configurat
 Add an entry into the crontab to execute this script periodically.
 
 ```bash
-0 4 * * * php /anywhere/on/your/disk/backup-agent.phar.bz2 config.json
+0 4 * * * php /path/to/backup-agent.phar.bz2 /path/to/config.json
 ```
 
 In this example the script would run every day at 4am.
 
-The backup agent expecting the path to the configuration file as parameter.
+The backup agent expecting the absolute path to the configuration file as parameter.
 
 ## Build With
 
 * [PHP](https://www.php.net/)
+* [Vection](https://github.com/Vection-Framework/Vection)
 
 ## Authors
 
