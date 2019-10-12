@@ -1,4 +1,5 @@
 <?php
+
 /**
  * This file is part of the Backup project.
  * Visit project at https://github.com/bloodhunterd/backup
@@ -12,6 +13,8 @@
 declare(strict_types = 1);
 
 namespace Backup\Interfaces;
+
+use Backup\SSH;
 
 /**
  * Interface Downloadable
@@ -35,7 +38,7 @@ interface Downloadable
      *
      * @return string
      */
-    public function getSource(): ?string;
+    public function getSource(): string;
 
     /**
      * Get the target directory
@@ -43,4 +46,18 @@ interface Downloadable
      * @return string
      */
     public function getTarget(): string;
+
+    /**
+     * Get the host address
+     *
+     * @return string
+     */
+    public function getHost(): string;
+
+    /**
+     * Get the SSH settings
+     *
+     * @return SSH
+     */
+    public function getSSH(): SSH;
 }

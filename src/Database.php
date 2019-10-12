@@ -71,7 +71,7 @@ class Database implements Compressible
     private $target;
 
     /**
-     * DatabaseException constructor
+     * Database constructor
      *
      * @param object $database
      *

@@ -19,18 +19,7 @@ declare(strict_types = 1);
 
 $start = microtime(true);
 
-switch ($argv[1]) {
-    case 'agent':
-        $app = 'agent';
-        break;
-    case 'server':
-        $app = 'server';
-        break;
-    default:
-        exit('App missing or invalid');
-}
-
-$appFile = sprintf('backup-%s.phar', $app);
+$appFile = sprintf('backup.phar');
 
 define('PHAR_ROOT', __DIR__ . DIRECTORY_SEPARATOR);
 define('PHAR_FILE', PHAR_ROOT . 'build' . DIRECTORY_SEPARATOR . $appFile);
@@ -50,7 +39,8 @@ if (is_file(PHAR_FILE_COMP)) {
 $phar = new Phar(PHAR_FILE);
 
 // Add sourcecode
-$phar->buildFromDirectory(PHAR_ROOT . $app);
+$phar->buildFromDirectory(PHAR_ROOT . 'src');
+$phar->buildFromDirectory(PHAR_ROOT . 'vendor');
 
 // Define initial script
 $phar->setDefaultStub('index.php');

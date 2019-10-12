@@ -12,18 +12,24 @@
 
 declare(strict_types = 1);
 
-namespace Backup\Exception;
-
-use Exception;
+use Backup\Exception\BackupException;
 
 /**
- * Class Server
+ * Backup AgentException
  *
  * @author BloodhunterD
- *
- * @package Backup\Exception
  */
-class ServerException extends Exception
-{
 
+error_reporting(E_ALL ^ E_NOTICE | E_DEPRECATED);
+
+define('ROOT_DIR', __DIR__);
+
+require_once ROOT_DIR . DIRECTORY_SEPARATOR . 'vendor' . DIRECTORY_SEPARATOR . 'autoload.php';
+
+try {
+    (new Backup\Bootstrap())->init($argv[1])->run();
+} catch (BackupException $e) {
+    echo $e->getMessage() . "\n";
+
+    exit();
 }

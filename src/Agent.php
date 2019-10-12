@@ -24,11 +24,11 @@ use Vection\Component\DI\Annotations\Inject;
 use Vection\Component\DI\Traits\AnnotationInjection;
 
 /**
- * Class AgentException
- *
- * @author BloodhunterD
+ * Class Agent
  *
  * @package Backup
+ *
+ * @author BloodhunterD
  */
 class Agent
 {
@@ -51,7 +51,7 @@ class Agent
         foreach ($directories as $directory) {
             try {
                 $this->backupDirectory(new Directory($directory));
-            } catch (AgentException $e) {
+            } catch (AgentException | DirectoryException $e) {
                 echo $e->getMessage() . "\n";
 
                 continue;
@@ -63,7 +63,7 @@ class Agent
         foreach ($databases as $database) {
             try {
                 $this->backupDatabase(new Database($database));
-            } catch (AgentException $e) {
+            } catch (AgentException | DatabaseException $e) {
                 echo $e->getMessage() . "\n";
 
                 continue;
@@ -78,7 +78,7 @@ class Agent
      *
      * @throws AgentException | DirectoryException
      */
-    public function backupDirectory($directory): void
+    public function backupDirectory(Directory $directory): void
     {
         $name = $directory->getName();
 

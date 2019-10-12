@@ -15,13 +15,13 @@ declare(strict_types = 1);
 namespace Backup\Exception;
 
 /**
- * Class DirectoryException
- *
- * @package Backup\Exception
+ * Class DownloadException
  *
  * @author BloodhunterD
+ *
+ * @package Backup\Exception
  */
-class DirectoryException extends AgentException
+class DownloadException extends BackupException
 {
 
 }

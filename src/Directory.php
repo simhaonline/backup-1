@@ -46,7 +46,7 @@ class Directory implements Compressible
     private $target;
 
     /**
-     * DirectoryException constructor
+     * Directory constructor
      *
      * @param object $directory
      */
