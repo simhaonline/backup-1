@@ -26,12 +26,12 @@ Place the Phar file somewhere on your disk.
 
 ## Deployment
 
-Upload the backup-agent.phar.bz2 anywhere on your server and create a configuration file.
+Upload the backup-agent.phar anywhere on your server and create a configuration file.
 
 Add an entry into the crontab to execute this script periodically.
 
 ```bash
-0 4 * * * php /path/to/backup-agent.phar.bz2 /path/to/config.json
+0 4 * * * php /path/to/backup-agent.phar /path/to/backup-agent.conf.json
 ```
 
 In this example the script would run every day at 4am.
