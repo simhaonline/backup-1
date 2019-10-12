@@ -11,14 +11,24 @@
 
 declare(strict_types = 1);
 
+use Backup\Exception\ServerException;
+
 /**
  * Backup Server
  *
  * @author BlöoodhunterD
  */
 
+error_reporting(E_ALL ^ E_NOTICE | E_DEPRECATED);
+
 define('ROOT_DIR', __DIR__);
 
 require_once ROOT_DIR . DIRECTORY_SEPARATOR . 'vendor' . DIRECTORY_SEPARATOR . 'autoload.php';
 
-// Todo: Do backup server
+try {
+    (new Backup\Bootstrap())->init()->run();
+} catch (ServerException $e) {
+    echo $e->getMessage() . "\n";
+
+    exit();
+}
