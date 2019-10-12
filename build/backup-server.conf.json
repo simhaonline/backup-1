@@ -1,0 +1,42 @@
+{
+  "timezone": "Europe/Berlin",
+  "language": "de-DE",
+  "report": {
+    "sender": {
+      "address": "noreply@example.com",
+      "name": "Backup Server"
+    },
+    "subject": "Download Report",
+    "recipients": {
+      "address": "recipient@example.com"
+    }
+  },
+  "servers": [
+    {
+      "name": "My first server",
+      "host": "domain.or.ip",
+      "ssh": {
+        "port": 22,
+        "user": "root",
+        "key": "/path/to/ssh/key",
+        "pass": "/path/to/ssh/passphrase"
+      },
+      "source": "/path/to/backup/directory",
+      "target": "/first/directory"
+    }, {
+      "name": "Second server",
+      "host": "ip.or.domain",
+      "ssh": {
+        "port": 22,
+        "user": "root",
+        "key": "/path/to/ssh/key",
+        "pass": "/path/to/ssh/passphrase"
+      },
+      "source": "/path/to/backup/directory",
+      "target": "/second/directory"
+    }
+  ],
+  "target": {
+    "directory": "/backup"
+  }
+}
