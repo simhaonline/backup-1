@@ -16,7 +16,7 @@ namespace Backup;
 use Backup\Interfaces\Compressible;
 
 /**
- * Class Database
+ * Class DatabaseException
  *
  * @package Backup
  *
@@ -71,7 +71,7 @@ class Database implements Compressible
     private $target;
 
     /**
-     * Database constructor
+     * DatabaseException constructor
      *
      * @param object $database
      *

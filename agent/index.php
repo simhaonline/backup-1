@@ -11,10 +11,10 @@
 
 declare(strict_types = 1);
 
-use Backup\Exceptions\Agent as AgentException;
+use Backup\Exception\AgentException;
 
 /**
- * Backup Agent
+ * Backup AgentException
  *
  * @author BlöoodhunterD
  */

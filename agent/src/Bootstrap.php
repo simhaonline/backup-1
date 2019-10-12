@@ -14,8 +14,8 @@ declare(strict_types = 1);
 
 namespace Backup;
 
-use Backup\Exceptions\Agent as AgentException;
-use Backup\Exceptions\Configuration as ConfigurationException;
+use Backup\Exception\AgentException;
+use Backup\Exception\ConfigurationException;
 use Locale;
 use Vection\Component\DI\Container;
 

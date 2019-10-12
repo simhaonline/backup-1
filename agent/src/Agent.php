@@ -14,9 +14,9 @@ declare(strict_types = 1);
 
 namespace Backup;
 
-use Backup\Exceptions\Agent as AgentException;
-use Backup\Exceptions\Database as DatabaseException;
-use Backup\Exceptions\Directory as DirectoryException;
+use Backup\Exception\AgentException;
+use Backup\Exception\DatabaseException;
+use Backup\Exception\DirectoryException;
 use Backup\Interfaces\Compressible;
 use Phar;
 use PharException;
@@ -24,7 +24,7 @@ use Vection\Component\DI\Annotations\Inject;
 use Vection\Component\DI\Traits\AnnotationInjection;
 
 /**
- * Class Agent
+ * Class AgentException
  *
  * @author BloodhunterD
  *
@@ -37,7 +37,7 @@ class Agent
 
     /**
      * @var Configuration
-     * @Inject("Backup\Configuration")
+     * @Inject("Backup\ConfigurationException")
      */
     private $config;
 

@@ -14,12 +14,12 @@ declare(strict_types = 1);
 
 namespace Backup;
 
-use Backup\Exceptions\Configuration as ConfigurationException;
+use Backup\Exception\ConfigurationException;
 use Phar;
 use PharException;
 
 /**
- * Class Configuration
+ * Class ConfigurationException
  *
  * @package Backup
  *

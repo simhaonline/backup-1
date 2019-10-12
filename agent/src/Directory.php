@@ -16,7 +16,7 @@ namespace Backup;
 use Backup\Interfaces\Compressible;
 
 /**
- * Class Directory
+ * Class DirectoryException
  *
  * @package Backup
  *
@@ -46,7 +46,7 @@ class Directory implements Compressible
     private $target;
 
     /**
-     * Directory constructor
+     * DirectoryException constructor
      *
      * @param object $directory
      */

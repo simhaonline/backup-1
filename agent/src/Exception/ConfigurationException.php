@@ -12,16 +12,16 @@
 
 declare(strict_types = 1);
 
-namespace Backup\Exceptions;
+namespace Backup\Exception;
 
 /**
- * Class Directory
- *
- * @package Backup\Exceptions
+ * Class ConfigurationException
  *
  * @author BloodhunterD
+ *
+ * @package Backup\Exception
  */
-class Directory extends Agent
+class ConfigurationException extends AgentException
 {
 
 }
