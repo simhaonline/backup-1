@@ -104,9 +104,7 @@ class Database implements Compressible
     }
 
     /**
-     * Get name
-     *
-     * @return string
+     * @inheritDoc
      */
     public function getName(): string
     {
@@ -124,9 +122,7 @@ class Database implements Compressible
     }
 
     /**
-     * Get source
-     *
-     * @return string
+     * @inheritDoc
      */
     public function getSource(): string
     {
@@ -144,9 +140,7 @@ class Database implements Compressible
     }
 
     /**
-     * Get target
-     *
-     * @return string
+     * @inheritDoc
      */
     public function getTarget(): string
     {
