@@ -10,7 +10,7 @@ echo "${LOCALE}" >> /etc/locale.gen && locale-gen
 echo "sendmail_path = /usr/bin/msmtp -t" >> /etc/php/${PHP_VERSION}/cli/php.ini
 
 # Create cronjob
-echo "${CRON_MINUTE} ${CRON_HOUR} * * * php /srv/backup-server.phar backup-server.conf.json > /dev/null 2>&1" > /etc/cron.d/backup-server
+echo "${CRON_MINUTE} ${CRON_HOUR} * * * php /srv/backup-server.phar /srv/backup-server.conf.json > /dev/null 2>&1" > /etc/cron.d/backup-server
 
 # Write Cron job to Cron table
 crontab /etc/cron.d/backup-server
