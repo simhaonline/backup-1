@@ -12,6 +12,7 @@
 
 declare(strict_types = 1);
 
+use Backup\Bootstrap;
 use Backup\Exception\BackupException;
 
 /**
@@ -27,7 +28,7 @@ define('ROOT_DIR', __DIR__);
 require_once ROOT_DIR . DIRECTORY_SEPARATOR . 'vendor' . DIRECTORY_SEPARATOR . 'autoload.php';
 
 try {
-    (new Backup\Bootstrap())->init($argv[1])->run();
+    (new Bootstrap())->init($argv[1])->run();
 } catch (BackupException $e) {
     echo $e->getMessage() . "\n";
 
