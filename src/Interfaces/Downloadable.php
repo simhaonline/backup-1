@@ -1,4 +1,5 @@
 <?php
+
 /**
  * This file is part of the Backup project.
  * Visit project at https://github.com/bloodhunterd/backup
@@ -13,14 +14,16 @@ declare(strict_types = 1);
 
 namespace Backup\Interfaces;
 
+use Backup\SSH;
+
 /**
- * Interface Compressible
+ * Interface Downloadable
  *
  * @package Backup\Interfaces
  *
  * @author BloodhunterD
  */
-interface Compressible
+interface Downloadable
 {
 
     /**
@@ -45,9 +48,16 @@ interface Compressible
     public function getTarget(): string;
 
     /**
-     * Get the archive name
+     * Get the host address
      *
      * @return string
      */
-    public function getArchive(): string;
+    public function getHost(): string;
+
+    /**
+     * Get the SSH settings
+     *
+     * @return SSH
+     */
+    public function getSSH(): SSH;
 }

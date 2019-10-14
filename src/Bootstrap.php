@@ -14,15 +14,16 @@ declare(strict_types = 1);
 
 namespace Backup;
 
-use Backup\Exceptions\Agent as AgentException;
-use Backup\Exceptions\Configuration as ConfigurationException;
+use Backup\Exception\AgentException;
+use Backup\Exception\ConfigurationException;
+use Backup\Exception\ManagerException;
 use Locale;
 use Vection\Component\DI\Container;
 
 /**
  * Class Bootstrap
  *
- * @package BackupAgent
+ * @package Backup
  *
  * @author BloodhunterD
  */
@@ -46,10 +47,10 @@ class Bootstrap
     }
 
     /**
-     * Initialize the agent
+     * Initialize the backup application
      *
-     * @return Agent
-     * @throws AgentException | ConfigurationException
+     * @return Agent | Manager
+     * @throws AgentException | ConfigurationException | ManagerException
      */
     public function init(): object
     {
@@ -62,11 +63,22 @@ class Bootstrap
         $this->setTimezone($config->getTimezone());
         $this->setLanguage($config->getLanguage());
 
-        /** @var Agent $agent */
-        $agent = $this->container->get(Agent::class);
-        $agent->mountDirectory($config->getTargetDirectory());
+        switch ($config->getMode()) {
+            case 'agent':
+                /** @var Agent $backup */
+                $backup = $this->container->get(Agent::class);
+                break;
+            case 'manager':
+                /** @var Manager $backup */
+                $backup = $this->container->get(Manager::class);
+                break;
+            default:
+                throw new ConfigurationException(sprintf('The mode "%s" is invalid.', $config->getMode()));
+        }
 
-        return $agent;
+        $backup->mountDirectory($config->getTargetDirectory());
+
+        return $backup;
     }
 
     /**

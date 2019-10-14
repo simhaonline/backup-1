@@ -1,4 +1,5 @@
 <?php
+
 /**
  * This file is part of the Backup project.
  * Visit project at https://github.com/bloodhunterd/backup
@@ -11,14 +12,16 @@
 
 declare(strict_types = 1);
 
+namespace Backup\Exception;
+
 /**
- * Backup Server
+ * Class DownloadException
  *
- * @author BlöoodhunterD
+ * @author BloodhunterD
+ *
+ * @package Backup\Exception
  */
+class DownloadException extends BackupException
+{
 
-define('ROOT_DIR', __DIR__);
-
-require_once ROOT_DIR . DIRECTORY_SEPARATOR . 'vendor' . DIRECTORY_SEPARATOR . 'autoload.php';
-
-// Todo: Do backup server
+}

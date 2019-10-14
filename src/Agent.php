@@ -14,9 +14,9 @@ declare(strict_types = 1);
 
 namespace Backup;
 
-use Backup\Exceptions\Agent as AgentException;
-use Backup\Exceptions\Database as DatabaseException;
-use Backup\Exceptions\Directory as DirectoryException;
+use Backup\Exception\AgentException;
+use Backup\Exception\DatabaseException;
+use Backup\Exception\DirectoryException;
 use Backup\Interfaces\Compressible;
 use Phar;
 use PharException;
@@ -26,9 +26,9 @@ use Vection\Component\DI\Traits\AnnotationInjection;
 /**
  * Class Agent
  *
- * @author BloodhunterD
- *
  * @package Backup
+ *
+ * @author BloodhunterD
  */
 class Agent
 {
@@ -37,7 +37,7 @@ class Agent
 
     /**
      * @var Configuration
-     * @Inject("Backup\Configuration")
+     * @Inject("Backup\ConfigurationException")
      */
     private $config;
 
@@ -51,7 +51,7 @@ class Agent
         foreach ($directories as $directory) {
             try {
                 $this->backupDirectory(new Directory($directory));
-            } catch (AgentException $e) {
+            } catch (AgentException | DirectoryException $e) {
                 echo $e->getMessage() . "\n";
 
                 continue;
@@ -63,7 +63,7 @@ class Agent
         foreach ($databases as $database) {
             try {
                 $this->backupDatabase(new Database($database));
-            } catch (AgentException $e) {
+            } catch (AgentException | DatabaseException $e) {
                 echo $e->getMessage() . "\n";
 
                 continue;
@@ -78,7 +78,7 @@ class Agent
      *
      * @throws AgentException | DirectoryException
      */
-    public function backupDirectory($directory): void
+    public function backupDirectory(Directory $directory): void
     {
         $name = $directory->getName();
 

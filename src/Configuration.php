@@ -14,12 +14,12 @@ declare(strict_types = 1);
 
 namespace Backup;
 
-use Backup\Exceptions\Configuration as ConfigurationException;
+use Backup\Exception\ConfigurationException;
 use Phar;
 use PharException;
 
 /**
- * Class Configuration
+ * Class ConfigurationException
  *
  * @package Backup
  *
@@ -90,6 +90,14 @@ class Configuration
     }
 
     /**
+     * @return string|null
+     */
+    public function getMode(): ?string
+    {
+        return $this->settings->mode;
+    }
+
+    /**
      * Get the directories
      *
      * @return array
@@ -107,6 +115,16 @@ class Configuration
     public function getDatabases(): array
     {
         return $this->settings->sources->databases ?? [];
+    }
+
+    /**
+     * Get the servers
+     *
+     * @return array
+     */
+    public function getServers(): array
+    {
+        return $this->settings->sources->servers ?? [];
     }
 
     /**

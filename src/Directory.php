@@ -16,7 +16,7 @@ namespace Backup;
 use Backup\Interfaces\Compressible;
 
 /**
- * Class Directory
+ * Class DirectoryException
  *
  * @package Backup
  *
@@ -68,9 +68,7 @@ class Directory implements Compressible
     }
 
     /**
-     * Get name
-     *
-     * @return string
+     * @inheritDoc
      */
     public function getName(): string
     {
@@ -88,9 +86,7 @@ class Directory implements Compressible
     }
 
     /**
-     * Get source
-     *
-     * @return string
+     * @inheritDoc
      */
     public function getSource(): string
     {
@@ -108,9 +104,7 @@ class Directory implements Compressible
     }
 
     /**
-     * Get target
-     *
-     * @return string
+     * @inheritDoc
      */
     public function getTarget(): string
     {

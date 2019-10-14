@@ -44,9 +44,8 @@ RUN apt-get install -y --no-install-recommends \
 # Create backup directory
 RUN mkdir /backup
 
-# Copy backup manager into directory
-COPY ./build/backup-server.phar         /srv/
-COPY ./build/backup-server.conf.json    /srv/
+# Add backup app and config
+COPY ./build /srv/
 
 COPY ./start.sh /
 
