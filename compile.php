@@ -39,8 +39,7 @@ if (is_file(PHAR_FILE_COMP)) {
 $phar = new Phar(PHAR_FILE);
 
 // Add sourcecode
-$phar->buildFromDirectory(PHAR_ROOT . 'src');
-$phar->buildFromDirectory(PHAR_ROOT . 'vendor');
+$phar->buildFromDirectory(PHAR_ROOT, '[src|vendor|composer|index]');
 
 // Define initial script
 $phar->setDefaultStub('index.php');
