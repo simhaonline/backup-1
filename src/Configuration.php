@@ -17,9 +17,10 @@ namespace Backup;
 use Backup\Exception\ConfigurationException;
 use Phar;
 use PharException;
+use TypeError;
 
 /**
- * Class ConfigurationException
+ * Class Configuration
  *
  * @package Backup
  *
@@ -42,7 +43,7 @@ class Configuration
     {
         try {
             Phar::mount('config.json', $_SERVER['argv'][1]);
-        } catch (PharException $e) {
+        } catch (TypeError | PharException $e) {
             $msg = 'The configuration file is missing. Please check %s.';
 
             throw new ConfigurationException(sprintf($msg, $e->getMessage()));

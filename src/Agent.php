@@ -37,7 +37,7 @@ class Agent
 
     /**
      * @var Configuration
-     * @Inject("Backup\ConfigurationException")
+     * @Inject("Backup\Configuration")
      */
     private $config;
 
