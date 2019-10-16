@@ -270,4 +270,38 @@ class Database implements Compressible
     {
         return $this->password;
     }
+
+    /**
+     * Create dump command
+     *
+     * @return string
+     */
+    public function createDumpCmd(): string
+    {
+        if ($this->type === 'docker') {
+            return sprintf(
+                'docker exec %s sh -c \'exec mysqldump -uroot -p"$MYSQL_ROOT_PASSWORD" $MYSQL_DATABASE\' > %s',
+                escapeshellarg($this->dockerContainer),
+                escapeshellarg($this->source)
+            );
+        }
+
+        $excludedDatabases = ['information_schema', 'mysql', 'performance_schema'];
+
+        $excludeSql = sprintf(' NOT IN (\'%s\')', implode('\',\'', $excludedDatabases));
+
+        $databaseNameSql = sprintf(
+            'mysql --skip-column-names -e "SELECT GROUP_CONCAT(schema_name SEPARATOR \' \') FROM information_schema.schemata WHERE schema_name%s;"',
+            $excludeSql
+        );
+
+        return sprintf(
+            'mysqldump -h%s -u%s -p"%s" --databases `%s` > %s',
+            escapeshellarg($this->host),
+            escapeshellarg($this->user),
+            $this->password,
+            $databaseNameSql,
+            escapeshellarg($this->source)
+        );
+    }
 }

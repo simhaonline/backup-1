@@ -116,7 +116,9 @@ class Agent
             throw new DatabaseException($msg);
         }
 
-        if (!$this->createDump($database)) {
+        $database->setSource($this->sanitize($database->getName()) . '.sql');
+
+        if (!$this->execute($database->createDumpCmd())) {
             $msg = sprintf('Failed to create dump of database backup "%s".', $name);
 
             throw new DatabaseException($msg);
@@ -169,46 +171,6 @@ class Agent
         }
 
         return true;
-    }
-
-    /**
-     * Create a dump
-     *
-     * @param Database $database
-     *
-     * @return bool
-     */
-    private function createDump(Database $database): bool
-    {
-        $database->setSource($this->sanitize($database->getName()) . '.sql');
-
-        if ($database->getType() === 'docker') {
-            $cmd = sprintf(
-                'docker exec %s sh -c \'exec mysqldump -uroot -p"$MYSQL_ROOT_PASSWORD" $MYSQL_DATABASE\' > %s',
-                escapeshellarg($database->getDockerContainer()),
-                escapeshellarg($database->getSource())
-            );
-        } else {
-            $excludedDatabases = ['information_schema', 'mysql', 'performance_schema'];
-
-            $excludeSql = sprintf(' NOT IN (\'%s\')', implode('\',\'', $excludedDatabases));
-
-            $databaseNameSql = sprintf(
-                'mysql --skip-column-names -e "SELECT GROUP_CONCAT(schema_name SEPARATOR \' \') FROM information_schema.schemata WHERE schema_name%s;"',
-                $excludeSql
-            );
-
-            $cmd = sprintf(
-                'mysqldump -h%s -u%s -p"%s" --databases `%s` > %s',
-                escapeshellarg($database->getHost()),
-                escapeshellarg($database->getUser()),
-                $database->getPassword(),
-                $databaseNameSql,
-                escapeshellarg($database->getSource())
-            );
-        }
-
-        return $this->execute($cmd);
     }
 
     /**
