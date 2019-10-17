@@ -43,6 +43,8 @@ class DatabaseTest extends TestCase
     /**
      * Data dump command
      *
+     * ATTENTION: This test only works on LINUX because of the PHP function "escapeshellarg" behavior.
+     *
      * @return array
      */
     public function dataDumpCmd(): array
@@ -60,7 +62,7 @@ class DatabaseTest extends TestCase
         $database = new Database($config);
         $database->setSource('/tmp/app-db.sql');
 
-        $cmd = 'docker exec "app-db" sh -c \'exec mysqldump -uroot -p"$MYSQL_ROOT_PASSWORD" $MYSQL_DATABASE\' > "/tmp/app-db.sql"';
+        $cmd = 'docker exec \'app-db\' sh -c \'exec mysqldump -uroot -p"$MYSQL_ROOT_PASSWORD" $MYSQL_DATABASE\' > \'/tmp/app-db.sql\'';
 
         $return[] = [$database, $cmd];
 
@@ -79,7 +81,7 @@ class DatabaseTest extends TestCase
         $database = new Database($config);
         $database->setSource('/tmp/db.sql');
 
-        $cmd = 'mysqldump -h"localhost" -u"root" -p"My+Very_Secret-Password." --databases `mysql --skip-column-names -e "SELECT GROUP_CONCAT(schema_name SEPARATOR \' \') FROM information_schema.schemata WHERE schema_name NOT IN (\'information_schema\',\'mysql\',\'performance_schema\');"` > "/tmp/db.sql"';
+        $cmd = 'mysqldump -h\'localhost\' -u\'root\' -p"My+Very_Secret-Password." --databases `mysql --skip-column-names -e "SELECT GROUP_CONCAT(schema_name SEPARATOR \' \') FROM information_schema.schemata WHERE schema_name NOT IN (\'information_schema\',\'mysql\',\'performance_schema\');"` > \'/tmp/db.sql\'';
 
         $return[] = [$database, $cmd];
 
