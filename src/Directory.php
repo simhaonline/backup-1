@@ -20,7 +20,7 @@ use Backup\Interfaces\Compressible;
  *
  * @package Backup
  *
- * @author BloodhunterD
+ * @author BloodhunterD <bloodhunterd@bloodhunterd.com>
  */
 class Directory implements Compressible
 {

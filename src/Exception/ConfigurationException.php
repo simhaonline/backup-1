@@ -17,9 +17,9 @@ namespace Backup\Exception;
 /**
  * Class ConfigurationException
  *
- * @author BloodhunterD
- *
  * @package Backup\Exception
+ *
+ * @author BloodhunterD <bloodhunterd@bloodhunterd.com>
  */
 class ConfigurationException extends BackupException
 {

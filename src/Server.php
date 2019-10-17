@@ -20,7 +20,7 @@ use Backup\Interfaces\Downloadable;
  *
  * @package Backup
  *
- * @author BloodhunterD
+ * @author BloodhunterD <bloodhunterd@bloodhunterd.com>
  */
 class Server implements Downloadable
 {

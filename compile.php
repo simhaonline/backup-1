@@ -14,7 +14,7 @@ declare(strict_types = 1);
 /**
  * Phar Compiler
  *
- * @author BlöoodhunterD
+ * @author BloodhunterD <bloodhunterd@bloodhunterd.com>
  */
 
 $start = microtime(true);

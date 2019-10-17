@@ -19,7 +19,7 @@ namespace Backup\Interfaces;
  *
  * @package Backup\Interfaces
  *
- * @author BloodhunterD
+ * @author BloodhunterD <bloodhunterd@bloodhunterd.com>
  */
 interface Compressible
 {

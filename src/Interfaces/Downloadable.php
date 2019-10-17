@@ -21,7 +21,7 @@ use Backup\SSH;
  *
  * @package Backup\Interfaces
  *
- * @author BloodhunterD
+ * @author BloodhunterD <bloodhunterd@bloodhunterd.com>
  */
 interface Downloadable
 {

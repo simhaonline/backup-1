@@ -28,7 +28,7 @@ use Vection\Component\DI\Traits\AnnotationInjection;
  *
  * @package Backup
  *
- * @author BloodhunterD
+ * @author BloodhunterD <bloodhunterd@bloodhunterd.com>
  */
 class Agent
 {

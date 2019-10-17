@@ -18,7 +18,7 @@ use Backup\Exception\BackupException;
 /**
  * Backup AgentException
  *
- * @author BloodhunterD
+ * @author BloodhunterD <bloodhunterd@bloodhunterd.com>
  */
 
 error_reporting(E_ALL ^ E_NOTICE | E_DEPRECATED);

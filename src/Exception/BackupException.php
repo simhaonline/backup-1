@@ -19,9 +19,9 @@ use Exception;
 /**
  * Class BackupException
  *
- * @author BloodhunterD
- *
  * @package Backup\Exception
+ *
+ * @author BloodhunterD <bloodhunterd@bloodhunterd.com>
  */
 class BackupException extends Exception
 {

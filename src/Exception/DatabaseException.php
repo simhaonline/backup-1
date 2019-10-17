@@ -17,9 +17,9 @@ namespace Backup\Exception;
 /**
  * Class DatabaseException
  *
- * @author BloodhunterD
- *
  * @package Backup\Exception
+ *
+ * @author BloodhunterD <bloodhunterd@bloodhunterd.com>
  */
 class DatabaseException extends BackupException
 {

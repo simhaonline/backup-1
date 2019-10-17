@@ -17,9 +17,9 @@ namespace Backup\Exception;
 /**
  * Class AgentException
  *
- * @author BloodhunterD
- *
  * @package Backup\Exception
+ *
+ * @author BloodhunterD <bloodhunterd@bloodhunterd.com>
  */
 class AgentException extends BackupException
 {

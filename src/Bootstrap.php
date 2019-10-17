@@ -25,7 +25,7 @@ use Vection\Component\DI\Container;
  *
  * @package Backup
  *
- * @author BloodhunterD
+ * @author BloodhunterD <bloodhunterd@bloodhunterd.com>
  */
 class Bootstrap
 {
