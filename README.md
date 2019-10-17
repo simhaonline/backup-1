@@ -16,14 +16,12 @@ See deployment for notes on how to deploy the project on a live system.
 
 PHP including the following modules are required to run the application.
 
-* php-bz2¹
+* php-bz2
 * php-cli
 * php-intl
 * php-json
 
 The server should also have a working MTA to send backup reports.
-
-¹ only needed if the compressed version is used.
 
 ### Installing
 
