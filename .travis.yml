@@ -2,4 +2,4 @@ language: php
 php:
   - '7.2'
   - '7.3'
-script: phpunit --configuration phpunit.xml --coverage-test
+script: phpunit --configuration phpunit.xml
