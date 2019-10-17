@@ -3,3 +3,5 @@ php:
   - '7.2'
   - '7.3'
 script: phpunit --configuration phpunit.xml
+install:
+  - travis_retry composer update --prefer-dist
