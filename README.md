@@ -1,10 +1,11 @@
 [![Build Status](https://img.shields.io/travis/bloodhunterd/backup?style=for-the-badge)](https://travis-ci.com/bloodhunterd/backup)
+[![Docker Build](https://img.shields.io/docker/cloud/build/bloodhunterd/backup?style=for-the-badge)](https://hub.docker.com/r/bloodhunterd/backup)
 [![Release](https://img.shields.io/github/v/release/bloodhunterd/backup?include_prereleases&style=for-the-badge)](https://github.com/bloodhunterd/backup/releases)
+[![License](https://img.shields.io/github/license/bloodhunterd/backup?style=for-the-badge)](https://github.com/bloodhunterd/backup/blob/master/LICENSE)
 
 # Backup
 
-The backup agent who creates backups of files and databases (incl. Docker container).
-Works together with the backup server as comprehensive backup tool.
+A simple backup application who creates backups of files and databases (incl. Docker container).
 
 ## Getting Started
 
@@ -13,33 +14,35 @@ See deployment for notes on how to deploy the project on a live system.
 
 ### Prerequisites
 
-To execute the backup tool **PHP 7.3** or above is required.
-Additionally the following modules are also required.
+PHP including the following modules are required to run the application.
 
-* php-bz2
+* php-bz2¹
 * php-cli
 * php-intl
 * php-json
 
-The server should also be able to send mails.
+The server should also have a working MTA to send backup reports.
+
+¹ only needed if the compressed version is used.
 
 ### Installing
 
-Place the Phar file somewhere on your disk.
+Download the (compressed) backup application and place it somewhere on your server. For example at **/srv/**.
+
+[![Phar](https://img.shields.io/github/size/bloodhunterd/backup/build/backup.phar?label=Backup&style=for-the-badge)](https://github.com/bloodhunterd/backup/blob/master/build/backup.phar)
+[![Phar BZ2](https://img.shields.io/github/size/bloodhunterd/backup/build/backup.phar.bz2?label=Backup%20(compressed)&style=for-the-badge)](https://github.com/bloodhunterd/backup/blob/master/build/backup.phar.bz2)
+
+Download the example agent or manager configuration file and place it somewhere on your server. For example also at **/srv/**.
 
 ## Deployment
 
-Upload the backup-agent.phar anywhere on your server and create a configuration file.
-
-Add an entry into the crontab to execute this script periodically.
+Adjust the configuration file for your needs and add an entry into the crontab to execute this script periodically.
 
 ```bash
-0 4 * * * php /path/to/backup-agent.phar /path/to/backup-agent.conf.json
+0 4 * * * php /srv/backup.phar /srv/backup.json
 ```
 
-In this example the script would run every day at 4am.
-
-The backup agent expecting the absolute path to the configuration file as parameter.
+In this example the backup would run every night at 4am.
 
 ## Build With
 
