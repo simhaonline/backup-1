@@ -45,7 +45,7 @@ RUN apt-get install -y --no-install-recommends \
 RUN mkdir /backup
 
 # Add backup app and config
-COPY ./build /srv/
+COPY ../dist /srv/
 
 COPY ./start.sh /
 
