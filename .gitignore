@@ -1,5 +1,2 @@
-/vendor/*
-/server/vendor/*
-
-!/vendor/.gitkeep
-!/server/vendor/.gitkeep
+.idea
+vendor
