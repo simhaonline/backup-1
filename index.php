@@ -28,7 +28,7 @@ define('ROOT_DIR', __DIR__);
 require_once ROOT_DIR . DIRECTORY_SEPARATOR . 'vendor' . DIRECTORY_SEPARATOR . 'autoload.php';
 
 try {
-    (new Bootstrap())->init($argv[1])->run();
+    (new Bootstrap())->init()->run();
 } catch (BackupException $e) {
     echo $e->getMessage() . "\n";
 
