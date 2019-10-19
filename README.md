@@ -1,5 +1,4 @@
 [![Build Status](https://img.shields.io/travis/bloodhunterd/backup?style=for-the-badge)](https://travis-ci.com/bloodhunterd/backup)
-[![Docker Build](https://img.shields.io/docker/cloud/build/bloodhunterd/backup?style=for-the-badge)](https://hub.docker.com/r/bloodhunterd/backup)
 [![Release](https://img.shields.io/github/v/release/bloodhunterd/backup?include_prereleases&style=for-the-badge)](https://github.com/bloodhunterd/backup/releases)
 [![License](https://img.shields.io/github/license/bloodhunterd/backup?style=for-the-badge)](https://github.com/bloodhunterd/backup/blob/master/LICENSE)
 
@@ -14,7 +13,9 @@ See deployment for notes on how to deploy the project on a live system.
 
 ### Prerequisites
 
-PHP including the following modules are required to run the application.
+* Composer
+
+PHP version **7.2** or greater is required, including the following modules. 
 
 * php-bz2
 * php-cli
@@ -25,22 +26,18 @@ The server should also have a working MTA to send backup reports.
 
 ### Installing
 
-Download the (compressed) backup application and place it somewhere on your server. For example at **/srv/**.
+Install the dependencies simply with Composer.
 
-[![Phar](https://img.shields.io/github/size/bloodhunterd/backup/build/backup.phar?label=Backup&style=for-the-badge)](https://github.com/bloodhunterd/backup/blob/master/build/backup.phar)
-[![Phar BZ2](https://img.shields.io/github/size/bloodhunterd/backup/build/backup.phar.bz2?label=Backup%20(compressed)&style=for-the-badge)](https://github.com/bloodhunterd/backup/blob/master/build/backup.phar.bz2)
-
-Download the example agent or manager configuration file and place it somewhere on your server. For example also at **/srv/**.
+```bash
+composer install
+```
 
 ## Deployment
 
-Adjust the configuration file for your needs and add an entry into the crontab to execute this script periodically.
+This repository isn't meant to be deployed anywhere.
 
-```bash
-0 4 * * * php /srv/backup.phar /srv/backup.json
-```
-
-In this example the backup would run every night at 4am.
+For production use the compiled Phar file of the [Backup Tool Repository](https://github.com/bloodhunterd/backup-tool) or
+the Docker image of the [Backup Tool Docker Repository](https://github.com/bloodhunterd/backup-tool-docker).
 
 ## Build With
 
