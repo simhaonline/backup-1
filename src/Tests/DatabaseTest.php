@@ -57,7 +57,7 @@ class DatabaseTest extends TestCase
                 'container' => 'app-db'
             ],
             'target' => null
-        ]), true);
+        ]));
 
         $database = new Database($config);
         $database->setSource('/tmp/app-db.sql');
@@ -76,7 +76,7 @@ class DatabaseTest extends TestCase
                 'pass' => 'My+Very_Secret-Password.'
             ],
             'target' => null
-        ]), true);
+        ]));
 
         $database = new Database($config);
         $database->setSource('/tmp/db.sql');
