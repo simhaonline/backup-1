@@ -4,8 +4,89 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "59dd85b6af3270979c5f043dfd660230",
+    "content-hash": "497998816e9fc226604c97dad28ad31c",
     "packages": [
+        {
+            "name": "monolog/monolog",
+            "version": "dev-master",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/Seldaek/monolog.git",
+                "reference": "6d51b319796e6391139932f78fb76a144a867b57"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/Seldaek/monolog/zipball/6d51b319796e6391139932f78fb76a144a867b57",
+                "reference": "6d51b319796e6391139932f78fb76a144a867b57",
+                "shasum": ""
+            },
+            "require": {
+                "php": "^7.2",
+                "psr/log": "^1.0.1"
+            },
+            "provide": {
+                "psr/log-implementation": "1.0.0"
+            },
+            "require-dev": {
+                "aws/aws-sdk-php": "^2.4.9 || ^3.0",
+                "doctrine/couchdb": "~1.0@dev",
+                "elasticsearch/elasticsearch": "^6.0",
+                "graylog2/gelf-php": "^1.4.2",
+                "jakub-onderka/php-parallel-lint": "^0.9",
+                "php-amqplib/php-amqplib": "~2.4",
+                "php-console/php-console": "^3.1.3",
+                "phpspec/prophecy": "^1.6.1",
+                "phpunit/phpunit": "^8.3",
+                "predis/predis": "^1.1",
+                "rollbar/rollbar": "^1.3",
+                "ruflin/elastica": ">=0.90 <3.0",
+                "swiftmailer/swiftmailer": "^5.3|^6.0"
+            },
+            "suggest": {
+                "aws/aws-sdk-php": "Allow sending log messages to AWS services like DynamoDB",
+                "doctrine/couchdb": "Allow sending log messages to a CouchDB server",
+                "elasticsearch/elasticsearch": "Allow sending log messages to an Elasticsearch server via official client",
+                "ext-amqp": "Allow sending log messages to an AMQP server (1.0+ required)",
+                "ext-mbstring": "Allow to work properly with unicode symbols",
+                "ext-mongodb": "Allow sending log messages to a MongoDB server (via driver)",
+                "graylog2/gelf-php": "Allow sending log messages to a GrayLog2 server",
+                "mongodb/mongodb": "Allow sending log messages to a MongoDB server (via library)",
+                "php-amqplib/php-amqplib": "Allow sending log messages to an AMQP server using php-amqplib",
+                "php-console/php-console": "Allow sending log messages to Google Chrome",
+                "rollbar/rollbar": "Allow sending log messages to Rollbar",
+                "ruflin/elastica": "Allow sending log messages to an Elastic Search server"
+            },
+            "type": "library",
+            "extra": {
+                "branch-alias": {
+                    "dev-master": "2.x-dev"
+                }
+            },
+            "autoload": {
+                "psr-4": {
+                    "Monolog\\": "src/Monolog"
+                }
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "MIT"
+            ],
+            "authors": [
+                {
+                    "name": "Jordi Boggiano",
+                    "email": "j.boggiano@seld.be",
+                    "homepage": "http://seld.be"
+                }
+            ],
+            "description": "Sends your logs to files, sockets, inboxes, databases and various web services",
+            "homepage": "http://github.com/Seldaek/monolog",
+            "keywords": [
+                "log",
+                "logging",
+                "psr-3"
+            ],
+            "time": "2019-09-17T07:44:07+00:00"
+        },
         {
             "name": "psr/container",
             "version": "dev-master",
@@ -402,12 +483,12 @@
             "source": {
                 "type": "git",
                 "url": "https://github.com/nette/bootstrap.git",
-                "reference": "b45a1e33b6a44beb307756522396551e5a9ff249"
+                "reference": "a0bfe4952b606dbdb33d5f2194c7ac718ca403d3"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/nette/bootstrap/zipball/b45a1e33b6a44beb307756522396551e5a9ff249",
-                "reference": "b45a1e33b6a44beb307756522396551e5a9ff249",
+                "url": "https://api.github.com/repos/nette/bootstrap/zipball/a0bfe4952b606dbdb33d5f2194c7ac718ca403d3",
+                "reference": "a0bfe4952b606dbdb33d5f2194c7ac718ca403d3",
                 "shasum": ""
             },
             "require": {
@@ -420,12 +501,13 @@
             },
             "require-dev": {
                 "latte/latte": "^2.2",
-                "nette/application": "^3.0",
+                "nette/application": "^3.1",
                 "nette/caching": "^3.0",
                 "nette/database": "^3.0",
-                "nette/forms": "^3.0",
-                "nette/http": "^3.0",
+                "nette/forms": "^3.1",
+                "nette/http": "^4.0",
                 "nette/mail": "^3.0",
+                "nette/middleware": "^1.0",
                 "nette/robot-loader": "^3.0",
                 "nette/safe-stream": "^2.2",
                 "nette/security": "^3.0",
@@ -439,7 +521,7 @@
             "type": "library",
             "extra": {
                 "branch-alias": {
-                    "dev-master": "3.0-dev"
+                    "dev-master": "3.1-dev"
                 }
             },
             "autoload": {
@@ -470,7 +552,7 @@
                 "configurator",
                 "nette"
             ],
-            "time": "2019-09-30T08:19:38+00:00"
+            "time": "2019-10-17T22:42:20+00:00"
         },
         {
             "name": "nette/di",
@@ -925,12 +1007,12 @@
             "source": {
                 "type": "git",
                 "url": "https://github.com/nikic/PHP-Parser.git",
-                "reference": "603203177e8483205f1f8b8cf31a41ec20a6c880"
+                "reference": "eacc5dbe190857ac1f7fa9bc94821f558b35f7ea"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/nikic/PHP-Parser/zipball/603203177e8483205f1f8b8cf31a41ec20a6c880",
-                "reference": "603203177e8483205f1f8b8cf31a41ec20a6c880",
+                "url": "https://api.github.com/repos/nikic/PHP-Parser/zipball/eacc5dbe190857ac1f7fa9bc94821f558b35f7ea",
+                "reference": "eacc5dbe190857ac1f7fa9bc94821f558b35f7ea",
                 "shasum": ""
             },
             "require": {
@@ -938,6 +1020,7 @@
                 "php": ">=7.0"
             },
             "require-dev": {
+                "ircmaxell/php-yacc": "0.0.4",
                 "phpunit/phpunit": "^6.5 || ^7.0 || ^8.0"
             },
             "bin": [
@@ -968,7 +1051,7 @@
                 "parser",
                 "php"
             ],
-            "time": "2019-09-18T09:25:40+00:00"
+            "time": "2019-10-19T13:24:38+00:00"
         },
         {
             "name": "ocramius/package-versions",
@@ -1389,12 +1472,12 @@
             "source": {
                 "type": "git",
                 "url": "https://github.com/phpstan/phpstan.git",
-                "reference": "74ca532d889ad6fc4ab63117cd1c923779b69221"
+                "reference": "3a1e0a9b9e5e00c9bcddec6f464f7d44a575388c"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/phpstan/phpstan/zipball/74ca532d889ad6fc4ab63117cd1c923779b69221",
-                "reference": "74ca532d889ad6fc4ab63117cd1c923779b69221",
+                "url": "https://api.github.com/repos/phpstan/phpstan/zipball/3a1e0a9b9e5e00c9bcddec6f464f7d44a575388c",
+                "reference": "3a1e0a9b9e5e00c9bcddec6f464f7d44a575388c",
                 "shasum": ""
             },
             "require": {
@@ -1453,7 +1536,7 @@
                 "MIT"
             ],
             "description": "PHPStan - PHP Static Analysis Tool",
-            "time": "2019-10-16T14:28:55+00:00"
+            "time": "2019-10-19T22:59:20+00:00"
         },
         {
             "name": "phpunit/php-code-coverage",
@@ -1713,12 +1796,12 @@
             "source": {
                 "type": "git",
                 "url": "https://github.com/sebastianbergmann/phpunit.git",
-                "reference": "a07d6ce5d21ecdfe7edeedaf5efb3be85c4f2046"
+                "reference": "01556eefc2757a1daaaaf2dcf6fb90e02627a850"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/sebastianbergmann/phpunit/zipball/a07d6ce5d21ecdfe7edeedaf5efb3be85c4f2046",
-                "reference": "a07d6ce5d21ecdfe7edeedaf5efb3be85c4f2046",
+                "url": "https://api.github.com/repos/sebastianbergmann/phpunit/zipball/01556eefc2757a1daaaaf2dcf6fb90e02627a850",
+                "reference": "01556eefc2757a1daaaaf2dcf6fb90e02627a850",
                 "shasum": ""
             },
             "require": {
@@ -1788,7 +1871,7 @@
                 "testing",
                 "xunit"
             ],
-            "time": "2019-10-15T08:26:12+00:00"
+            "time": "2019-10-18T05:11:04+00:00"
         },
         {
             "name": "roave/security-advisories",
@@ -2627,12 +2710,12 @@
             "source": {
                 "type": "git",
                 "url": "https://github.com/symfony/console.git",
-                "reference": "8749c76af2c319185b4eab2d89520b12fc454a58"
+                "reference": "aa43e86fe32b03a4518096240a35f8f52c6cac8f"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/symfony/console/zipball/8749c76af2c319185b4eab2d89520b12fc454a58",
-                "reference": "8749c76af2c319185b4eab2d89520b12fc454a58",
+                "url": "https://api.github.com/repos/symfony/console/zipball/aa43e86fe32b03a4518096240a35f8f52c6cac8f",
+                "reference": "aa43e86fe32b03a4518096240a35f8f52c6cac8f",
                 "shasum": ""
             },
             "require": {
@@ -2695,7 +2778,7 @@
             ],
             "description": "Symfony Console Component",
             "homepage": "https://symfony.com",
-            "time": "2019-10-11T14:10:55+00:00"
+            "time": "2019-10-17T12:23:42+00:00"
         },
         {
             "name": "symfony/finder",
