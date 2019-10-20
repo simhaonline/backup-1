@@ -107,7 +107,7 @@ class Server implements Downloadable
      */
     public function setTarget(string $path): void
     {
-        $this->source = $path;
+        $this->target = $path;
     }
 
     /**
