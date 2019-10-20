@@ -102,13 +102,14 @@ class Manager implements Backup
     /**
      * Download all files from a downloadable object
      *
-     * @param Downloadable $object
+     * @param Downloadable $downloadable
      *
      * @return bool
      */
-    public function download(Downloadable $object): bool
+    public function download(Downloadable $downloadable): bool
     {
         # RSYNC:
+        # -r Recursive
         # -t Preserves modification times.
         # -v Increases verbosity. (debug mode only)
         # -e Uses an alternative remote shell program for communication between the local and remote copies. (SSH)
@@ -117,15 +118,15 @@ class Manager implements Backup
         # -p Port to connect to on the remote host.
         # -i Identity file. Selects a file from which the identity (private key) for authentication is read.
         $cmd = sprintf(
-            'rsync -t -e "ssh -t -q -o "StrictHostKeyChecking=no" -p %d -i %s" %s@%s:%s %s/',
-            $object->getSSH()->getPort(),
-            $object->getSSH()->getKey(),
-            $object->getSSH()->getUser(),
-            $object->getHost(),
-            $object->getSource(),
-            $object->getTarget()
+            'rsync -r -t -e "ssh -t -q -o "StrictHostKeyChecking=no" -p %d -i %s" %s@%s:%s %s/',
+            $downloadable->getSSH()->getPort(),
+            $downloadable->getSSH()->getKey(),
+            $downloadable->getSSH()->getUser(),
+            $downloadable->getHost(),
+            $downloadable->getSource(),
+            $downloadable->getTarget()
         );
 
-        return $this->tool->execute($cmd) && is_file($object->getTarget());
+        return $this->tool->execute($cmd) && is_file($downloadable->getTarget());
     }
 }
