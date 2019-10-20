@@ -13,6 +13,8 @@ declare(strict_types=1);
 
 namespace Backup;
 
+use Backup\Exception\ConfigurationException;
+use Locale;
 use Phar;
 use Vection\Component\DI\Annotations\Inject;
 use Vection\Component\DI\Traits\AnnotationInjection;
@@ -40,6 +42,40 @@ class Tool
      * @Inject("Backup\Logger")
      */
     private $logger;
+
+    /**
+     * Set the timezone
+     *
+     * @param string $timezone
+     * @throws ConfigurationException
+     */
+    private function setTimezone(string $timezone): void
+    {
+        if (!date_default_timezone_set($timezone)) {
+            $msg = 'The timezone "%s" is invalid.';
+
+            throw new ConfigurationException(sprintf($msg, $timezone));
+        }
+
+        $this->logger->use('app')->debug('Timezone successfully set');
+    }
+
+    /**
+     * Set the language
+     *
+     * @param string $language
+     * @throws ConfigurationException
+     */
+    private function setLanguage(string $language): void
+    {
+        if (!Locale::setDefault($language)) {
+            $msg = 'The language "%s" is not supported or not installed.';
+
+            throw new ConfigurationException(sprintf($msg, $language));
+        }
+
+        $this->logger->use('app')->debug('Language successfully set');
+    }
 
     /**
      * Mount a directory

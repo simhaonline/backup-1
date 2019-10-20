@@ -16,13 +16,9 @@ namespace Backup;
 
 use Backup\Exception\ConfigurationException;
 use Exception;
-use Locale;
-use Monolog\Handler\PHPConsoleHandler;
 use Monolog\Handler\StreamHandler;
 use Monolog\Logger as MonologLogger;
-use Vection\Component\DI\Annotations\Inject;
 use Vection\Component\DI\Container;
-use Vection\Component\DI\Traits\AnnotationInjection;
 
 /**
  * Class Bootstrap
@@ -34,24 +30,10 @@ use Vection\Component\DI\Traits\AnnotationInjection;
 class Bootstrap
 {
 
-    use AnnotationInjection;
-
     /**
      * @var Container
      */
     private $container;
-
-    /**
-     * @var Logger
-     * @Inject("Backup\Logger")
-     */
-    private $logger;
-
-    /**
-     * @var Tool
-     * @Inject("Backup\Tool")
-     */
-    private $tool;
 
     /**
      * Bootstrap constructor
@@ -73,21 +55,19 @@ class Bootstrap
      */
     public function init(): object
     {
-        # Initialize application logging
-        $appLogger = new MonologLogger('app');
-        $appLogger->pushHandler(new StreamHandler('php://stdout'));
-        $appLogger->pushHandler(new StreamHandler('/var/log/backup.log'));
-
-        # Initialize report logging
-        $reportLogger = new MonologLogger('report');
-        $reportLogger->pushHandler(
-            new StreamHandler(ROOT_DIR . DIRECTORY_SEPARATOR . 'backup-report.log', MonologLogger::INFO)
-        );
-
         # Wrap loggers to be able to inject
         $loggers = new Logger();
-        $loggers->set($appLogger);
-        $loggers->set($reportLogger);
+        # Initialize application logging
+        $loggers->set((new MonologLogger('app'))
+            ->pushHandler(new StreamHandler('php://stdout'))
+            ->pushHandler(new StreamHandler('/var/log/backup.log'))
+        );
+        # Initialize report logging
+        $loggers->set((new MonologLogger('report'))
+            ->pushHandler(
+                new StreamHandler(ROOT_DIR . DIRECTORY_SEPARATOR . 'backup-report.log', MonologLogger::INFO)
+            )
+        );
 
         # Make logger injectable
         $this->container->add($loggers);
@@ -97,62 +77,30 @@ class Bootstrap
         $config->mount();
         $config->load();
 
-        $this->setTimezone($config->getTimezone());
-        $this->setLanguage($config->getLanguage());
+        $tool = $this->container->get(Tool::class);
+
+        $tool->setTimezone($config->getTimezone());
+        $tool->setLanguage($config->getLanguage());
 
         switch ($config->getMode()) {
             case 'agent':
                 /** @var Agent $backup */
                 $backup = $this->container->get(Agent::class);
 
-                $this->logger->use('app')->info('Backup is running in Agent mode');
+                $loggers->use('app')->info('Backup is running in Agent mode');
                 break;
             case 'manager':
                 /** @var Manager $backup */
                 $backup = $this->container->get(Manager::class);
 
-                $this->logger->use('app')->info('Backup is running in Manager mode');
+                $loggers->use('app')->info('Backup is running in Manager mode');
                 break;
             default:
                 throw new ConfigurationException(sprintf('The mode "%s" is invalid.', $config->getMode()));
         }
 
-        $this->tool->mountDirectory($config->getTargetDirectory());
+        $tool->mountDirectory($config->getTargetDirectory());
 
         return $backup;
-    }
-
-    /**
-     * Set the timezone
-     *
-     * @param string $timezone
-     * @throws ConfigurationException
-     */
-    private function setTimezone(string $timezone): void
-    {
-        if (!date_default_timezone_set($timezone)) {
-            $msg = 'The timezone "%s" is invalid.';
-
-            throw new ConfigurationException(sprintf($msg, $timezone));
-        }
-
-        $this->logger->use('app')->debug('Timezone successfully set');
-    }
-
-    /**
-     * Set the language
-     *
-     * @param string $language
-     * @throws ConfigurationException
-     */
-    private function setLanguage(string $language): void
-    {
-        if (!Locale::setDefault($language)) {
-            $msg = 'The language "%s" is not supported or not installed.';
-
-            throw new ConfigurationException(sprintf($msg, $language));
-        }
-
-        $this->logger->use('app')->debug('Language successfully set');
     }
 }
