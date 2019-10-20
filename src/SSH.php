@@ -52,12 +52,9 @@ class SSH
     {
         $this->setPort($settings['port'] ?? $this->port);
         $this->setUser($settings['user'] ?? $this->user);
+        $this->setKey($settings['key']);
 
-        if ($settings['key']) {
-            $this->setKey($settings['key']);
-        }
-
-        if ($settings['pass']) {
+        if (isset($settings['pass'])) {
             $this->setPass($settings['key']);
         }
     }

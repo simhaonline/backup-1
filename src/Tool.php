@@ -110,7 +110,7 @@ class Tool
             }
         }
 
-        $this->logger->use('app')->debug(sprintf('Directory "%s" successfully created', $path));
+        $this->logger->use('app')->debug(sprintf('Directory "%s" successfully created', $absolutePath));
 
         return true;
     }
@@ -125,6 +125,10 @@ class Tool
     public function execute(string $command): bool
     {
         exec($command, $output, $return);
+
+        foreach ($output as $line) {
+            $this->logger->use('app')->debug($line);
+        }
 
         unset($output);
 
