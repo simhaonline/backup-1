@@ -178,16 +178,6 @@ class Database implements Compressible
     }
 
     /**
-     * Get type
-     *
-     * @return string|null
-     */
-    public function getType(): ?string
-    {
-        return $this->type;
-    }
-
-    /**
      * Set docker container
      *
      * @param string $container
@@ -195,16 +185,6 @@ class Database implements Compressible
     public function setDockerContainer(string $container): void
     {
         $this->dockerContainer = $container;
-    }
-
-    /**
-     * Get docker container
-     *
-     * @return string
-     */
-    public function getDockerContainer(): string
-    {
-        return $this->dockerContainer;
     }
 
     /**
@@ -220,16 +200,6 @@ class Database implements Compressible
     }
 
     /**
-     * Get host
-     *
-     * @return string
-     */
-    public function getHost(): string
-    {
-        return $this->host;
-    }
-
-    /**
      * Set user
      *
      * @param string|null $user
@@ -242,16 +212,6 @@ class Database implements Compressible
     }
 
     /**
-     * Get user
-     *
-     * @return string
-     */
-    public function getUser(): string
-    {
-        return $this->user;
-    }
-
-    /**
      * Set password
      *
      * @param string|null $password
@@ -259,16 +219,6 @@ class Database implements Compressible
     public function setPassword(string $password = null): void
     {
         $this->password = $password;
-    }
-
-    /**
-     * Get password
-     *
-     * @return string|null
-     */
-    public function getPassword(): ?string
-    {
-        return $this->password;
     }
 
     /**

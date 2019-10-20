@@ -13,7 +13,6 @@
 declare(strict_types = 1);
 
 use Backup\Bootstrap;
-use Backup\Exception\BackupException;
 
 /**
  * Backup AgentException
@@ -29,7 +28,7 @@ require_once ROOT_DIR . DIRECTORY_SEPARATOR . 'vendor' . DIRECTORY_SEPARATOR . '
 
 try {
     (new Bootstrap())->init()->run();
-} catch (BackupException $e) {
+} catch (Exception $e) {
     echo $e->getMessage() . "\n";
 
     exit();

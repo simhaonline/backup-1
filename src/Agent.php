@@ -14,11 +14,9 @@ declare(strict_types = 1);
 
 namespace Backup;
 
-use Backup\Exception\AgentException;
 use Backup\Exception\DatabaseException;
 use Backup\Exception\DirectoryException;
 use Backup\Interfaces\Compressible;
-use Phar;
 use PharException;
 use Vection\Component\DI\Annotations\Inject;
 use Vection\Component\DI\Traits\AnnotationInjection;
@@ -42,6 +40,18 @@ class Agent
     private $config;
 
     /**
+     * @var Logger
+     * @Inject("Backup\Logger")
+     */
+    private $logger;
+
+    /**
+     * @var Tool
+     * @Inject("Backup\Tool")
+     */
+    private $tool;
+
+    /**
      * Run backup agent
      */
     public function run(): void
@@ -51,7 +61,7 @@ class Agent
         foreach ($directories as $directory) {
             try {
                 $this->backupDirectory(new Directory($directory));
-            } catch (AgentException | DirectoryException $e) {
+            } catch (DirectoryException $e) {
                 echo $e->getMessage() . "\n";
 
                 continue;
@@ -63,7 +73,7 @@ class Agent
         foreach ($databases as $database) {
             try {
                 $this->backupDatabase(new Database($database));
-            } catch (AgentException | DatabaseException $e) {
+            } catch (DatabaseException $e) {
                 echo $e->getMessage() . "\n";
 
                 continue;
@@ -76,19 +86,23 @@ class Agent
      *
      * @param Directory $directory
      *
-     * @throws AgentException | DirectoryException
+     * @throws DirectoryException
      */
     public function backupDirectory(Directory $directory): void
     {
         $name = $directory->getName();
 
-        if (!$this->createDirectory($directory->getTarget())) {
+        if (!$this->tool->createDirectory($directory->getTarget())) {
             $msg = sprintf('Failed to create target directory for directory backup "%s".', $name);
 
             throw new DirectoryException($msg);
         }
 
-        $this->mountDirectory($directory->getSource());
+        try {
+            $this->tool->mountDirectory($directory->getSource());
+        } catch (PharException $e) {
+            throw new DirectoryException($e->getMessage());
+        }
 
         $directory->setArchive($this->sanitize($directory->getName()));
 
@@ -97,6 +111,8 @@ class Agent
 
             throw new DirectoryException($msg);
         }
+
+        $this->logger->use('app')->info(sprintf('Archive of directory "%s" successfully created', $name));
     }
 
     /**
@@ -104,13 +120,13 @@ class Agent
      *
      * @param Database $database
      *
-     * @throws AgentException | DatabaseException
+     * @throws DatabaseException
      */
     public function backupDatabase(Database $database): void
     {
         $name = $database->getName();
 
-        if (!$this->createDirectory($database->getTarget())) {
+        if (!$this->tool->createDirectory($database->getTarget())) {
             $msg = sprintf('Failed to create target directory for database backup "%s".', $name);
 
             throw new DatabaseException($msg);
@@ -118,7 +134,7 @@ class Agent
 
         $database->setSource($this->sanitize($database->getName()) . '.sql');
 
-        if (!$this->execute($database->createDumpCmd())) {
+        if (!$this->tool->execute($database->createDumpCmd())) {
             $msg = sprintf('Failed to create dump of database backup "%s".', $name);
 
             throw new DatabaseException($msg);
@@ -131,46 +147,6 @@ class Agent
 
             throw new DatabaseException($msg);
         }
-    }
-
-    /**
-     * Mount a directory
-     *
-     * @param string $path
-     *
-     * @throws AgentException
-     */
-    public function mountDirectory(string $path): void
-    {
-        try {
-            Phar::mount($path, $path);
-        } catch (PharException $e) {
-            $msg = 'Failed to mount the target directory "%s". Please check %s.';
-
-            throw new AgentException(sprintf($msg, $path, $e->getMessage()));
-        }
-    }
-
-    /**
-     * Create a directory
-     *
-     * @param string $path
-     *
-     * @return bool
-     */
-    private function createDirectory(string $path): bool
-    {
-        $absolutePath = $this->config->getTargetDirectory() . $path;
-
-        if (!is_dir($absolutePath)) {
-            $cmd = sprintf('mkdir -p %s', escapeshellarg($absolutePath));
-
-            $r = $this->execute($cmd);
-
-            return $r && is_dir($absolutePath);
-        }
-
-        return true;
     }
 
     /**
@@ -190,24 +166,7 @@ class Agent
             escapeshellarg($object->getSource())
         );
 
-        return $this->execute($cmd);
-    }
-
-    /**
-     * Execute a command
-     *
-     * @param string $command
-     *
-     * @return bool
-     */
-    private function execute(string $command): bool
-    {
-        exec($command, $output, $return);
-
-        unset($output);
-
-        # The command failed, if it returns a non-zero value
-        return ! (bool) $return;
+        return $this->tool->execute($cmd);
     }
 
     /**

@@ -14,11 +14,15 @@ declare(strict_types = 1);
 
 namespace Backup;
 
-use Backup\Exception\AgentException;
 use Backup\Exception\ConfigurationException;
-use Backup\Exception\ManagerException;
+use Exception;
 use Locale;
+use Monolog\Handler\PHPConsoleHandler;
+use Monolog\Handler\StreamHandler;
+use Monolog\Logger as MonologLogger;
+use Vection\Component\DI\Annotations\Inject;
 use Vection\Component\DI\Container;
+use Vection\Component\DI\Traits\AnnotationInjection;
 
 /**
  * Class Bootstrap
@@ -30,16 +34,31 @@ use Vection\Component\DI\Container;
 class Bootstrap
 {
 
+    use AnnotationInjection;
+
     /**
      * @var Container
      */
-    public $container;
+    private $container;
+
+    /**
+     * @var Logger
+     * @Inject("Backup\Logger")
+     */
+    private $logger;
+
+    /**
+     * @var Tool
+     * @Inject("Backup\Tool")
+     */
+    private $tool;
 
     /**
      * Bootstrap constructor
      */
     public function __construct()
     {
+        # Initialize dependency injection
         $this->container = new Container();
         $this->container->registerNamespace([
             'Backup'
@@ -50,15 +69,31 @@ class Bootstrap
      * Initialize the backup application
      *
      * @return Agent | Manager
-     * @throws AgentException | ConfigurationException | ManagerException
+     * @throws ConfigurationException | Exception
      */
     public function init(): object
     {
-        $config = new Configuration();
+        # Initialize application logging
+        $appLogger = new MonologLogger('app');
+        $appLogger->pushHandler(new StreamHandler('/var/log/backup.log'));
+        $appLogger->pushHandler(new PHPConsoleHandler());
+
+        # Initialize report logging
+        $reportLogger = new MonologLogger('report');
+        $reportLogger->pushHandler(new StreamHandler(ROOT_DIR . DIRECTORY_SEPARATOR . 'backup-report.log'));
+
+        # Wrap loggers to be able to inject
+        $loggers = new Logger();
+        $loggers->set($appLogger);
+        $loggers->set($reportLogger);
+
+        # Make logger injectable
+        $this->container->add($loggers);
+
+        /** @var Configuration $config */
+        $config = $this->container->get(Configuration::class);
         $config->mount();
         $config->load();
-
-        $this->container->add($config);
 
         $this->setTimezone($config->getTimezone());
         $this->setLanguage($config->getLanguage());
@@ -67,16 +102,20 @@ class Bootstrap
             case 'agent':
                 /** @var Agent $backup */
                 $backup = $this->container->get(Agent::class);
+
+                $this->logger->use('app')->info('Backup is running in Agent mode');
                 break;
             case 'manager':
                 /** @var Manager $backup */
                 $backup = $this->container->get(Manager::class);
+
+                $this->logger->use('app')->info('Backup is running in Manager mode');
                 break;
             default:
                 throw new ConfigurationException(sprintf('The mode "%s" is invalid.', $config->getMode()));
         }
 
-        $backup->mountDirectory($config->getTargetDirectory());
+        $this->tool->mountDirectory($config->getTargetDirectory());
 
         return $backup;
     }
@@ -94,6 +133,8 @@ class Bootstrap
 
             throw new ConfigurationException(sprintf($msg, $timezone));
         }
+
+        $this->logger->use('app')->debug('Timezone successfully set');
     }
 
     /**
@@ -109,5 +150,7 @@ class Bootstrap
 
             throw new ConfigurationException(sprintf($msg, $language));
         }
+
+        $this->logger->use('app')->debug('Language successfully set');
     }
 }

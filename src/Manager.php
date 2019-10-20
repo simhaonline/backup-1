@@ -15,13 +15,8 @@ declare(strict_types = 1);
 namespace Backup;
 
 use Backup\Exception\DownloadException;
-use Backup\Exception\ManagerException;
 use Backup\Exception\DirectoryException;
-use Backup\Exception\ServerException;
 use Backup\Interfaces\Downloadable;
-use Phar;
-use PharException;
-use TypeError;
 use Vection\Component\DI\Annotations\Inject;
 use Vection\Component\DI\Traits\AnnotationInjection;
 
@@ -44,6 +39,18 @@ class Manager
     private $config;
 
     /**
+     * @var Logger
+     * @Inject("Backup\Logger")
+     */
+    private $logger;
+
+    /**
+     * @var Tool
+     * @Inject("Backup\Tool")
+     */
+    private $tool;
+
+    /**
      * Run backup agent
      */
     public function run(): void
@@ -53,7 +60,7 @@ class Manager
         foreach ($servers as $server) {
             try {
                 $this->backupServer(new Server($server));
-            } catch (DownloadException | DirectoryException | ManagerException | ServerException $e) {
+            } catch (DownloadException | DirectoryException $e) {
                 echo $e->getMessage() . "\n";
 
                 continue;
@@ -66,13 +73,13 @@ class Manager
      *
      * @param Server $server
      *
-     * @throws DownloadException | DirectoryException | ManagerException | ServerException
+     * @throws DownloadException | DirectoryException
      */
     public function backupServer(Server $server): void
     {
         $name = $server->getName();
 
-        if (!$this->createDirectory($server->getTarget())) {
+        if (!$this->tool->createDirectory($server->getTarget())) {
             $msg = sprintf('Failed to create target directory for directory backup "%s".', $name);
 
             throw new DirectoryException($msg);
@@ -83,63 +90,8 @@ class Manager
 
             throw new DownloadException($msg);
         }
-    }
 
-    /**
-     * Mount a directory
-     *
-     * @param string $path
-     *
-     * @throws ManagerException
-     */
-    public function mountDirectory(string $path): void
-    {
-        try {
-            Phar::mount($path, $path);
-        } catch (PharException | TypeError $e) {
-            $msg = 'Failed to mount the target directory "%s". Please check %s.';
-
-            throw new ManagerException(sprintf($msg, $path, $e->getMessage()));
-        }
-    }
-
-    /**
-     * Create a directory
-     *
-     * @param string $path
-     *
-     * @return bool
-     */
-    private function createDirectory(string $path): bool
-    {
-        $absolutePath = $this->config->getTargetDirectory() . $path;
-
-        if (!is_dir($absolutePath)) {
-            $cmd = sprintf('mkdir -p %s', escapeshellarg($absolutePath));
-
-            $r = $this->execute($cmd);
-
-            return $r && is_dir($absolutePath);
-        }
-
-        return true;
-    }
-
-    /**
-     * Execute a command
-     *
-     * @param string $command
-     *
-     * @return bool
-     */
-    private function execute(string $command): bool
-    {
-        exec($command, $output, $return);
-
-        unset($output);
-
-        # The command failed, if it returns a non-zero value
-        return ! (bool) $return;
+        $this->logger->use('app')->info(sprintf('Download from server "%s" successfully', $name));
     }
 
     /**
@@ -169,6 +121,6 @@ class Manager
             $object->getTarget()
         );
 
-        return $this->execute($cmd) && is_file($object->getTarget());
+        return $this->tool->execute($cmd) && is_file($object->getTarget());
     }
 }

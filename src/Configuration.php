@@ -18,6 +18,8 @@ use Backup\Exception\ConfigurationException;
 use Phar;
 use PharException;
 use TypeError;
+use Vection\Component\DI\Annotations\Inject;
+use Vection\Component\DI\Traits\AnnotationInjection;
 
 /**
  * Class Configuration
@@ -29,10 +31,18 @@ use TypeError;
 class Configuration
 {
 
+    use AnnotationInjection;
+
     /**
      * @var object
      */
     private $settings;
+
+    /**
+     * @var Logger
+     * @Inject("Backup\Logger")
+     */
+    private $logger;
 
     /**
      * Mount the configuration file
@@ -48,6 +58,8 @@ class Configuration
 
             throw new ConfigurationException(sprintf($msg, $e->getMessage()));
         }
+
+        $this->logger->use('app')->debug('Configuration successfully mounted');
     }
 
     /**
@@ -68,6 +80,8 @@ class Configuration
         }
 
         $this->settings = $config;
+
+        $this->logger->use('app')->debug('Configuration successfully loaded');
     }
 
     /**
