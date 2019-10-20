@@ -66,7 +66,7 @@ class Manager implements Backup
             try {
                 $this->backupServer(new Server($server));
             } catch (DownloadException | DirectoryException $e) {
-                echo $e->getMessage() . "\n";
+                $this->logger->use('app')->error($e->getMessage());
 
                 continue;
             }
@@ -91,7 +91,7 @@ class Manager implements Backup
         }
 
         if (!$this->download($server)) {
-            $msg = sprintf('Failed to download backup directory of server "%s".', $name);
+            $msg = sprintf('Failed to download from server "%s".', $name);
 
             throw new DownloadException($msg);
         }

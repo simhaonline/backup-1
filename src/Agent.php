@@ -67,7 +67,7 @@ class Agent implements Backup
             try {
                 $this->backupDirectory(new Directory($directory));
             } catch (DirectoryException $e) {
-                echo $e->getMessage() . "\n";
+                $this->logger->use('app')->error($e->getMessage());
 
                 continue;
             }
@@ -79,7 +79,7 @@ class Agent implements Backup
             try {
                 $this->backupDatabase(new Database($database));
             } catch (DatabaseException $e) {
-                echo $e->getMessage() . "\n";
+                $this->logger->use('app')->error($e->getMessage());
 
                 continue;
             }
