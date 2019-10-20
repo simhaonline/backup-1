@@ -37,6 +37,11 @@ class Bootstrap
     private $container;
 
     /**
+     * @var Logger
+     */
+    private $logger;
+
+    /**
      * Bootstrap constructor
      */
     public function __construct()
@@ -56,24 +61,9 @@ class Bootstrap
      */
     public function init(): Backup
     {
-        # Wrap loggers to be able to inject
-        $loggers = new Logger();
-        # Initialize application logging
-        $loggers->set((new MonologLogger('app'))
-            ->pushHandler(new StreamHandler('php://stdout'))
-            ->pushHandler(new StreamHandler('/var/log/backup.log'))
-        );
-        # Initialize report logging
-        $loggers->set((new MonologLogger('report'))
-            ->pushHandler(
-                new StreamHandler(ROOT_DIR . DIRECTORY_SEPARATOR . 'backup-report.log', MonologLogger::INFO)
-            )
-        );
+        $this->initLoggers();
 
-        # Make logger injectable
-        $this->container->add($loggers);
-
-        $loggers->use('app')->info('Backup initializing');
+        $this->logger->use('app')->info('Backup initializing');
 
         /** @var Configuration $config */
         $config = $this->container->get(Configuration::class);
@@ -91,13 +81,13 @@ class Bootstrap
                 /** @var Agent $backup */
                 $backup = $this->container->get(Agent::class);
 
-                $loggers->use('app')->info('Starting Agent');
+                $this->logger->use('app')->info('Starting Agent');
                 break;
             case 'manager':
                 /** @var Manager $backup */
                 $backup = $this->container->get(Manager::class);
 
-                $loggers->use('app')->info('Starting Manager');
+                $this->logger->use('app')->info('Starting Manager');
                 break;
             default:
                 throw new ConfigurationException(sprintf('The mode "%s" is invalid.', $config->getMode()));
@@ -105,8 +95,43 @@ class Bootstrap
 
         $tool->mountDirectory($config->getTargetDirectory());
 
-        $loggers->use('app')->info('Backup initialized');
+        $this->logger->use('app')->info('Backup initialized');
 
         return $backup;
+    }
+
+    /**
+     * Initialize loggers
+     *
+     * @throws Exception
+     */
+    private function initLoggers(): void
+    {
+        # Wrap loggers to be able to inject
+        $logger = new Logger();
+
+        # Initialize application logging
+        $logger->set((new MonologLogger('app'))
+            ->pushHandler(new StreamHandler('php://stdout'))
+            ->pushHandler(new StreamHandler('/var/log/backup.log'))
+        );
+
+        # Initialize RSYNC logging
+        $logger->set((new MonologLogger('shell'))
+            ->pushHandler(new StreamHandler('php://stdout'))
+            ->pushHandler(new StreamHandler('/var/log/backup.shell.log'))
+        );
+
+        # Initialize report logging
+        $logger->set((new MonologLogger('report'))
+            ->pushHandler(
+                new StreamHandler(ROOT_DIR . DIRECTORY_SEPARATOR . 'backup.report.log', MonologLogger::INFO)
+            )
+        );
+
+        # Make logger injectable
+        $this->container->add($logger);
+
+        $this->logger = $logger;
     }
 }

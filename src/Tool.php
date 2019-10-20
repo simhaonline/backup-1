@@ -124,13 +124,15 @@ class Tool
      */
     public function execute(string $command): bool
     {
+        unset($output);
+
         exec($command, $output, $return);
 
         foreach ($output as $line) {
-            $this->logger->use('app')->debug($line);
+            $this->logger->use('shell')->debug($line);
         }
 
-        unset($output);
+        $this->logger->use('app')->debug(sprintf('Return status: %s', $return));
 
         # The command failed, if it returns a non-zero value
         if (! (bool) $return) {
