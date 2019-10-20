@@ -47,7 +47,7 @@ abstract class Download implements Downloadable
             escapeshellarg($this->getSSH()->getKey()),
             $this->getSSH()->getUser(),
             $this->getHost(),
-            escapeshellarg($this->getSource()),
+            escapeshellarg($this->getSource() . DIRECTORY_SEPARATOR),
             escapeshellarg($this->getTarget() . DIRECTORY_SEPARATOR)
         );
     }
