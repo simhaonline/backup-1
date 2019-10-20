@@ -75,12 +75,14 @@ class Bootstrap
     {
         # Initialize application logging
         $appLogger = new MonologLogger('app');
+        $appLogger->pushHandler(new StreamHandler('php://stdout'));
         $appLogger->pushHandler(new StreamHandler('/var/log/backup.log'));
-        $appLogger->pushHandler(new PHPConsoleHandler());
 
         # Initialize report logging
         $reportLogger = new MonologLogger('report');
-        $reportLogger->pushHandler(new StreamHandler(ROOT_DIR . DIRECTORY_SEPARATOR . 'backup-report.log'));
+        $reportLogger->pushHandler(
+            new StreamHandler(ROOT_DIR . DIRECTORY_SEPARATOR . 'backup-report.log', MonologLogger::INFO)
+        );
 
         # Wrap loggers to be able to inject
         $loggers = new Logger();
