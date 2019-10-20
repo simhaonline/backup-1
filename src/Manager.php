@@ -17,7 +17,6 @@ namespace Backup;
 use Backup\Exception\DownloadException;
 use Backup\Exception\DirectoryException;
 use Backup\Interfaces\Backup;
-use Backup\Interfaces\Downloadable;
 use Vection\Component\DI\Annotations\Inject;
 use Vection\Component\DI\Traits\AnnotationInjection;
 
@@ -90,43 +89,15 @@ class Manager implements Backup
             throw new DirectoryException($msg);
         }
 
-        if (!$this->download($server)) {
+        $server->setSource($this->config->getTargetDirectory() . $server->getSource());
+        $server->setTarget($this->config->getTargetDirectory() . $server->getTarget());
+
+        if (!$this->tool->execute($server->createDownloadCmd()) || !is_file($server->getTarget())) {
             $msg = sprintf('Failed to download from server "%s".', $name);
 
             throw new DownloadException($msg);
         }
 
         $this->logger->use('app')->info(sprintf('Download from server "%s" successfully', $name));
-    }
-
-    /**
-     * Download all files from a downloadable object
-     *
-     * @param Downloadable $downloadable
-     *
-     * @return bool
-     */
-    public function download(Downloadable $downloadable): bool
-    {
-        # RSYNC:
-        # -r Recursive
-        # -t Preserves modification times.
-        # -v Increases verbosity. (debug mode only)
-        # -e Uses an alternative remote shell program for communication between the local and remote copies. (SSH)
-        # SSH:
-        # -q Quiet mode. Causes most warning and diagnostic messages to be suppressed.
-        # -p Port to connect to on the remote host.
-        # -i Identity file. Selects a file from which the identity (private key) for authentication is read.
-        $cmd = sprintf(
-            'rsync -r -t -e "ssh -t -q -o "StrictHostKeyChecking=no" -p %d -i %s" %s@%s:%s %s/',
-            $downloadable->getSSH()->getPort(),
-            $downloadable->getSSH()->getKey(),
-            $downloadable->getSSH()->getUser(),
-            $downloadable->getHost(),
-            $downloadable->getSource(),
-            $downloadable->getTarget()
-        );
-
-        return $this->tool->execute($cmd) && is_file($downloadable->getTarget());
     }
 }

@@ -13,8 +13,6 @@ declare(strict_types = 1);
 
 namespace Backup;
 
-use Backup\Interfaces\Downloadable;
-
 /**
  * Class Server
  *
@@ -22,7 +20,7 @@ use Backup\Interfaces\Downloadable;
  *
  * @author BloodhunterD <bloodhunterd@bloodhunterd.com>
  */
-class Server implements Downloadable
+class Server extends Download
 {
 
     /**
