@@ -15,6 +15,7 @@ declare(strict_types = 1);
 namespace Backup;
 
 use Backup\Exception\ConfigurationException;
+use Backup\Interfaces\Backup;
 use Exception;
 use Monolog\Handler\StreamHandler;
 use Monolog\Logger as MonologLogger;
@@ -50,10 +51,10 @@ class Bootstrap
     /**
      * Initialize the backup application
      *
-     * @return Agent | Manager
+     * @return Backup
      * @throws ConfigurationException | Exception
      */
-    public function init(): object
+    public function init(): Backup
     {
         # Wrap loggers to be able to inject
         $loggers = new Logger();
@@ -72,11 +73,14 @@ class Bootstrap
         # Make logger injectable
         $this->container->add($loggers);
 
+        $loggers->use('app')->info('Backup initializing');
+
         /** @var Configuration $config */
         $config = $this->container->get(Configuration::class);
         $config->mount();
         $config->load();
 
+        /** @var Tool $tool */
         $tool = $this->container->get(Tool::class);
 
         $tool->setTimezone($config->getTimezone());
@@ -87,19 +91,21 @@ class Bootstrap
                 /** @var Agent $backup */
                 $backup = $this->container->get(Agent::class);
 
-                $loggers->use('app')->info('Backup is running in Agent mode');
+                $loggers->use('app')->info('Starting Agent');
                 break;
             case 'manager':
                 /** @var Manager $backup */
                 $backup = $this->container->get(Manager::class);
 
-                $loggers->use('app')->info('Backup is running in Manager mode');
+                $loggers->use('app')->info('Starting Manager');
                 break;
             default:
                 throw new ConfigurationException(sprintf('The mode "%s" is invalid.', $config->getMode()));
         }
 
         $tool->mountDirectory($config->getTargetDirectory());
+
+        $loggers->use('app')->info('Backup initialized');
 
         return $backup;
     }

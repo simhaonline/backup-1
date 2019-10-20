@@ -16,6 +16,7 @@ namespace Backup;
 
 use Backup\Exception\DownloadException;
 use Backup\Exception\DirectoryException;
+use Backup\Interfaces\Backup;
 use Backup\Interfaces\Downloadable;
 use Vection\Component\DI\Annotations\Inject;
 use Vection\Component\DI\Traits\AnnotationInjection;
@@ -27,7 +28,7 @@ use Vection\Component\DI\Traits\AnnotationInjection;
  *
  * @author BloodhunterD <bloodhunterd@bloodhunterd.com>
  */
-class Manager
+class Manager implements Backup
 {
 
     use AnnotationInjection;
@@ -51,11 +52,15 @@ class Manager
     private $tool;
 
     /**
-     * Run backup agent
+     * @inheritDoc
      */
     public function run(): void
     {
         $servers = $this->config->getServers();
+
+        if (!$servers) {
+            $this->logger->use('app')->warning('No servers set in configuration');
+        }
 
         foreach ($servers as $server) {
             try {

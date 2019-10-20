@@ -16,6 +16,7 @@ namespace Backup;
 
 use Backup\Exception\DatabaseException;
 use Backup\Exception\DirectoryException;
+use Backup\Interfaces\Backup;
 use Backup\Interfaces\Compressible;
 use PharException;
 use Vection\Component\DI\Annotations\Inject;
@@ -28,7 +29,7 @@ use Vection\Component\DI\Traits\AnnotationInjection;
  *
  * @author BloodhunterD <bloodhunterd@bloodhunterd.com>
  */
-class Agent
+class Agent implements Backup
 {
 
     use AnnotationInjection;
@@ -52,11 +53,15 @@ class Agent
     private $tool;
 
     /**
-     * Run backup agent
+     * @inheritDoc
      */
     public function run(): void
     {
         $directories = $this->config->getDirectories();
+
+        if (!$directories) {
+            $this->logger->use('app')->warning('No directories set in configuration');
+        }
 
         foreach ($directories as $directory) {
             try {
