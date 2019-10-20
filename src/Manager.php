@@ -21,6 +21,7 @@ use Backup\Exception\ServerException;
 use Backup\Interfaces\Downloadable;
 use Phar;
 use PharException;
+use TypeError;
 use Vection\Component\DI\Annotations\Inject;
 use Vection\Component\DI\Traits\AnnotationInjection;
 
@@ -95,7 +96,7 @@ class Manager
     {
         try {
             Phar::mount($path, $path);
-        } catch (PharException $e) {
+        } catch (PharException | TypeError $e) {
             $msg = 'Failed to mount the target directory "%s". Please check %s.';
 
             throw new ManagerException(sprintf($msg, $path, $e->getMessage()));

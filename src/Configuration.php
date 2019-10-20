@@ -43,7 +43,7 @@ class Configuration
     {
         try {
             Phar::mount('config.json', $_SERVER['argv'][1]);
-        } catch (TypeError | PharException $e) {
+        } catch (PharException | TypeError $e) {
             $msg = 'The configuration file is missing. Please check %s.';
 
             throw new ConfigurationException(sprintf($msg, $e->getMessage()));
