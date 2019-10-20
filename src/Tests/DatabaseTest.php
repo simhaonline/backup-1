@@ -57,7 +57,7 @@ class DatabaseTest extends TestCase
                 'container' => 'app-db'
             ],
             'target' => null
-        ], JSON_THROW_ON_ERROR, 512), true, 512, JSON_THROW_ON_ERROR);
+        ]), true);
 
         $database = new Database($config);
         $database->setSource('/tmp/app-db.sql');
@@ -76,7 +76,7 @@ class DatabaseTest extends TestCase
                 'pass' => 'My+Very_Secret-Password.'
             ],
             'target' => null
-        ], JSON_THROW_ON_ERROR, 512), true, 512, JSON_THROW_ON_ERROR);
+        ]), true);
 
         $database = new Database($config);
         $database->setSource('/tmp/db.sql');
