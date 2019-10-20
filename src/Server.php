@@ -53,15 +53,15 @@ class Server implements Downloadable
     /**
      * Server constructor
      *
-     * @param object $server
+     * @param array $server
      */
-    public function __construct(object $server)
+    public function __construct(array $server)
     {
-        $this->setName($server->name);
-        $this->setSource($server->source);
-        $this->setTarget($server->target);
-        $this->setHost($server->host);
-        $this->setSSH(new SSH($server->ssh));
+        $this->setName($server['name']);
+        $this->setSource($server['source']);
+        $this->setTarget($server['target']);
+        $this->setHost($server['host']);
+        $this->setSSH(new SSH($server['ssh']));
     }
 
     /**

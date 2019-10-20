@@ -38,7 +38,7 @@ class Database implements Compressible
     /**
      * @var string
      */
-    private $type;
+    private $type = 'host';
 
     /**
      * @var string
@@ -68,29 +68,34 @@ class Database implements Compressible
     /**
      * @var string
      */
-    private $target;
+    private $target = '';
 
     /**
      * Database constructor
      *
-     * @param object $database
+     * @param array $database
      *
      */
-    public function __construct(object $database)
+    public function __construct(array $database)
     {
-        $this->setName($database->name);
+        $source = $database['source'];
+
+        $this->setName($database['name']);
         $this->setSource('');
-        $this->setType($database->source->type);
+        $this->setType($source['type'] ?? $this->type);
 
         if ($this->type === 'docker') {
-            $this->setDockerContainer($database->source->container);
+            $this->setDockerContainer($source['container']);
         } else {
-            $this->setHost($database->source->host);
-            $this->setUser($database->source->user);
-            $this->setPassword($database->source->pass);
+            $this->setHost($source['host'] ?? $this->host);
+            $this->setUser($source['user'] ?? $this->user);
+
+            if ($source['pass']) {
+                $this->setPassword($source['pass']);
+            }
         }
 
-        $this->setTarget($database->target);
+        $this->setTarget($database['target'] ?? $this->target);
     }
 
     /**
@@ -132,9 +137,9 @@ class Database implements Compressible
     /**
      * Set target
      *
-     * @param string|null $path
+     * @param string $path
      */
-    public function setTarget(string $path = null): void
+    public function setTarget(string $path): void
     {
         $this->target = $path;
     }
@@ -170,9 +175,9 @@ class Database implements Compressible
     /**
      * Set type
      *
-     * @param string|null $type
+     * @param string $type
      */
-    public function setType(string $type = null): void
+    public function setType(string $type): void
     {
         $this->type = $type;
     }
@@ -190,13 +195,11 @@ class Database implements Compressible
     /**
      * Set host
      *
-     * @param string|null $host
+     * @param string $host
      */
-    public function setHost(string $host = null): void
+    public function setHost(string $host): void
     {
-        if (isset($host)) {
-            $this->host = $host;
-        }
+        $this->host = $host;
     }
 
     /**
@@ -204,19 +207,17 @@ class Database implements Compressible
      *
      * @param string|null $user
      */
-    public function setUser(string $user = null): void
+    public function setUser(string $user): void
     {
-        if (isset($user)) {
-            $this->user = $user;
-        }
+        $this->user = $user;
     }
 
     /**
      * Set password
      *
-     * @param string|null $password
+     * @param string $password
      */
-    public function setPassword(string $password = null): void
+    public function setPassword(string $password): void
     {
         $this->password = $password;
     }

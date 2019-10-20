@@ -43,7 +43,7 @@ class Directory implements Compressible
     /**
      * @var string
      */
-    private $target;
+    private $target = '';
 
     /**
      * Directory constructor
@@ -52,9 +52,9 @@ class Directory implements Compressible
      */
     public function __construct(object $directory)
     {
-        $this->setName($directory->name);
-        $this->setSource($directory->source);
-        $this->setTarget($directory->target);
+        $this->setName($directory['name']);
+        $this->setSource($directory['source']);
+        $this->setTarget($directory['target'] ?? $this->target);
     }
 
     /**
@@ -96,9 +96,9 @@ class Directory implements Compressible
     /**
      * Set target
      *
-     * @param string|null $path
+     * @param string $path
      */
-    public function setTarget(string $path = null): void
+    public function setTarget(string $path): void
     {
         $this->target = $path;
     }

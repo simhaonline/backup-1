@@ -46,14 +46,20 @@ class SSH
     /**
      * SSH constructor
      *
-     * @param object $ssh
+     * @param array $settings
      */
-    public function __construct(object $ssh)
+    public function __construct(array $settings)
     {
-        $this->setPort($ssh->port ?? $this->port);
-        $this->setUser($ssh->user ?? $this->user);
-        $this->setKey($ssh->key);
-        $this->setPass($ssh->pass);
+        $this->setPort($settings['port'] ?? $this->port);
+        $this->setUser($settings['user'] ?? $this->user);
+
+        if ($settings['key']) {
+            $this->setKey($settings['key']);
+        }
+
+        if ($settings['pass']) {
+            $this->setPass($settings['key']);
+        }
     }
 
     /**
@@ -109,9 +115,9 @@ class SSH
     /**
      * Get key path
      *
-     * @return string
+     * @return string|null
      */
-    public function getKey(): string
+    public function getKey(): ? string
     {
         return $this->key;
     }
@@ -129,9 +135,9 @@ class SSH
     /**
      * Get key path
      *
-     * @return string
+     * @return string|null
      */
-    public function getPass(): string
+    public function getPass(): ? string
     {
         return $this->pass;
     }

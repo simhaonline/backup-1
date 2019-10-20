@@ -34,7 +34,7 @@ class Configuration
     use AnnotationInjection;
 
     /**
-     * @var object
+     * @var array
      */
     private $settings;
 
@@ -71,7 +71,7 @@ class Configuration
     {
         $json = file_get_contents(ROOT_DIR . DIRECTORY_SEPARATOR . 'config.json');
 
-        $config = json_decode($json, false, 512, JSON_THROW_ON_ERROR);
+        $settings = json_decode($json, true, 512, JSON_THROW_ON_ERROR);
 
         if (json_last_error()) {
             $msg = 'The configuration is invalid. Please check %s.';
@@ -79,7 +79,7 @@ class Configuration
             throw new ConfigurationException(sprintf($msg, json_last_error_msg()));
         }
 
-        $this->settings = $config;
+        $this->settings = $settings;
 
         $this->logger->use('app')->debug('Configuration successfully loaded');
     }
@@ -91,7 +91,7 @@ class Configuration
      */
     public function getTimezone(): string
     {
-        return $this->settings->timezone;
+        return $this->settings['timezone'];
     }
 
     /**
@@ -101,15 +101,27 @@ class Configuration
      */
     public function getLanguage(): string
     {
-        return $this->settings->language;
+        return $this->settings['language'];
     }
 
     /**
-     * @return string|null
+     * Get the mode
+     *
+     * @return string
      */
-    public function getMode(): ?string
+    public function getMode(): string
     {
-        return $this->settings->mode;
+        return $this->settings['mode'];
+    }
+
+    /**
+     * Get the sources
+     *
+     * @return array
+     */
+    public function getSources(): array
+    {
+        return $this->settings['sources'];
     }
 
     /**
@@ -119,7 +131,7 @@ class Configuration
      */
     public function getDirectories(): array
     {
-        return $this->settings->sources->directories ?? [];
+        return $this->getSources()['directories'] ?? [];
     }
 
     /**
@@ -129,7 +141,7 @@ class Configuration
      */
     public function getDatabases(): array
     {
-        return $this->settings->sources->databases ?? [];
+        return $this->getSources()['databases'] ?? [];
     }
 
     /**
@@ -139,7 +151,7 @@ class Configuration
      */
     public function getServers(): array
     {
-        return $this->settings->sources->servers ?? [];
+        return $this->getSources()['servers'] ?? [];
     }
 
     /**
@@ -149,6 +161,6 @@ class Configuration
      */
     public function getTargetDirectory(): string
     {
-        return $this->settings->target->directory;
+        return $this->settings['target']['directory'];
     }
 }
