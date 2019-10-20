@@ -20,8 +20,6 @@ use Backup\Bootstrap;
  * @author BloodhunterD <bloodhunterd@bloodhunterd.com>
  */
 
-error_reporting(E_ALL ^ E_NOTICE | E_DEPRECATED);
-
 define('ROOT_DIR', __DIR__);
 
 require_once ROOT_DIR . DIRECTORY_SEPARATOR . 'vendor' . DIRECTORY_SEPARATOR . 'autoload.php';
