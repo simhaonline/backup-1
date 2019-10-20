@@ -38,7 +38,7 @@ class Server implements Downloadable
     /**
      * @var string
      */
-    private $target;
+    private $target = '';
 
     /**
      * @var string
@@ -59,7 +59,7 @@ class Server implements Downloadable
     {
         $this->setName($server['name']);
         $this->setSource($server['source']);
-        $this->setTarget($server['target']);
+        $this->setTarget($server['target'] ?? $this->target);
         $this->setHost($server['host']);
         $this->setSSH(new SSH($server['ssh']));
     }
