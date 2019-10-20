@@ -49,7 +49,7 @@ class Tool
      * @param string $timezone
      * @throws ConfigurationException
      */
-    private function setTimezone(string $timezone): void
+    public function setTimezone(string $timezone): void
     {
         if (!date_default_timezone_set($timezone)) {
             $msg = 'The timezone "%s" is invalid.';
@@ -66,7 +66,7 @@ class Tool
      * @param string $language
      * @throws ConfigurationException
      */
-    private function setLanguage(string $language): void
+    public function setLanguage(string $language): void
     {
         if (!Locale::setDefault($language)) {
             $msg = 'The language "%s" is not supported or not installed.';
