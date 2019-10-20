@@ -89,7 +89,6 @@ class Manager implements Backup
             throw new DirectoryException($msg);
         }
 
-        $server->setSource($this->config->getTargetDirectory() . $server->getSource());
         $server->setTarget($this->config->getTargetDirectory() . $server->getTarget());
 
         if (!$this->tool->execute($server->createDownloadCmd()) || !is_file($server->getTarget())) {
