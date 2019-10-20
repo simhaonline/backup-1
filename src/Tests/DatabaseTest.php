@@ -50,14 +50,14 @@ class DatabaseTest extends TestCase
     public function dataDumpCmd(): array
     {
         # Docker container database
-        $config = json_decode(json_encode([
+        $config = [
             'name' => '',
             'source' => [
                 'type' => 'docker',
                 'container' => 'app-db'
             ],
             'target' => null
-        ]));
+        ];
 
         $database = new Database($config);
         $database->setSource('/tmp/app-db.sql');
@@ -67,7 +67,7 @@ class DatabaseTest extends TestCase
         $return[] = [$database, $cmd];
 
         # Local database
-        $config = json_decode(json_encode([
+        $config = [
             'name' => '',
             'source' => [
                 'type' => null,
@@ -76,7 +76,7 @@ class DatabaseTest extends TestCase
                 'pass' => 'My+Very_Secret-Password.'
             ],
             'target' => null
-        ]));
+        ];
 
         $database = new Database($config);
         $database->setSource('/tmp/db.sql');
