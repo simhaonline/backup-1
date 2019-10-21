@@ -48,9 +48,9 @@ class Directory implements Compressible
     /**
      * Directory constructor
      *
-     * @param object $directory
+     * @param array $directory
      */
-    public function __construct(object $directory)
+    public function __construct(array $directory)
     {
         $this->setName($directory['name']);
         $this->setSource($directory['source']);
