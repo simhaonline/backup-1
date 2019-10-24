@@ -83,7 +83,7 @@ class Server extends Download
     /**
      * Set source path
      *
-     * @param string|null $path
+     * @param string $path
      */
     public function setSource(string $path): void
     {

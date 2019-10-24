@@ -205,7 +205,7 @@ class Database implements Compressible
     /**
      * Set user
      *
-     * @param string|null $user
+     * @param string $user
      */
     public function setUser(string $user): void
     {

@@ -71,6 +71,12 @@ class Configuration
     {
         $json = file_get_contents(ROOT_DIR . DIRECTORY_SEPARATOR . 'config.json');
 
+        if ($json === false) {
+            $msg = 'The configuration is corrupt. Please check it.';
+
+            throw new ConfigurationException($msg);
+        }
+
         $settings = json_decode($json, true);
 
         if (json_last_error()) {
