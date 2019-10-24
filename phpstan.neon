@@ -1,0 +1,7 @@
+parameters:
+    paths:
+        - src
+        - tests
+    autoload_files:
+        - %rootDir%/../../../config/path.php
+    level: 7
