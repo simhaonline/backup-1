@@ -3,7 +3,7 @@
 <phpunit bootstrap="vendor/autoload.php" colors="true">
     <testsuites>
         <testsuite name="Tests">
-            <directory>./src/Tests/</directory>
+            <directory>./tests/</directory>
         </testsuite>
     </testsuites>
 
@@ -11,7 +11,7 @@
         <whitelist>
             <directory>./</directory>
             <exclude>
-                <directory>./src/Tests</directory>
+                <directory>./tests</directory>
             </exclude>
         </whitelist>
     </filter>
