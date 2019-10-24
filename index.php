@@ -20,9 +20,8 @@ use Backup\Bootstrap;
  * @author BloodhunterD <bloodhunterd@bloodhunterd.com>
  */
 
-define('ROOT_DIR', __DIR__);
-
-require_once ROOT_DIR . DIRECTORY_SEPARATOR . 'vendor' . DIRECTORY_SEPARATOR . 'autoload.php';
+require_once __DIR__ . '/config/path.php';
+require_once VENDOR_DIR . DIRECTORY_SEPARATOR . 'autoload.php';
 
 try {
     (new Bootstrap())->init()->run();
