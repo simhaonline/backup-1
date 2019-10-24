@@ -22,7 +22,10 @@
     ],
     "minimum-stability": "dev",
     "autoload": {
-        "psr-4": {"Backup\\": "src/"}
+        "psr-4": {
+            "Backup\\": "src/",
+            "Backup\\Tests\\": "tests/"
+        }
     },
     "support": {
         "source": "https://github.com/bloodhunterd/backup",
