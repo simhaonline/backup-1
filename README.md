@@ -43,6 +43,7 @@ the Docker image of the [Backup Tool Docker Repository](https://github.com/blood
 
 * [PHP](https://www.php.net/)
 * [Vection](https://github.com/Vection-Framework/Vection)
+* [Monolog](https://github.com/Seldaek/monolog)
 
 ## Authors
 
