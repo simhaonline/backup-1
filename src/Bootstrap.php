@@ -113,19 +113,19 @@ class Bootstrap
         # Initialize application logging
         $logger->set((new MonologLogger('app'))
             ->pushHandler(new StreamHandler('php://stdout'))
-            ->pushHandler(new StreamHandler(LOG_DIR . DIRECTORY_SEPARATOR . 'backup.log'))
+            ->pushHandler(new StreamHandler(LOG_DIR . DIRECTORY_SEPARATOR . 'app.log'))
         );
 
         # Initialize RSYNC logging
         $logger->set((new MonologLogger('shell'))
             ->pushHandler(new StreamHandler('php://stdout'))
-            ->pushHandler(new StreamHandler(LOG_DIR . DIRECTORY_SEPARATOR . 'backup.shell.log'))
+            ->pushHandler(new StreamHandler(LOG_DIR . DIRECTORY_SEPARATOR . 'shell.log'))
         );
 
         # Initialize report logging
         $logger->set((new MonologLogger('report'))
             ->pushHandler(
-                new StreamHandler(LOG_DIR . DIRECTORY_SEPARATOR . 'backup.report.log', MonologLogger::INFO)
+                new StreamHandler(LOG_DIR . DIRECTORY_SEPARATOR . 'report.log', MonologLogger::INFO)
             )
         );
 
