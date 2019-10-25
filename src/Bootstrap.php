@@ -64,7 +64,7 @@ class Bootstrap
             ->pushHandler(new StreamHandler('php://stdout'))
         );
 
-        $logger->use('app')->info('Backup initializing');
+        $logger->use('app')->info('Backup preparing');
 
         /** @var Tool $tool */
         $tool = $this->container->get(Tool::class);
@@ -73,6 +73,8 @@ class Bootstrap
 
         # Update application logging
         $logger->use('app')->pushHandler(new StreamHandler(LOG_DIR . DIRECTORY_SEPARATOR . 'backup.app.log'));
+
+        $logger->use('app')->info('Backup initializing');
 
         # Initialize RSYNC logging
         $logger->set((new MonologLogger('shell'))
