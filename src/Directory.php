@@ -46,6 +46,11 @@ class Directory implements Compressible
     private $target = '';
 
     /**
+     * @var bool
+     */
+    private $disabled = false;
+
+    /**
      * Directory constructor
      *
      * @param array $directory
@@ -129,5 +134,23 @@ class Directory implements Compressible
     public function getArchive(): string
     {
         return $this->archive;
+    }
+
+    /**
+     * Disable
+     */
+    public function disable(): void
+    {
+        $this->disabled = true;
+    }
+
+    /**
+     * Is disabled
+     *
+     * @return bool
+     */
+    public function isDisabled(): bool
+    {
+        return $this->disabled;
     }
 }

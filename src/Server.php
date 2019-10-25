@@ -49,6 +49,11 @@ class Server extends Download
     private $ssh;
 
     /**
+     * @var bool
+     */
+    private $disabled = false;
+
+    /**
      * Server constructor
      *
      * @param array $server
@@ -60,6 +65,10 @@ class Server extends Download
         $this->setTarget($server['target'] ?? $this->target);
         $this->setHost($server['host']);
         $this->setSSH(new SSH($server['ssh']));
+
+        if ($server['disabled']) {
+            $this->disable();
+        }
     }
 
     /**
@@ -150,5 +159,23 @@ class Server extends Download
     public function getSSH(): SSH
     {
         return $this->ssh;
+    }
+
+    /**
+     * Disable
+     */
+    public function disable(): void
+    {
+        $this->disabled = true;
+    }
+
+    /**
+     * Is disabled
+     *
+     * @return bool
+     */
+    public function isDisabled(): bool
+    {
+        return $this->disabled;
     }
 }

@@ -71,6 +71,11 @@ class Database implements Compressible
     private $target = '';
 
     /**
+     * @var bool
+     */
+    private $disabled = false;
+
+    /**
      * Database constructor
      *
      * @param array $database
@@ -83,6 +88,10 @@ class Database implements Compressible
         $this->setName($database['name']);
         $this->setSource('');
         $this->setType($source['type'] ?? $this->type);
+
+        if ($database['disabled']) {
+            $this->disable();
+        }
 
         if ($this->type === 'docker') {
             $this->setDockerContainer($source['container']);
@@ -220,6 +229,24 @@ class Database implements Compressible
     public function setPassword(string $password): void
     {
         $this->password = $password;
+    }
+
+    /**
+     * Disable
+     */
+    public function disable(): void
+    {
+        $this->disabled = true;
+    }
+
+    /**
+     * Is disabled
+     *
+     * @return bool
+     */
+    public function isDisabled(): bool
+    {
+        return $this->disabled;
     }
 
     /**
