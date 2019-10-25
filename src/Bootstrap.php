@@ -61,6 +61,11 @@ class Bootstrap
      */
     public function init(): Backup
     {
+        /** @var Tool $tool */
+        $tool = $this->container->get(Tool::class);
+
+        $tool->mountDirectory(LOG_DIR);
+
         $this->initLoggers();
 
         $this->logger->use('app')->info('Backup initializing');
@@ -69,9 +74,6 @@ class Bootstrap
         $config = $this->container->get(Configuration::class);
         $config->mount();
         $config->load();
-
-        /** @var Tool $tool */
-        $tool = $this->container->get(Tool::class);
 
         $tool->setTimezone($config->getTimezone());
         $tool->setLanguage($config->getLanguage());
