@@ -9,8 +9,8 @@
  * file that was distributed with this source code.
  */
 
-declare(strict_types=1);
+declare(strict_types = 1);
 
 define('ROOT_DIR', __DIR__ . DIRECTORY_SEPARATOR . '..');
-define('LOG_DIR', ROOT_DIR . DIRECTORY_SEPARATOR . 'log');
 define('VENDOR_DIR', ROOT_DIR . DIRECTORY_SEPARATOR . 'vendor');
+define('LOG_DIR', '/var/log');
