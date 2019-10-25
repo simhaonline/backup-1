@@ -1,11 +1,8 @@
 language: php
-php:
-  - 7.3
 env:
   - CODECOV_TOKEN="93c522f5-d270-41be-8135-d9b2d7ac7da2"
 install:
   - travis_retry composer update --prefer-dist
-script: phpunit --configuration phpunit.xml
 after_success:
   - bash <(curl -s https://codecov.io/bash)
 jobs:
@@ -13,3 +10,6 @@ jobs:
     - stage: PHP 7.2
       php: 7.2
       script: phpunit --configuration phpunit.php72.xml
+    - stage: PHP 7.3
+      php: 7.3
+      script: phpunit --configuration phpunit.xml
