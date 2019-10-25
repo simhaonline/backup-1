@@ -60,12 +60,22 @@ class Agent implements Backup
         $directories = $this->config->getDirectories();
 
         if (!$directories) {
-            $this->logger->use('app')->warning('No directories set in configuration');
+            $this->logger->use('app')->warning('No directories set in configuration.');
         }
 
         foreach ($directories as $directory) {
+            $directoryModel = new Directory($directory);
+
+            if ($directoryModel->isDisabled()) {
+                $this->logger->use('app')->debug(
+                    sprintf('Backup of directory "%s" is disabled.', $directoryModel->getName())
+                );
+
+                continue;
+            }
+
             try {
-                $this->backupDirectory(new Directory($directory));
+                $this->backupDirectory($directoryModel);
             } catch (DirectoryException $e) {
                 $this->logger->use('app')->error($e->getMessage());
 
@@ -75,9 +85,23 @@ class Agent implements Backup
 
         $databases = $this->config->getDatabases();
 
+        if (!$databases) {
+            $this->logger->use('app')->warning('No databases set in configuration.');
+        }
+
         foreach ($databases as $database) {
+            $databaseModel = new Database($database);
+
+            if ($databaseModel->isDisabled()) {
+                $this->logger->use('app')->debug(
+                    sprintf('Backup of database "%s" is disabled.', $databaseModel->getName())
+                );
+
+                continue;
+            }
+
             try {
-                $this->backupDatabase(new Database($database));
+                $this->backupDatabase($databaseModel);
             } catch (DatabaseException $e) {
                 $this->logger->use('app')->error($e->getMessage());
 
@@ -117,7 +141,7 @@ class Agent implements Backup
             throw new DirectoryException($msg);
         }
 
-        $this->logger->use('app')->info(sprintf('Archive of directory "%s" successfully created', $name));
+        $this->logger->use('app')->info(sprintf('Archive of directory "%s" successfully created.', $name));
     }
 
     /**

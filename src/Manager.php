@@ -58,12 +58,22 @@ class Manager implements Backup
         $servers = $this->config->getServers();
 
         if (!$servers) {
-            $this->logger->use('app')->warning('No servers set in configuration');
+            $this->logger->use('app')->warning('No servers set in configuration.');
         }
 
         foreach ($servers as $server) {
+            $serverModel = new Server($server);
+
+            if ($serverModel->isDisabled()) {
+                $this->logger->use('app')->debug(
+                    sprintf('Backup of server "%s" is disabled.', $serverModel->getName())
+                );
+
+                continue;
+            }
+
             try {
-                $this->backupServer(new Server($server));
+                $this->backupServer($serverModel);
             } catch (DownloadException | DirectoryException $e) {
                 $this->logger->use('app')->error($e->getMessage());
 
@@ -97,6 +107,6 @@ class Manager implements Backup
             throw new DownloadException($msg);
         }
 
-        $this->logger->use('app')->info(sprintf('Download from server "%s" successfully', $name));
+        $this->logger->use('app')->info(sprintf('Download from server "%s" successfully.', $name));
     }
 }
