@@ -60,8 +60,12 @@ class Bootstrap
         $logger = $this->container->get(Logger::class);
 
         # Initialize application logging
-        $logger->set((new MonologLogger('app'))
-            ->pushHandler(new StreamHandler('php://stdout'))
+        $logger->set(
+            (new MonologLogger('app'))
+                ->pushHandler(
+                    (new StreamHandler('php://stdout'))
+                        ->setFormatter($logger->getLineFormatter())
+            )
         );
 
         $logger->use('app')->info('Backup preparing');
@@ -72,20 +76,32 @@ class Bootstrap
         $tool->mountDirectory(LOG_DIR);
 
         # Update application logging
-        $logger->use('app')->pushHandler(new StreamHandler(LOG_DIR . DIRECTORY_SEPARATOR . 'backup.app.log'));
+        $logger->use('app')
+            ->pushHandler(
+                (new StreamHandler(LOG_DIR . DIRECTORY_SEPARATOR . 'backup.app.log'))
+                    ->setFormatter($logger->getLineFormatter())
+            );
 
         $logger->use('app')->info('Backup initializing');
 
         # Initialize RSYNC logging
-        $logger->set((new MonologLogger('shell'))
-            ->pushHandler(new StreamHandler('php://stdout'))
-            ->pushHandler(new StreamHandler(LOG_DIR . DIRECTORY_SEPARATOR . 'backup.shell.log'))
+        $logger->set(
+            (new MonologLogger('shell'))
+                ->pushHandler(
+                    (new StreamHandler('php://stdout'))
+                        ->setFormatter($logger->getLineFormatter())
+                )
+                ->pushHandler(
+                    (new StreamHandler(LOG_DIR . DIRECTORY_SEPARATOR . 'backup.shell.log'))
+                        ->setFormatter($logger->getLineFormatter())
+                )
         );
 
         # Initialize report logging
         $logger->set((new MonologLogger('report'))
             ->pushHandler(
-                new StreamHandler(LOG_DIR . DIRECTORY_SEPARATOR . 'backup.report.log', MonologLogger::INFO)
+                (new StreamHandler(LOG_DIR . DIRECTORY_SEPARATOR . 'backup.report.log', MonologLogger::INFO))
+                    ->setFormatter($logger->getLineFormatter())
             )
         );
 
