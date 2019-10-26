@@ -60,6 +60,10 @@ class Directory implements Compressible
         $this->setName($directory['name']);
         $this->setSource($directory['source']);
         $this->setTarget($directory['target'] ?? $this->target);
+
+        if ($directory['disabled']) {
+            $this->disable();
+        }
     }
 
     /**
