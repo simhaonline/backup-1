@@ -1057,12 +1057,12 @@
             "source": {
                 "type": "git",
                 "url": "https://github.com/nikic/PHP-Parser.git",
-                "reference": "eacc5dbe190857ac1f7fa9bc94821f558b35f7ea"
+                "reference": "b76bbc3c51f22c570648de48e8c2d941ed5e2cf2"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/nikic/PHP-Parser/zipball/eacc5dbe190857ac1f7fa9bc94821f558b35f7ea",
-                "reference": "eacc5dbe190857ac1f7fa9bc94821f558b35f7ea",
+                "url": "https://api.github.com/repos/nikic/PHP-Parser/zipball/b76bbc3c51f22c570648de48e8c2d941ed5e2cf2",
+                "reference": "b76bbc3c51f22c570648de48e8c2d941ed5e2cf2",
                 "shasum": ""
             },
             "require": {
@@ -1101,7 +1101,7 @@
                 "parser",
                 "php"
             ],
-            "time": "2019-10-19T13:24:38+00:00"
+            "time": "2019-10-25T18:33:07+00:00"
         },
         {
             "name": "ocramius/package-versions",
@@ -1846,12 +1846,12 @@
             "source": {
                 "type": "git",
                 "url": "https://github.com/sebastianbergmann/phpunit.git",
-                "reference": "e0dedce2f080da690aa63135667f1d842569207b"
+                "reference": "4e65eea6e1dfa9eb6f32a1407dfb6ffcb4b97b7f"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/sebastianbergmann/phpunit/zipball/e0dedce2f080da690aa63135667f1d842569207b",
-                "reference": "e0dedce2f080da690aa63135667f1d842569207b",
+                "url": "https://api.github.com/repos/sebastianbergmann/phpunit/zipball/4e65eea6e1dfa9eb6f32a1407dfb6ffcb4b97b7f",
+                "reference": "4e65eea6e1dfa9eb6f32a1407dfb6ffcb4b97b7f",
                 "shasum": ""
             },
             "require": {
@@ -1921,7 +1921,7 @@
                 "testing",
                 "xunit"
             ],
-            "time": "2019-10-24T09:26:13+00:00"
+            "time": "2019-10-26T04:57:15+00:00"
         },
         {
             "name": "roave/security-advisories",

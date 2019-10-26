@@ -1,0 +1,107 @@
+{
+  "@type": "object",
+  "@properties": {
+    "mode": {
+      "@type": "string",
+      "@required": true,
+      "@allowed": "agent|manager"
+    },
+    "timezone": {
+      "@type": "string",
+      "@required": true,
+      "@allowed": "Europe/Berlin"
+    },
+    "language": {
+      "@type": "string",
+      "@required": true,
+      "@allowed": "de-DE|en-GB|en-US"
+    },
+    "report": {
+      "@type": "object",
+      "@properties": {
+        "sender": {
+          "@type": "object",
+          "@properties": {
+            "address": {
+              "@type": "string",
+              "@required": true
+            },
+            "name": {
+              "@type": "string"
+            }
+          }
+        },
+        "subject": {
+          "@type": "string",
+          "@required": true
+        },
+        "recipients": {
+          "@type": "array",
+          "@property": {
+            "@type": "object",
+            "@properties": {
+              "address": {
+                "@type": "string",
+                "@required": true
+              },
+              "name": {
+                "@type": "string"
+              },
+              "type": {
+                "@type": "string",
+                "@allowed": "to|cc|bcc"
+              }
+            }
+          }
+        }
+      }
+    },
+    "sources": {
+      "@type": "object",
+      "@required": true,
+      "@properties": {
+        "servers": {
+          "@type": "array",
+          "@property": {
+            "@type": "object",
+            "@properties": {
+              "name": {
+                "@type": "string",
+                "@required": true
+              },
+              "host": {
+                "@type": "string",
+                "@required": true
+              },
+              "ssh": {
+                "@type": "object",
+                "@properties": {
+                  "port": {
+                    "@type": "integer"
+                  },
+                  "user": {
+                    "@type": "string"
+                  },
+                  "key": {
+                    "@type": "string",
+                    "@required": "string"
+                  },
+                  "passphrase": {
+                    "@type": "string"
+                  }
+                }
+              },
+              "source": {
+                "@type": "string",
+                "@required": true
+              },
+              "target": {
+                "@type": "string"
+              }
+            }
+          }
+        }
+      }
+    }
+  }
+}

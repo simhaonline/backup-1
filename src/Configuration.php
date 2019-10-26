@@ -20,6 +20,10 @@ use PharException;
 use TypeError;
 use Vection\Component\DI\Annotations\Inject;
 use Vection\Component\DI\Traits\AnnotationInjection;
+use Vection\Component\Validator\Schema\Schema;
+use Vection\Component\Validator\Schema\SchemaValidator;
+use Vection\Contracts\Validator\Schema\PropertyExceptionInterface;
+use Vection\Contracts\Validator\Schema\SchemaExceptionInterface;
 
 /**
  * Class Configuration
@@ -69,23 +73,19 @@ class Configuration
      */
     public function load(): void
     {
+        $validator = new SchemaValidator(new Schema(ROOT_DIR . DIRECTORY_SEPARATOR . 'config.schema.json'));
+
         $json = file_get_contents(ROOT_DIR . DIRECTORY_SEPARATOR . 'config.json');
 
-        if ($json === false) {
-            $msg = 'The configuration is corrupt. Please check it.';
+        try {
+            $validator->validateJsonString($json);
+        } catch (PropertyExceptionInterface | SchemaExceptionInterface $e) {
+            $msg = 'The configuration is invalid. %s';
 
-            throw new ConfigurationException($msg);
+            throw new ConfigurationException(sprintf($msg, $e->getMessage()));
         }
 
-        $settings = json_decode($json, true);
-
-        if (json_last_error()) {
-            $msg = 'The configuration is invalid. Please check %s.';
-
-            throw new ConfigurationException(sprintf($msg, json_last_error_msg()));
-        }
-
-        $this->settings = $settings;
+        $this->settings = json_decode($json, true);
 
         $this->logger->use('app')->debug('Configuration successfully loaded');
     }
