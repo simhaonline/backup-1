@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "497998816e9fc226604c97dad28ad31c",
+    "content-hash": "1c03cb38cd68c33a450e054d76552f20",
     "packages": [
         {
             "name": "monolog/monolog",
@@ -142,12 +142,12 @@
             "source": {
                 "type": "git",
                 "url": "https://github.com/php-fig/log.git",
-                "reference": "c4421fcac1edd5a324fda73e589a5cf96e52ffd0"
+                "reference": "bf73deb2b3b896a9d9c75f3f0d88185d2faa27e2"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/php-fig/log/zipball/c4421fcac1edd5a324fda73e589a5cf96e52ffd0",
-                "reference": "c4421fcac1edd5a324fda73e589a5cf96e52ffd0",
+                "url": "https://api.github.com/repos/php-fig/log/zipball/bf73deb2b3b896a9d9c75f3f0d88185d2faa27e2",
+                "reference": "bf73deb2b3b896a9d9c75f3f0d88185d2faa27e2",
                 "shasum": ""
             },
             "require": {
@@ -181,7 +181,7 @@
                 "psr",
                 "psr-3"
             ],
-            "time": "2018-11-21T13:42:00+00:00"
+            "time": "2019-10-25T08:06:51+00:00"
         },
         {
             "name": "vection-framework/contracts",
@@ -275,6 +275,55 @@
                 "php-dic"
             ],
             "time": "2019-10-03T13:23:31+00:00"
+        },
+        {
+            "name": "vection-framework/validator",
+            "version": "v0.2",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/Vection-Framework/Validator.git",
+                "reference": "644fac767b79d8cddcc9f1a16205616126649cab"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/Vection-Framework/Validator/zipball/644fac767b79d8cddcc9f1a16205616126649cab",
+                "reference": "644fac767b79d8cddcc9f1a16205616126649cab",
+                "shasum": ""
+            },
+            "require": {
+                "ext-ctype": "*",
+                "ext-json": "*",
+                "php": "^7.2",
+                "vection-framework/contracts": "dev-master"
+            },
+            "type": "library",
+            "autoload": {
+                "psr-4": {
+                    "Vection\\Component\\Validator\\": "./"
+                }
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "MIT"
+            ],
+            "authors": [
+                {
+                    "name": "David Lung",
+                    "email": "vection@davidlung.de"
+                }
+            ],
+            "description": "PHP Validator for chained data validation - Vection Framework Component",
+            "homepage": "https://vection.de",
+            "keywords": [
+                "assert",
+                "assertion",
+                "framework",
+                "php-assert",
+                "php-validator",
+                "validation",
+                "validator"
+            ],
+            "time": "2019-10-12T13:47:47+00:00"
         }
     ],
     "packages-dev": [

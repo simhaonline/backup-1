@@ -5,8 +5,9 @@
         "ext-bz2": "*",
         "ext-intl": "*",
         "ext-json": "*",
+        "monolog/monolog": "^2.0",
         "vection-framework/di-container": "^0.2",
-        "monolog/monolog": "^2.0"
+        "vection-framework/validator": "^0.2"
     },
     "require-dev": {
         "roave/security-advisories": "dev-master",
