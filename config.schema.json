@@ -18,9 +18,11 @@
     },
     "report": {
       "@type": "object",
+      "@required": true,
       "@properties": {
         "sender": {
           "@type": "object",
+          "@required": true,
           "@properties": {
             "address": {
               "@type": "string",
@@ -37,8 +39,10 @@
         },
         "recipients": {
           "@type": "array",
+          "@required": true,
           "@property": {
             "@type": "object",
+            "@required": true,
             "@properties": {
               "address": {
                 "@type": "string",
@@ -64,6 +68,7 @@
           "@type": "array",
           "@property": {
             "@type": "object",
+            "@required": true,
             "@properties": {
               "name": {
                 "@type": "string",
@@ -100,6 +105,73 @@
               }
             }
           }
+        },
+        "directories": {
+          "@type": "array",
+          "@property": {
+            "@type": "object",
+            "@required": true,
+            "@properties": {
+              "name": {
+                "@type": "string",
+                "@required": true
+              },
+              "source": {
+                "@type": "string",
+                "@required": true
+              },
+              "target": {
+                "@type": "string"
+              }
+            }
+          }
+        },
+        "databases": {
+          "@type": "array",
+          "@property": {
+            "@type": "object",
+            "@required": true,
+            "@properties": {
+              "name": {
+                "@type": "string",
+                "@required": true
+              },
+              "source": {
+                "@type": "object",
+                "@required": true,
+                "properties": {
+                  "type": {
+                    "@type": "string",
+                    "@allowed": "host|docker"
+                  },
+                  "host": {
+                    "@type": "string"
+                  },
+                  "user": {
+                    "@type": "string"
+                  },
+                  "password": {
+                    "@type": "string"
+                  },
+                  "container": {
+                    "@type": "string"
+                  }
+                }
+              },
+              "target": {
+                "@type": "string"
+              }
+            }
+          }
+        }
+      }
+    },
+    "target": {
+      "@type": "object",
+      "@properties": {
+        "directory": {
+          "@type": "string",
+          "@required": true
         }
       }
     }
