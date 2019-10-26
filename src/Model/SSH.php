@@ -42,7 +42,7 @@ class SSH
     /**
      * @var string
      */
-    private $pass;
+    private $passphrase = '';
 
     /**
      * SSH constructor
@@ -51,13 +51,13 @@ class SSH
      */
     public function __construct(array $settings)
     {
-        $this->setPort($settings['port'] ?? $this->port);
-        $this->setUser($settings['user'] ?? $this->user);
+        # Required
         $this->setKey($settings['key']);
 
-        if (isset($settings['pass'])) {
-            $this->setPass($settings['key']);
-        }
+        # Optional
+        $this->setPort($settings['port'] ?? $this->port);
+        $this->setUser($settings['user'] ?? $this->user);
+        $this->setPassphrase($settings['passphrase'] ?? $this->passphrase);
     }
 
     /**
@@ -113,30 +113,30 @@ class SSH
     /**
      * Get key path
      *
-     * @return string|null
+     * @return string
      */
-    public function getKey(): ? string
+    public function getKey(): string
     {
         return $this->key;
     }
 
     /**
-     * Set key path
+     * Set key passphrase
      *
-     * @param string $path
+     * @param string $passphrase
      */
-    public function setPass(string $path): void
+    public function setPassphrase(string $passphrase): void
     {
-        $this->pass = $path;
+        $this->passphrase = $passphrase;
     }
 
     /**
-     * Get key path
+     * Get key passphrase
      *
-     * @return string|null
+     * @return string
      */
-    public function getPass(): ? string
+    public function getPassphrase(): string
     {
-        return $this->pass;
+        return $this->passphrase;
     }
 }

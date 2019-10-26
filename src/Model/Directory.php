@@ -44,7 +44,7 @@ class Directory implements Compressible
     /**
      * @var string
      */
-    private $target = '';
+    private $target = DIRECTORY_SEPARATOR;
 
     /**
      * @var bool
@@ -58,8 +58,11 @@ class Directory implements Compressible
      */
     public function __construct(array $directory)
     {
+        # Required
         $this->setName($directory['name']);
         $this->setSource($directory['source']);
+
+        # Optional
         $this->setTarget($directory['target'] ?? $this->target);
 
         if ($directory['disabled']) {
@@ -118,7 +121,7 @@ class Directory implements Compressible
      */
     public function getTarget(): string
     {
-        return $this->target ?? DIRECTORY_SEPARATOR;
+        return $this->target;
     }
 
     /**

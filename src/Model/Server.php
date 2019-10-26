@@ -37,7 +37,7 @@ class Server extends Download
     /**
      * @var string
      */
-    private $target = '';
+    private $target = DIRECTORY_SEPARATOR;
 
     /**
      * @var string
@@ -61,11 +61,14 @@ class Server extends Download
      */
     public function __construct(array $server)
     {
+        # Required
         $this->setName($server['name']);
         $this->setSource($server['source']);
-        $this->setTarget($server['target'] ?? $this->target);
         $this->setHost($server['host']);
         $this->setSSH(new SSH($server['ssh']));
+
+        # Optional
+        $this->setTarget($server['target'] ?? $this->target);
 
         if ($server['disabled']) {
             $this->disable();
