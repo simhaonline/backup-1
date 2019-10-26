@@ -76,6 +76,9 @@ class Configuration
         $validator = new SchemaValidator(new Schema(ROOT_DIR . DIRECTORY_SEPARATOR . 'config.schema.json'));
 
         $json = file_get_contents(ROOT_DIR . DIRECTORY_SEPARATOR . 'config.json');
+        if ($json === false) {
+            throw new ConfigurationException('Failed to load the configuration.');
+        }
 
         try {
             $validator->validateJsonString($json);
