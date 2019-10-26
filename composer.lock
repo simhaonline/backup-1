@@ -189,12 +189,12 @@
             "source": {
                 "type": "git",
                 "url": "https://github.com/Vection-Framework/Contracts.git",
-                "reference": "570b8b2cf253ffcb59e2ac56c5af2b13057200ff"
+                "reference": "ae19e781f547769bf61cee058636a1600e675616"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/Vection-Framework/Contracts/zipball/570b8b2cf253ffcb59e2ac56c5af2b13057200ff",
-                "reference": "570b8b2cf253ffcb59e2ac56c5af2b13057200ff",
+                "url": "https://api.github.com/repos/Vection-Framework/Contracts/zipball/ae19e781f547769bf61cee058636a1600e675616",
+                "reference": "ae19e781f547769bf61cee058636a1600e675616",
                 "shasum": ""
             },
             "require": {
@@ -225,11 +225,11 @@
                 "vection",
                 "vection-contracts"
             ],
-            "time": "2019-08-14T20:46:12+00:00"
+            "time": "2019-10-26T11:40:16+00:00"
         },
         {
             "name": "vection-framework/di-container",
-            "version": "v0.2",
+            "version": "v0.2.2",
             "source": {
                 "type": "git",
                 "url": "https://github.com/Vection-Framework/DI-Container.git",
@@ -278,16 +278,16 @@
         },
         {
             "name": "vection-framework/validator",
-            "version": "v0.2",
+            "version": "v0.2.2",
             "source": {
                 "type": "git",
                 "url": "https://github.com/Vection-Framework/Validator.git",
-                "reference": "644fac767b79d8cddcc9f1a16205616126649cab"
+                "reference": "6d748e91f24e0b34de06a6a98aaa9abc4c433c65"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/Vection-Framework/Validator/zipball/644fac767b79d8cddcc9f1a16205616126649cab",
-                "reference": "644fac767b79d8cddcc9f1a16205616126649cab",
+                "url": "https://api.github.com/repos/Vection-Framework/Validator/zipball/6d748e91f24e0b34de06a6a98aaa9abc4c433c65",
+                "reference": "6d748e91f24e0b34de06a6a98aaa9abc4c433c65",
                 "shasum": ""
             },
             "require": {
@@ -323,7 +323,7 @@
                 "validation",
                 "validator"
             ],
-            "time": "2019-10-12T13:47:47+00:00"
+            "time": "2019-10-15T17:41:36+00:00"
         }
     ],
     "packages-dev": [
