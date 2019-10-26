@@ -59,7 +59,7 @@ class Database implements Compressible
     /**
      * @var string
      */
-    private $password;
+    private $password = '';
 
     /**
      * @var string
@@ -69,7 +69,7 @@ class Database implements Compressible
     /**
      * @var string
      */
-    private $target = '';
+    private $target = DIRECTORY_SEPARATOR;
 
     /**
      * @var bool
@@ -86,26 +86,29 @@ class Database implements Compressible
     {
         $source = $database['source'];
 
+        # Required
         $this->setName($database['name']);
-        $this->setSource('');
+
+        # Optional
+        $this->setTarget($database['target'] ?? $this->target);
         $this->setType($source['type'] ?? $this->type);
 
         if ($database['disabled']) {
             $this->disable();
         }
 
+        # Special handling for host or docker databases
         if ($this->type === 'docker') {
+            # Required
             $this->setDockerContainer($source['container']);
         } else {
+            # Optional
             $this->setHost($source['host'] ?? $this->host);
             $this->setUser($source['user'] ?? $this->user);
-
-            if ($source['pass']) {
-                $this->setPassword($source['pass']);
-            }
+            $this->setPassword($source['password'] ?? $this->password);
         }
 
-        $this->setTarget($database['target'] ?? $this->target);
+        $this->setSource('');
     }
 
     /**
@@ -159,7 +162,7 @@ class Database implements Compressible
      */
     public function getTarget(): string
     {
-        return $this->target ?? DIRECTORY_SEPARATOR;
+        return $this->target;
     }
 
     /**
@@ -274,11 +277,14 @@ class Database implements Compressible
             $excludeSql
         );
 
+        # Use password parameter only if a password is set
+        $passwordSql = $this->password ? sprintf(' -p"%s"', $this->password) : '';
+
         return sprintf(
-            'mysqldump -h%s -u%s -p"%s" --databases `%s` > %s',
+            'mysqldump -h%s -u%s%s --databases `%s` > %s',
             escapeshellarg($this->host),
             escapeshellarg($this->user),
-            $this->password,
+            $passwordSql,
             $databaseNameSql,
             escapeshellarg($this->source)
         );
