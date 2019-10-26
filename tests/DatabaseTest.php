@@ -73,7 +73,7 @@ class DatabaseTest extends TestCase
                 'type' => null,
                 'host' => 'localhost',
                 'user' => 'root',
-                'pass' => 'My+Very_Secret-Password.'
+                'password' => 'My+Very_Secret-Password.'
             ],
             'target' => null
         ];
