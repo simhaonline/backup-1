@@ -1,4 +1,5 @@
 <?php
+
 /**
  * This file is part of the Backup project.
  * Visit project at https://github.com/bloodhunterd/backup
@@ -9,16 +10,16 @@
  * file that was distributed with this source code.
  */
 
-declare(strict_types=1);
+declare(strict_types = 1);
 
-namespace Backup;
+namespace Backup\Model;
 
 use Backup\Interfaces\Downloadable;
 
 /**
  * Class Downloadable
  *
- * @package Backup
+ * @package Backup\Model
  *
  * @author BloodhunterD <bloodhunterd@bloodhunterd.com>
  */

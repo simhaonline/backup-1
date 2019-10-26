@@ -1,4 +1,5 @@
 <?php
+
 /**
  * This file is part of the Backup project.
  * Visit project at https://github.com/bloodhunterd/backup
@@ -11,29 +12,22 @@
 
 declare(strict_types = 1);
 
-namespace Backup;
-
-use Backup\Interfaces\Compressible;
+namespace Backup\Model;
 
 /**
- * Class DirectoryException
+ * Class Server
  *
- * @package Backup
+ * @package Backup\Model
  *
  * @author BloodhunterD <bloodhunterd@bloodhunterd.com>
  */
-class Directory implements Compressible
+class Server extends Download
 {
 
     /**
      * @var string
      */
     private $name;
-
-    /**
-     * @var string
-     */
-    private $archive;
 
     /**
      * @var string
@@ -46,22 +40,34 @@ class Directory implements Compressible
     private $target = '';
 
     /**
+     * @var string
+     */
+    private $host;
+
+    /**
+     * @var SSH
+     */
+    private $ssh;
+
+    /**
      * @var bool
      */
     private $disabled = false;
 
     /**
-     * Directory constructor
+     * Server constructor
      *
-     * @param array $directory
+     * @param array $server
      */
-    public function __construct(array $directory)
+    public function __construct(array $server)
     {
-        $this->setName($directory['name']);
-        $this->setSource($directory['source']);
-        $this->setTarget($directory['target'] ?? $this->target);
+        $this->setName($server['name']);
+        $this->setSource($server['source']);
+        $this->setTarget($server['target'] ?? $this->target);
+        $this->setHost($server['host']);
+        $this->setSSH(new SSH($server['ssh']));
 
-        if ($directory['disabled']) {
+        if ($server['disabled']) {
             $this->disable();
         }
     }
@@ -85,7 +91,7 @@ class Directory implements Compressible
     }
 
     /**
-     * Set source
+     * Set source path
      *
      * @param string $path
      */
@@ -103,7 +109,7 @@ class Directory implements Compressible
     }
 
     /**
-     * Set target
+     * Set target path
      *
      * @param string $path
      */
@@ -117,27 +123,43 @@ class Directory implements Compressible
      */
     public function getTarget(): string
     {
-        return $this->target ?? DIRECTORY_SEPARATOR;
+        return $this->target;
     }
 
     /**
-     * Set archive
+     * Set host
      *
-     * @param string $name
+     * @param string $host
      */
-    public function setArchive(string $name): void
+    public function setHost(string $host): void
     {
-        $this->archive = $name . '.tar.bz2';
+        $this->host = $host;
     }
 
     /**
-     * Get archive
-     *
-     * @return string
+     * @inheritDoc
      */
-    public function getArchive(): string
+    public function getHost(): string
     {
-        return $this->archive;
+        return $this->host;
+    }
+
+    /**
+     * Set SSH
+     *
+     * @param SSH $ssh
+     */
+    public function setSSH(SSH $ssh): void
+    {
+        $this->ssh = $ssh;
+    }
+
+    /**
+     * @inheritDoc
+     */
+    public function getSSH(): SSH
+    {
+        return $this->ssh;
     }
 
     /**

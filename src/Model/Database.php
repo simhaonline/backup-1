@@ -1,4 +1,5 @@
 <?php
+
 /**
  * This file is part of the Backup project.
  * Visit project at https://github.com/bloodhunterd/backup
@@ -11,14 +12,14 @@
 
 declare(strict_types = 1);
 
-namespace Backup;
+namespace Backup\Model;
 
 use Backup\Interfaces\Compressible;
 
 /**
  * Class DatabaseException
  *
- * @package Backup
+ * @package Backup\Model
  *
  * @author BloodhunterD <bloodhunterd@bloodhunterd.com>
  */

@@ -18,6 +18,8 @@ use Backup\Exception\DatabaseException;
 use Backup\Exception\DirectoryException;
 use Backup\Interfaces\Backup;
 use Backup\Interfaces\Compressible;
+use Backup\Model\Database;
+use Backup\Model\Directory;
 use PharException;
 use Vection\Component\DI\Annotations\Inject;
 use Vection\Component\DI\Traits\AnnotationInjection;

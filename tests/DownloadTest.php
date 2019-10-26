@@ -1,4 +1,5 @@
 <?php
+
 /**
  * This file is part of the Backup project.
  * Visit project at https://github.com/bloodhunterd/backup
@@ -13,8 +14,8 @@ declare(strict_types = 1);
 
 namespace Backup\Tests;
 
-use Backup\Download;
-use Backup\Server;
+use Backup\Model\Download;
+use Backup\Model\Server;
 use PHPUnit\Framework\TestCase;
 
 /**

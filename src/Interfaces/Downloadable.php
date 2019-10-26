@@ -14,7 +14,7 @@ declare(strict_types = 1);
 
 namespace Backup\Interfaces;
 
-use Backup\SSH;
+use Backup\Model\SSH;
 
 /**
  * Interface Downloadable

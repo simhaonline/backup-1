@@ -14,7 +14,7 @@ declare(strict_types = 1);
 
 namespace Backup\Tests;
 
-use Backup\Database;
+use Backup\Model\Database;
 use PHPUnit\Framework\TestCase;
 
 /**

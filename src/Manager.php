@@ -17,6 +17,7 @@ namespace Backup;
 use Backup\Exception\DownloadException;
 use Backup\Exception\DirectoryException;
 use Backup\Interfaces\Backup;
+use Backup\Model\Server;
 use Vection\Component\DI\Annotations\Inject;
 use Vection\Component\DI\Traits\AnnotationInjection;
 

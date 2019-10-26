@@ -1,4 +1,5 @@
 <?php
+
 /**
  * This file is part of the Backup project.
  * Visit project at https://github.com/bloodhunterd/backup
@@ -11,22 +12,29 @@
 
 declare(strict_types = 1);
 
-namespace Backup;
+namespace Backup\Model;
+
+use Backup\Interfaces\Compressible;
 
 /**
- * Class Server
+ * Class DirectoryException
  *
- * @package Backup
+ * @package Backup\Model
  *
  * @author BloodhunterD <bloodhunterd@bloodhunterd.com>
  */
-class Server extends Download
+class Directory implements Compressible
 {
 
     /**
      * @var string
      */
     private $name;
+
+    /**
+     * @var string
+     */
+    private $archive;
 
     /**
      * @var string
@@ -39,34 +47,22 @@ class Server extends Download
     private $target = '';
 
     /**
-     * @var string
-     */
-    private $host;
-
-    /**
-     * @var SSH
-     */
-    private $ssh;
-
-    /**
      * @var bool
      */
     private $disabled = false;
 
     /**
-     * Server constructor
+     * Directory constructor
      *
-     * @param array $server
+     * @param array $directory
      */
-    public function __construct(array $server)
+    public function __construct(array $directory)
     {
-        $this->setName($server['name']);
-        $this->setSource($server['source']);
-        $this->setTarget($server['target'] ?? $this->target);
-        $this->setHost($server['host']);
-        $this->setSSH(new SSH($server['ssh']));
+        $this->setName($directory['name']);
+        $this->setSource($directory['source']);
+        $this->setTarget($directory['target'] ?? $this->target);
 
-        if ($server['disabled']) {
+        if ($directory['disabled']) {
             $this->disable();
         }
     }
@@ -90,7 +86,7 @@ class Server extends Download
     }
 
     /**
-     * Set source path
+     * Set source
      *
      * @param string $path
      */
@@ -108,7 +104,7 @@ class Server extends Download
     }
 
     /**
-     * Set target path
+     * Set target
      *
      * @param string $path
      */
@@ -122,43 +118,27 @@ class Server extends Download
      */
     public function getTarget(): string
     {
-        return $this->target;
+        return $this->target ?? DIRECTORY_SEPARATOR;
     }
 
     /**
-     * Set host
+     * Set archive
      *
-     * @param string $host
+     * @param string $name
      */
-    public function setHost(string $host): void
+    public function setArchive(string $name): void
     {
-        $this->host = $host;
+        $this->archive = $name . '.tar.bz2';
     }
 
     /**
-     * @inheritDoc
-     */
-    public function getHost(): string
-    {
-        return $this->host;
-    }
-
-    /**
-     * Set SSH
+     * Get archive
      *
-     * @param SSH $ssh
+     * @return string
      */
-    public function setSSH(SSH $ssh): void
+    public function getArchive(): string
     {
-        $this->ssh = $ssh;
-    }
-
-    /**
-     * @inheritDoc
-     */
-    public function getSSH(): SSH
-    {
-        return $this->ssh;
+        return $this->archive;
     }
 
     /**
