@@ -93,7 +93,7 @@ class Database implements Compressible
         $this->setTarget($database['target'] ?? $this->target);
         $this->setType($source['type'] ?? $this->type);
 
-        if ($database['disabled']) {
+        if (isset($database['disabled']) && $database['disabled']) {
             $this->disable();
         }
 

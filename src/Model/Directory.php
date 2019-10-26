@@ -65,7 +65,7 @@ class Directory implements Compressible
         # Optional
         $this->setTarget($directory['target'] ?? $this->target);
 
-        if ($directory['disabled']) {
+        if (isset($directory['disabled']) && $directory['disabled']) {
             $this->disable();
         }
     }

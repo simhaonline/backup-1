@@ -70,7 +70,7 @@ class Server extends Download
         # Optional
         $this->setTarget($server['target'] ?? $this->target);
 
-        if ($server['disabled']) {
+        if (isset($server['disabled']) && $server['disabled']) {
             $this->disable();
         }
     }
