@@ -15,6 +15,7 @@ declare(strict_types = 1);
 namespace Backup\Tests;
 
 use Backup\Model\Database;
+use Backup\Service\Database as DatabaseService;
 use PHPUnit\Framework\TestCase;
 
 /**
@@ -37,7 +38,7 @@ class DatabaseTest extends TestCase
      */
     public function testDumpCmd(Database $database, string $cmd): void
     {
-        self::assertEquals($cmd, $database->createDumpCmd());
+        self::assertEquals($cmd, (new DatabaseService())->getDumpCmd($database));
     }
 
     /**

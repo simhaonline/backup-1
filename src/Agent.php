@@ -20,6 +20,7 @@ use Backup\Interfaces\Backup;
 use Backup\Interfaces\Compressible;
 use Backup\Model\Database;
 use Backup\Model\Directory;
+use Backup\Service\Database as DatabaseService;
 use PharException;
 use Vection\Component\DI\Annotations\Inject;
 use Vection\Component\DI\Traits\AnnotationInjection;
@@ -165,7 +166,7 @@ class Agent implements Backup
 
         $database->setSource($this->sanitize($database->getName()) . '.sql');
 
-        if (!$this->tool->execute($database->createDumpCmd())) {
+        if (!$this->tool->execute((new DatabaseService())->getDumpCmd($database))) {
             $msg = sprintf('Failed to create dump of database backup "%s".', $name);
 
             throw new DatabaseException($msg);

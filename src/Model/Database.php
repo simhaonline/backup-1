@@ -196,6 +196,16 @@ class Database implements Compressible
     }
 
     /**
+     * Get type
+     *
+     * @return string
+     */
+    public function getType(): string
+    {
+        return $this->type;
+    }
+
+    /**
      * Set docker container
      *
      * @param string $container
@@ -203,6 +213,16 @@ class Database implements Compressible
     public function setDockerContainer(string $container): void
     {
         $this->dockerContainer = $container;
+    }
+
+    /**
+     * Get docker container
+     *
+     * @return string
+     */
+    public function getDockerContainer(): string
+    {
+        return $this->dockerContainer;
     }
 
     /**
@@ -216,6 +236,16 @@ class Database implements Compressible
     }
 
     /**
+     * Get host
+     *
+     * @return string
+     */
+    public function getHost(): string
+    {
+        return $this->host;
+    }
+
+    /**
      * Set user
      *
      * @param string $user
@@ -226,6 +256,16 @@ class Database implements Compressible
     }
 
     /**
+     * Get user
+     *
+     * @return string
+     */
+    public function getUser(): string
+    {
+        return $this->user;
+    }
+
+    /**
      * Set password
      *
      * @param string $password
@@ -233,6 +273,16 @@ class Database implements Compressible
     public function setPassword(string $password): void
     {
         $this->password = $password;
+    }
+
+    /**
+     * Get password
+     *
+     * @return string
+     */
+    public function getPassword(): string
+    {
+        return $this->password;
     }
 
     /**
@@ -251,42 +301,5 @@ class Database implements Compressible
     public function isDisabled(): bool
     {
         return $this->disabled;
-    }
-
-    /**
-     * Create dump command
-     *
-     * @return string
-     */
-    public function createDumpCmd(): string
-    {
-        if ($this->type === 'docker') {
-            return sprintf(
-                'docker exec %s sh -c \'exec mysqldump -uroot -p"$MYSQL_ROOT_PASSWORD" $MYSQL_DATABASE\' > %s',
-                escapeshellarg($this->dockerContainer),
-                escapeshellarg($this->source)
-            );
-        }
-
-        $excludedDatabases = ['information_schema', 'mysql', 'performance_schema'];
-
-        $excludeSql = sprintf(' NOT IN (\'%s\')', implode('\',\'', $excludedDatabases));
-
-        $databaseNameSql = sprintf(
-            'mysql --skip-column-names -e "SELECT GROUP_CONCAT(schema_name SEPARATOR \' \') FROM information_schema.schemata WHERE schema_name%s;"',
-            $excludeSql
-        );
-
-        # Use password parameter only if a password is set
-        $passwordSql = $this->password ? sprintf(' -p"%s"', $this->password) : '';
-
-        return sprintf(
-            'mysqldump -h%s -u%s%s --databases `%s` > %s',
-            escapeshellarg($this->host),
-            escapeshellarg($this->user),
-            $passwordSql,
-            $databaseNameSql,
-            escapeshellarg($this->source)
-        );
     }
 }
