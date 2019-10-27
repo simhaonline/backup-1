@@ -14,8 +14,9 @@ declare(strict_types = 1);
 
 namespace Backup\Tests;
 
-use Backup\Model\Download;
+use Backup\Interfaces\Downloadable;
 use Backup\Model\Server;
+use Backup\Service\Download as DownloadService;
 use PHPUnit\Framework\TestCase;
 
 /**
@@ -33,12 +34,12 @@ class DownloadTest extends TestCase
      *
      * @dataProvider dataDownloadCmd
      *
-     * @param Download $download
+     * @param Downloadable $download
      * @param string $cmd
      */
-    public function testDownloadCmd(Download $download, string $cmd): void
+    public function testDownloadCmd(Downloadable $download, string $cmd): void
     {
-        self::assertEquals($cmd, $download->createDownloadCmd());
+        self::assertEquals($cmd, (new DownloadService())->getCmd($download));
     }
 
     /**

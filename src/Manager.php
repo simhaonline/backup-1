@@ -18,6 +18,7 @@ use Backup\Exception\DownloadException;
 use Backup\Exception\DirectoryException;
 use Backup\Interfaces\Backup;
 use Backup\Model\Server;
+use Backup\Service\Download;
 use Vection\Component\DI\Annotations\Inject;
 use Vection\Component\DI\Traits\AnnotationInjection;
 
@@ -102,7 +103,7 @@ class Manager implements Backup
 
         $server->setTarget($this->config->getTargetDirectory() . $server->getTarget());
 
-        if (!$this->tool->execute($server->createDownloadCmd()) || !is_file($server->getTarget())) {
+        if (!$this->tool->execute((new Download())->getCmd($server)) || !is_file($server->getTarget())) {
             $msg = sprintf('Failed to download from server "%s".', $name);
 
             throw new DownloadException($msg);

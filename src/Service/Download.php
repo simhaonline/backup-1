@@ -12,18 +12,18 @@
 
 declare(strict_types = 1);
 
-namespace Backup\Model;
+namespace Backup\Service;
 
 use Backup\Interfaces\Downloadable;
 
 /**
- * Class Downloadable
+ * Class Download
  *
- * @package Backup\Model
+ * @package Backup\Service
  *
- * @author BloodhunterD <bloodhunterd@bloodhunterd.com>
+ * @author BloodhunterD
  */
-abstract class Download implements Downloadable
+class Download
 {
 
     /**
@@ -31,7 +31,7 @@ abstract class Download implements Downloadable
      *
      * @return string
      */
-    public function createDownloadCmd(): string
+    public function getCmd(Downloadable $download): string
     {
         # RSYNC:
         # -r Recursive
@@ -44,12 +44,12 @@ abstract class Download implements Downloadable
         # -i Identity file. Selects a file from which the identity (private key) for authentication is read.
         return sprintf(
             'rsync -r -t -e "ssh -t -q -o "StrictHostKeyChecking=no" -p %d -i %s" %s@%s:%s %s',
-            $this->getSSH()->getPort(),
-            escapeshellarg($this->getSSH()->getKey()),
-            $this->getSSH()->getUser(),
-            $this->getHost(),
-            escapeshellarg($this->getSource() . DIRECTORY_SEPARATOR),
-            escapeshellarg($this->getTarget() . DIRECTORY_SEPARATOR)
+            $download->getSSH()->getPort(),
+            escapeshellarg($download->getSSH()->getKey()),
+            $download->getSSH()->getUser(),
+            $download->getHost(),
+            escapeshellarg($download->getSource() . DIRECTORY_SEPARATOR),
+            escapeshellarg($download->getTarget() . DIRECTORY_SEPARATOR)
         );
     }
 }
