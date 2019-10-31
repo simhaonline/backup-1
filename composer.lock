@@ -142,12 +142,12 @@
             "source": {
                 "type": "git",
                 "url": "https://github.com/php-fig/log.git",
-                "reference": "bf73deb2b3b896a9d9c75f3f0d88185d2faa27e2"
+                "reference": "d477130b23d419404dbd4bfea1aa557b3236bbc7"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/php-fig/log/zipball/bf73deb2b3b896a9d9c75f3f0d88185d2faa27e2",
-                "reference": "bf73deb2b3b896a9d9c75f3f0d88185d2faa27e2",
+                "url": "https://api.github.com/repos/php-fig/log/zipball/d477130b23d419404dbd4bfea1aa557b3236bbc7",
+                "reference": "d477130b23d419404dbd4bfea1aa557b3236bbc7",
                 "shasum": ""
             },
             "require": {
@@ -181,7 +181,7 @@
                 "psr",
                 "psr-3"
             ],
-            "time": "2019-10-25T08:06:51+00:00"
+            "time": "2019-10-30T09:18:31+00:00"
         },
         {
             "name": "vection-framework/contracts",
@@ -189,12 +189,12 @@
             "source": {
                 "type": "git",
                 "url": "https://github.com/Vection-Framework/Contracts.git",
-                "reference": "ae19e781f547769bf61cee058636a1600e675616"
+                "reference": "6744af6ca5550065bf5ea7b0ab6e8b5210c75bee"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/Vection-Framework/Contracts/zipball/ae19e781f547769bf61cee058636a1600e675616",
-                "reference": "ae19e781f547769bf61cee058636a1600e675616",
+                "url": "https://api.github.com/repos/Vection-Framework/Contracts/zipball/6744af6ca5550065bf5ea7b0ab6e8b5210c75bee",
+                "reference": "6744af6ca5550065bf5ea7b0ab6e8b5210c75bee",
                 "shasum": ""
             },
             "require": {
@@ -225,7 +225,7 @@
                 "vection",
                 "vection-contracts"
             ],
-            "time": "2019-10-26T11:40:16+00:00"
+            "time": "2019-10-27T12:39:08+00:00"
         },
         {
             "name": "vection-framework/di-container",
@@ -1109,12 +1109,12 @@
             "source": {
                 "type": "git",
                 "url": "https://github.com/Ocramius/PackageVersions.git",
-                "reference": "1d32342b8c1eb27353c8887c366147b4c2da673c"
+                "reference": "6e9ddfbbbb1683df71cee3c7751a82edd26f92a1"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/Ocramius/PackageVersions/zipball/1d32342b8c1eb27353c8887c366147b4c2da673c",
-                "reference": "1d32342b8c1eb27353c8887c366147b4c2da673c",
+                "url": "https://api.github.com/repos/Ocramius/PackageVersions/zipball/6e9ddfbbbb1683df71cee3c7751a82edd26f92a1",
+                "reference": "6e9ddfbbbb1683df71cee3c7751a82edd26f92a1",
                 "shasum": ""
             },
             "require": {
@@ -1152,7 +1152,7 @@
                 }
             ],
             "description": "Composer plugin that provides efficient querying for installed package versions (no runtime IO)",
-            "time": "2019-07-17T15:49:50+00:00"
+            "time": "2019-10-29T22:11:08+00:00"
         },
         {
             "name": "phar-io/manifest",
@@ -1474,12 +1474,12 @@
             "source": {
                 "type": "git",
                 "url": "https://github.com/phpstan/phpdoc-parser.git",
-                "reference": "b23fbb14d596f83c2a0d2a8d0503c7856346d19b"
+                "reference": "18b0e92b63ada4f1dc7e30265950bd1d10f5fb75"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/phpstan/phpdoc-parser/zipball/b23fbb14d596f83c2a0d2a8d0503c7856346d19b",
-                "reference": "b23fbb14d596f83c2a0d2a8d0503c7856346d19b",
+                "url": "https://api.github.com/repos/phpstan/phpdoc-parser/zipball/18b0e92b63ada4f1dc7e30265950bd1d10f5fb75",
+                "reference": "18b0e92b63ada4f1dc7e30265950bd1d10f5fb75",
                 "shasum": ""
             },
             "require": {
@@ -1514,7 +1514,7 @@
                 "MIT"
             ],
             "description": "PHPDoc parser with support for nullable, intersection and generic types",
-            "time": "2019-10-06T12:45:32+00:00"
+            "time": "2019-10-26T19:40:39+00:00"
         },
         {
             "name": "phpstan/phpstan",
@@ -1522,12 +1522,12 @@
             "source": {
                 "type": "git",
                 "url": "https://github.com/phpstan/phpstan.git",
-                "reference": "46e70abfb8012a5ffeb2f0583bf732bef1513a18"
+                "reference": "cf2363d0de2c2475b179b7c06fd1d74621796657"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/phpstan/phpstan/zipball/46e70abfb8012a5ffeb2f0583bf732bef1513a18",
-                "reference": "46e70abfb8012a5ffeb2f0583bf732bef1513a18",
+                "url": "https://api.github.com/repos/phpstan/phpstan/zipball/cf2363d0de2c2475b179b7c06fd1d74621796657",
+                "reference": "cf2363d0de2c2475b179b7c06fd1d74621796657",
                 "shasum": ""
             },
             "require": {
@@ -1586,7 +1586,7 @@
                 "MIT"
             ],
             "description": "PHPStan - PHP Static Analysis Tool",
-            "time": "2019-10-22T20:26:29+00:00"
+            "time": "2019-10-31T13:58:56+00:00"
         },
         {
             "name": "phpunit/php-code-coverage",
@@ -1594,12 +1594,12 @@
             "source": {
                 "type": "git",
                 "url": "https://github.com/sebastianbergmann/php-code-coverage.git",
-                "reference": "5a03e94d9f0e4047097a4870d704b5b4eda4eb0c"
+                "reference": "2bcb7042ce5e88d441225d67a9af53b0d2afed99"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/sebastianbergmann/php-code-coverage/zipball/5a03e94d9f0e4047097a4870d704b5b4eda4eb0c",
-                "reference": "5a03e94d9f0e4047097a4870d704b5b4eda4eb0c",
+                "url": "https://api.github.com/repos/sebastianbergmann/php-code-coverage/zipball/2bcb7042ce5e88d441225d67a9af53b0d2afed99",
+                "reference": "2bcb7042ce5e88d441225d67a9af53b0d2afed99",
                 "shasum": ""
             },
             "require": {
@@ -1649,7 +1649,7 @@
                 "testing",
                 "xunit"
             ],
-            "time": "2019-10-23T09:02:55+00:00"
+            "time": "2019-10-28T09:21:11+00:00"
         },
         {
             "name": "phpunit/php-file-iterator",
@@ -1846,12 +1846,12 @@
             "source": {
                 "type": "git",
                 "url": "https://github.com/sebastianbergmann/phpunit.git",
-                "reference": "4e65eea6e1dfa9eb6f32a1407dfb6ffcb4b97b7f"
+                "reference": "7d52bd8eab082f99c76f0a4ac25f22f21cbed794"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/sebastianbergmann/phpunit/zipball/4e65eea6e1dfa9eb6f32a1407dfb6ffcb4b97b7f",
-                "reference": "4e65eea6e1dfa9eb6f32a1407dfb6ffcb4b97b7f",
+                "url": "https://api.github.com/repos/sebastianbergmann/phpunit/zipball/7d52bd8eab082f99c76f0a4ac25f22f21cbed794",
+                "reference": "7d52bd8eab082f99c76f0a4ac25f22f21cbed794",
                 "shasum": ""
             },
             "require": {
@@ -1921,7 +1921,7 @@
                 "testing",
                 "xunit"
             ],
-            "time": "2019-10-26T04:57:15+00:00"
+            "time": "2019-10-31T14:16:18+00:00"
         },
         {
             "name": "roave/security-advisories",
@@ -1929,12 +1929,12 @@
             "source": {
                 "type": "git",
                 "url": "https://github.com/Roave/SecurityAdvisories.git",
-                "reference": "eb59d9f35a47f567ae15e7179d7c666489cd4b85"
+                "reference": "f8c8349a4b12a26edfa8b21d07d3dbeb6dcedcfa"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/Roave/SecurityAdvisories/zipball/eb59d9f35a47f567ae15e7179d7c666489cd4b85",
-                "reference": "eb59d9f35a47f567ae15e7179d7c666489cd4b85",
+                "url": "https://api.github.com/repos/Roave/SecurityAdvisories/zipball/f8c8349a4b12a26edfa8b21d07d3dbeb6dcedcfa",
+                "reference": "f8c8349a4b12a26edfa8b21d07d3dbeb6dcedcfa",
                 "shasum": ""
             },
             "conflict": {
@@ -2137,7 +2137,7 @@
                 }
             ],
             "description": "Prevents installation of composer packages with known security vulnerabilities: no API, simply require it",
-            "time": "2019-10-09T14:04:58+00:00"
+            "time": "2019-10-29T22:11:03+00:00"
         },
         {
             "name": "sebastian/code-unit-reverse-lookup",
@@ -2190,12 +2190,12 @@
             "source": {
                 "type": "git",
                 "url": "https://github.com/sebastianbergmann/comparator.git",
-                "reference": "0b71b4de0c55d2eb2946f30052e94d23e014c2cd"
+                "reference": "c57ba51c28b64ef8a4b14b40bceb2c5ca19e9406"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/sebastianbergmann/comparator/zipball/0b71b4de0c55d2eb2946f30052e94d23e014c2cd",
-                "reference": "0b71b4de0c55d2eb2946f30052e94d23e014c2cd",
+                "url": "https://api.github.com/repos/sebastianbergmann/comparator/zipball/c57ba51c28b64ef8a4b14b40bceb2c5ca19e9406",
+                "reference": "c57ba51c28b64ef8a4b14b40bceb2c5ca19e9406",
                 "shasum": ""
             },
             "require": {
@@ -2246,7 +2246,7 @@
                 "compare",
                 "equality"
             ],
-            "time": "2019-10-23T09:03:30+00:00"
+            "time": "2019-10-28T09:22:49+00:00"
         },
         {
             "name": "sebastian/diff",
@@ -2760,12 +2760,12 @@
             "source": {
                 "type": "git",
                 "url": "https://github.com/symfony/console.git",
-                "reference": "3dc050a9adab0081c8cd76c1b3274ed6d7b21a03"
+                "reference": "da3678e12c62d479777653e44653bf4e923fe7c2"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/symfony/console/zipball/3dc050a9adab0081c8cd76c1b3274ed6d7b21a03",
-                "reference": "3dc050a9adab0081c8cd76c1b3274ed6d7b21a03",
+                "url": "https://api.github.com/repos/symfony/console/zipball/da3678e12c62d479777653e44653bf4e923fe7c2",
+                "reference": "da3678e12c62d479777653e44653bf4e923fe7c2",
                 "shasum": ""
             },
             "require": {
@@ -2828,7 +2828,7 @@
             ],
             "description": "Symfony Console Component",
             "homepage": "https://symfony.com",
-            "time": "2019-10-12T00:35:04+00:00"
+            "time": "2019-10-30T13:23:44+00:00"
         },
         {
             "name": "symfony/finder",
