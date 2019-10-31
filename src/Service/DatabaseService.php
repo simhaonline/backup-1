@@ -256,7 +256,7 @@ class DatabaseService
     private function getDockerDumpCmd(string $schema): string
     {
         return sprintf(
-            'docker exec %s sh -c "mysqldump -u%s%s %s" > %s',
+            'docker exec %s sh -c "mysqldump%s%s %s" > %s',
             escapeshellarg($this->database->getDockerContainer()),
             $this->prepareUser(),
             $this->preparePassword(),
@@ -274,7 +274,7 @@ class DatabaseService
     private function getHostDumpCmd(string $schema): string
     {
         return sprintf(
-            'mysqldump -h%s -u%s%s %s > %s',
+            'mysqldump%s%s%s %s > %s',
             $this->prepareHost(),
             $this->prepareUser(),
             $this->preparePassword(),
