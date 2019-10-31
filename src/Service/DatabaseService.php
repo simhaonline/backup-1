@@ -177,14 +177,14 @@ class DatabaseService
     private function getSchemataQuery(): string
     {
         $query = 'SELECT
-                    GROUP_CONCAT(schema_name SEPARATOR " ")
+                    GROUP_CONCAT(schema_name SEPARATOR \" \")
                   FROM
                     information_schema.schemata
                   WHERE
                     schema_name NOT IN ("%s")
                   ';
 
-        $query = sprintf($query, implode('","', self::EXCLUDED_SCHEMAS));
+        $query = sprintf($query, implode('\",\"', self::EXCLUDED_SCHEMAS));
 
         return $query;
     }
