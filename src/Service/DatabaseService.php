@@ -35,6 +35,7 @@ class DatabaseService
 
     use AnnotationInjection;
 
+    private const ENV = '\$';
     private const MYSQL_PASSWORDS = ['MYSQL_ROOT_PASSWORD', 'MYSQL_PASSWORD'];
     private const EXCLUDED_SCHEMAS = ['information_schema', 'mysql', 'performance_schema'];
 
@@ -157,7 +158,7 @@ class DatabaseService
 
         # Replace Docker Compose environment vars
         if ($this->database->getType() === self::TYPE_DOCKER && strncasecmp($user, 'MYSQL_USER', 10) === 0) {
-            $user = '$' . $user;
+            $user = self::ENV . $user;
         } else {
             $user = escapeshellarg($user);
         }
@@ -176,7 +177,7 @@ class DatabaseService
 
         # Replace Docker Compose environment vars
         if ($this->database->getType() === self::TYPE_DOCKER && in_array($password, self::MYSQL_PASSWORDS, true)) {
-            $password = '$' . $password;
+            $password = self::ENV . $password;
         } else {
             $password = escapeshellarg($password);
         }
