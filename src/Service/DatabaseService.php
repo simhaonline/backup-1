@@ -20,6 +20,7 @@ use Backup\Logger;
 use Backup\Model\DatabaseModel;
 use Backup\Tool;
 use Vection\Component\DI\Annotations\Inject;
+use Vection\Component\DI\Traits\AnnotationInjection;
 
 /**
  * Class DatabaseService
@@ -30,6 +31,8 @@ use Vection\Component\DI\Annotations\Inject;
  */
 class DatabaseService
 {
+
+    use AnnotationInjection;
 
     /**
      * Excluded schemas
