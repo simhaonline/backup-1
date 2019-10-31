@@ -109,7 +109,7 @@ class DatabaseService
      */
     private function getHostMySqlCmd(string $query): string
     {
-        $cmd = 'mysql%s%s%s --skip-column-names -e "%s;"';
+        $cmd = 'mysql%s%s%s --skip-column-names -e \'%s;\'';
 
         return sprintf($cmd, $this->prepareHost(), $this->prepareUser(), $this->preparePassword(), $query);
     }
@@ -122,12 +122,11 @@ class DatabaseService
      */
     private function getDockerMySqlCmd(string $query): string
     {
-        $cmd = 'docker exec %s sh -c \'mysql%s%s%s --skip-column-names -e "%s;"\'';
+        $cmd = 'docker exec %s sh -c "mysql%s%s --skip-column-names -e \'%s;\'"';
 
         return sprintf(
             $cmd,
             $this->database->getDockerContainer(),
-            $this->prepareHost(),
             $this->prepareUser(),
             $this->preparePassword(),
             $query
@@ -178,14 +177,14 @@ class DatabaseService
     private function getSchemataQuery(): string
     {
         $query = 'SELECT
-                    GROUP_CONCAT(schema_name SEPARATOR \' \')
+                    GROUP_CONCAT(schema_name SEPARATOR " ")
                   FROM
                     information_schema.schemata
                   WHERE
-                    schema_name NOT IN (\'%s\')
+                    schema_name NOT IN ("%s")
                   ';
 
-        $query = sprintf($query, implode('\',\'', self::EXCLUDED_SCHEMAS));
+        $query = sprintf($query, implode('","', self::EXCLUDED_SCHEMAS));
 
         return $query;
     }
