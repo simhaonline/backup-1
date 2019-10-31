@@ -90,7 +90,7 @@ class DatabaseService
             throw new DatabaseException('Failed to get database schemata.', 0, $e);
         }
 
-        $schemata = explode(' ', $schemata[1]);
+        $schemata = explode(' ', $schemata[0]);
 
         foreach ($schemata as $schema) {
             try {
