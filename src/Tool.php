@@ -15,6 +15,8 @@ declare(strict_types=1);
 namespace Backup;
 
 use Backup\Exception\ConfigurationException;
+use Backup\Exception\ToolException;
+use Backup\Interfaces\Compressible;
 use Locale;
 use Phar;
 use Vection\Component\DI\Annotations\Inject;
@@ -95,25 +97,41 @@ class Tool
      *
      * @param string $path
      *
-     * @return bool
+     * @throws ToolException
      */
-    public function createDirectory(string $path): bool
+    public function createDirectory(string $path): void
     {
         $absolutePath = $this->config->getTargetDirectory() . $path;
 
         if (!is_dir($absolutePath)) {
             $cmd = sprintf('mkdir -p %s', escapeshellarg($absolutePath));
 
-            $r = $this->execute($cmd);
-
-            if (!$r && !is_dir($absolutePath)) {
-                return false;
-            }
+            $this->execute($cmd);
         }
 
         $this->logger->use('app')->debug(sprintf('Directory "%s" successfully created', $absolutePath));
+    }
 
-        return true;
+    /**
+     * Create an archive
+     *
+     * @param Compressible $object
+     *
+     * @throws ToolException
+     */
+    public function createArchive(Compressible $object): void
+    {
+        $target = $object->getTarget() . DIRECTORY_SEPARATOR . $object->getArchive();
+
+        $cmd = sprintf(
+            'tar -cjf %s %s',
+            escapeshellarg($this->config->getTargetDirectory() . $target),
+            escapeshellarg($object->getSource())
+        );
+
+        $this->execute($cmd);
+
+        $this->logger->use('app')->debug(sprintf('Archive "%s" successfully created', $target));
     }
 
     /**
@@ -121,11 +139,14 @@ class Tool
      *
      * @param string $command
      *
-     * @return bool
+     * @return array
+     * @throws ToolException
      */
-    public function execute(string $command): bool
+    public function execute(string $command): array
     {
         unset($output);
+
+        $this->logger->use('app')->debug(sprintf('Execute command: %s', $command));
 
         exec($command, $output, $return);
 
@@ -133,15 +154,25 @@ class Tool
             $this->logger->use('shell')->debug($line);
         }
 
-        $this->logger->use('app')->debug(sprintf('Return status: %s', $return));
+        $this->logger->use('app')->debug(sprintf('Return status: %d', $return));
 
-        # The command failed, if it returns a non-zero value
-        if (! (bool) $return) {
-            $this->logger->use('app')->debug(sprintf('Command successfully executed: %s', $command));
-
-            return true;
+        # If the return status is not zero, the command failed
+        if ($return !== 0) {
+            throw new ToolException(sprintf('Failed to execute command: %s', $command), $return);
         }
 
-        return false;
+        return $output;
+    }
+
+    /**
+     * Sanitize a string
+     *
+     * @param string $string
+     *
+     * @return string
+     */
+    public function sanitize(string $string): string
+    {
+        return preg_replace('/[^a-zA-Z0-9_-]/', '-', preg_replace('/\s/', '_', $string));
     }
 }

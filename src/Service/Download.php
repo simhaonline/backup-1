@@ -29,6 +29,7 @@ class Download
     /**
      * Create download command
      *
+     * @param Downloadable $download
      * @return string
      */
     public function getCmd(Downloadable $download): string

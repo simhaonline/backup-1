@@ -16,6 +16,7 @@ namespace Backup;
 
 use Backup\Exception\DownloadException;
 use Backup\Exception\DirectoryException;
+use Backup\Exception\ToolException;
 use Backup\Interfaces\Backup;
 use Backup\Model\Server;
 use Backup\Service\Download;
@@ -77,7 +78,9 @@ class Manager implements Backup
             try {
                 $this->backupServer($serverModel);
             } catch (DownloadException | DirectoryException $e) {
-                $this->logger->use('app')->error($e->getMessage());
+                $this->logger->use('app')->error($e->getMessage(), [
+                    'previous' => $e->getPrevious()->getMessage()
+                ]);
 
                 continue;
             }
@@ -95,18 +98,22 @@ class Manager implements Backup
     {
         $name = $server->getName();
 
-        if (!$this->tool->createDirectory($server->getTarget())) {
+        try {
+            $this->tool->createDirectory($server->getTarget());
+        } catch (ToolException $e) {
             $msg = sprintf('Failed to create target directory for directory backup "%s".', $name);
 
-            throw new DirectoryException($msg);
+            throw new DirectoryException($msg, 0, $e);
         }
 
         $server->setTarget($this->config->getTargetDirectory() . $server->getTarget());
 
-        if (!$this->tool->execute((new Download())->getCmd($server)) || !is_file($server->getTarget())) {
+        try {
+            $this->tool->execute((new Download())->getCmd($server));
+        } catch (ToolException $e) {
             $msg = sprintf('Failed to download from server "%s".', $name);
 
-            throw new DownloadException($msg);
+            throw new DownloadException($msg, 0, $e);
         }
 
         $this->logger->use('app')->info(sprintf('Download from server "%s" successfully.', $name));

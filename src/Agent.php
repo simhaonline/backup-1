@@ -16,11 +16,11 @@ namespace Backup;
 
 use Backup\Exception\DatabaseException;
 use Backup\Exception\DirectoryException;
+use Backup\Exception\ToolException;
 use Backup\Interfaces\Backup;
-use Backup\Interfaces\Compressible;
-use Backup\Model\Database;
+use Backup\Model\DatabaseModel;
 use Backup\Model\Directory;
-use Backup\Service\Database as DatabaseService;
+use Backup\Service\DatabaseService;
 use PharException;
 use Vection\Component\DI\Annotations\Inject;
 use Vection\Component\DI\Traits\AnnotationInjection;
@@ -56,6 +56,12 @@ class Agent implements Backup
     private $tool;
 
     /**
+     * @var DatabaseService
+     * @Inject("Backup\Service\DatabaseModel")
+     */
+    private $databaseService;
+
+    /**
      * @inheritDoc
      */
     public function run(): void
@@ -81,8 +87,6 @@ class Agent implements Backup
                 $this->backupDirectory($directoryModel);
             } catch (DirectoryException $e) {
                 $this->logger->use('app')->error($e->getMessage());
-
-                continue;
             }
         }
 
@@ -93,7 +97,7 @@ class Agent implements Backup
         }
 
         foreach ($databases as $database) {
-            $databaseModel = new Database($database);
+            $databaseModel = new DatabaseModel($database);
 
             if ($databaseModel->isDisabled()) {
                 $this->logger->use('app')->debug(
@@ -104,11 +108,11 @@ class Agent implements Backup
             }
 
             try {
-                $this->backupDatabase($databaseModel);
+                $this->databaseService->backupDatabase($databaseModel);
             } catch (DatabaseException $e) {
-                $this->logger->use('app')->error($e->getMessage());
-
-                continue;
+                $this->logger->use('app')->error($e->getMessage(), [
+                    'previous' => $e->getPrevious()->getMessage()
+                ]);
             }
         }
     }
@@ -124,92 +128,32 @@ class Agent implements Backup
     {
         $name = $directory->getName();
 
-        if (!$this->tool->createDirectory($directory->getTarget())) {
+        try {
+            $this->tool->createDirectory($directory->getTarget());
+        } catch (ToolException $e) {
             $msg = sprintf('Failed to create target directory for directory backup "%s".', $name);
 
-            throw new DirectoryException($msg);
+            throw new DirectoryException($msg, 0, $e);
         }
 
         try {
             $this->tool->mountDirectory($directory->getSource());
         } catch (PharException $e) {
-            throw new DirectoryException($e->getMessage());
+            $msg = sprintf('Failed to mount source directory for directory backup "%s"', $name);
+
+            throw new DirectoryException($msg, 0, $e);
         }
 
-        $directory->setArchive($this->sanitize($directory->getName()));
+        $directory->setArchive($this->tool->sanitize($name));
 
-        if (!$this->createArchive($directory)) {
+        try {
+            $this->tool->createArchive($directory);
+        } catch (ToolException $e) {
             $msg = sprintf('Failed to create archive for directory backup "%s".', $name);
 
-            throw new DirectoryException($msg);
+            throw new DirectoryException($msg, 0, $e);
         }
 
         $this->logger->use('app')->info(sprintf('Archive of directory "%s" successfully created.', $name));
-    }
-
-    /**
-     * Backup a database
-     *
-     * @param Database $database
-     *
-     * @throws DatabaseException
-     */
-    public function backupDatabase(Database $database): void
-    {
-        $name = $database->getName();
-
-        if (!$this->tool->createDirectory($database->getTarget())) {
-            $msg = sprintf('Failed to create target directory for database backup "%s".', $name);
-
-            throw new DatabaseException($msg);
-        }
-
-        $database->setSource($this->sanitize($database->getName()) . '.sql');
-
-        if (!$this->tool->execute((new DatabaseService())->getDumpCmd($database))) {
-            $msg = sprintf('Failed to create dump of database backup "%s".', $name);
-
-            throw new DatabaseException($msg);
-        }
-
-        $database->setArchive($this->sanitize($database->getName()));
-
-        if (!$this->createArchive($database)) {
-            $msg = sprintf('Failed to create archive for directory backup "%s".', $name);
-
-            throw new DatabaseException($msg);
-        }
-    }
-
-    /**
-     * Create an archive
-     *
-     * @param Compressible $object
-     *
-     * @return bool
-     */
-    private function createArchive(Compressible $object): bool
-    {
-        $target = $object->getTarget() . DIRECTORY_SEPARATOR . $object->getArchive();
-
-        $cmd = sprintf(
-            'tar -cjf %s %s',
-            escapeshellarg($this->config->getTargetDirectory() . $target),
-            escapeshellarg($object->getSource())
-        );
-
-        return $this->tool->execute($cmd);
-    }
-
-    /**
-     * Sanitize a string
-     *
-     * @param string $string
-     *
-     * @return string
-     */
-    private function sanitize(string $string): string
-    {
-        return preg_replace('/[^a-zA-Z0-9_-]/', '-', preg_replace('/\s/', '_', $string));
     }
 }

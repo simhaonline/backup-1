@@ -17,7 +17,7 @@ namespace Backup\Model;
 use Backup\Interfaces\Compressible;
 
 /**
- * Class DirectoryException
+ * Class Directory
  *
  * @package Backup\Model
  *

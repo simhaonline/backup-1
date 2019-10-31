@@ -17,13 +17,13 @@ namespace Backup\Model;
 use Backup\Interfaces\Compressible;
 
 /**
- * Class DatabaseException
+ * Class DatabaseModel
  *
  * @package Backup\Model
  *
  * @author BloodhunterD <bloodhunterd@bloodhunterd.com>
  */
-class Database implements Compressible
+class DatabaseModel implements Compressible
 {
 
     /**
@@ -77,7 +77,7 @@ class Database implements Compressible
     private $disabled = false;
 
     /**
-     * Database constructor
+     * DatabaseModel constructor
      *
      * @param array $database
      *
@@ -112,7 +112,7 @@ class Database implements Compressible
     }
 
     /**
-     * Set name
+     * Set the name
      *
      * @param string $name
      */
@@ -130,7 +130,7 @@ class Database implements Compressible
     }
 
     /**
-     * Set source
+     * Set the source
      *
      * @param string $path
      */
@@ -148,7 +148,7 @@ class Database implements Compressible
     }
 
     /**
-     * Set target
+     * Set the target
      *
      * @param string $path
      */
@@ -166,7 +166,7 @@ class Database implements Compressible
     }
 
     /**
-     * Set archive
+     * Set the archive
      *
      * @param string $name
      */
@@ -176,7 +176,7 @@ class Database implements Compressible
     }
 
     /**
-     * Get archive
+     * Get the archive
      *
      * @return string
      */
@@ -186,7 +186,7 @@ class Database implements Compressible
     }
 
     /**
-     * Set type
+     * Set the type
      *
      * @param string $type
      */
@@ -196,7 +196,7 @@ class Database implements Compressible
     }
 
     /**
-     * Get type
+     * Get the type
      *
      * @return string
      */
@@ -206,7 +206,7 @@ class Database implements Compressible
     }
 
     /**
-     * Set docker container
+     * Set the docker container
      *
      * @param string $container
      */
@@ -216,7 +216,7 @@ class Database implements Compressible
     }
 
     /**
-     * Get docker container
+     * Get the docker container
      *
      * @return string
      */
@@ -226,7 +226,7 @@ class Database implements Compressible
     }
 
     /**
-     * Set host
+     * Set the host
      *
      * @param string $host
      */
@@ -236,7 +236,7 @@ class Database implements Compressible
     }
 
     /**
-     * Get host
+     * Get the host
      *
      * @return string
      */
@@ -246,7 +246,7 @@ class Database implements Compressible
     }
 
     /**
-     * Set user
+     * Set the user
      *
      * @param string $user
      */
@@ -256,7 +256,7 @@ class Database implements Compressible
     }
 
     /**
-     * Get user
+     * Get the user
      *
      * @return string
      */
@@ -266,7 +266,7 @@ class Database implements Compressible
     }
 
     /**
-     * Set password
+     * Set the password
      *
      * @param string $password
      */
@@ -276,7 +276,7 @@ class Database implements Compressible
     }
 
     /**
-     * Get password
+     * Get the password
      *
      * @return string
      */
