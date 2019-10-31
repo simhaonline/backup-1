@@ -15,6 +15,7 @@ declare(strict_types = 1);
 namespace Backup\Model;
 
 use Backup\Interfaces\Compressible;
+use Backup\Service\DatabaseService;
 
 /**
  * Class DatabaseModel
@@ -102,7 +103,7 @@ class DatabaseModel implements Compressible
         }
 
         # Special handling for host or docker databases
-        if ($this->type === 'docker') {
+        if ($this->type === DatabaseService::TYPE_DOCKER) {
             # Required
             $this->setDockerContainer($source['container']);
         } else {

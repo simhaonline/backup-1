@@ -21,6 +21,7 @@ use Backup\Model\DatabaseModel;
 use Backup\Tool;
 use Vection\Component\DI\Annotations\Inject;
 use Vection\Component\DI\Traits\AnnotationInjection;
+use function in_array;
 
 /**
  * Class DatabaseService
@@ -34,10 +35,10 @@ class DatabaseService
 
     use AnnotationInjection;
 
-    /**
-     * Excluded schemas
-     */
+    private const MYSQL_PASSWORDS = ['MYSQL_ROOT_PASSWORD', 'MYSQL_PASSWORD'];
     private const EXCLUDED_SCHEMAS = ['information_schema', 'mysql', 'performance_schema'];
+
+    public const TYPE_DOCKER = 'docker';
 
     /**
      * @var DatabaseModel
@@ -75,7 +76,7 @@ class DatabaseService
             throw new DatabaseException($msg, 0, $e);
         }
 
-        if ($this->database->getType() === 'docker') {
+        if ($this->database->getType() === self::TYPE_DOCKER) {
             $cmd = $this->getDockerMySqlCmd($this->getSchemataQuery());
         } else {
             $cmd = $this->getHostMySqlCmd($this->getSchemataQuery());
@@ -154,7 +155,14 @@ class DatabaseService
     {
         $user = $this->database->getUser();
 
-        return $user ? sprintf(' -u%s', escapeshellarg($user)) : '';
+        # Replace Docker Compose environment vars
+        if ($this->database->getType() === self::TYPE_DOCKER && strncasecmp($user, 'MYSQL_USER', 10) === 0) {
+            $user = '$' . $user;
+        } else {
+            $user = escapeshellarg($user);
+        }
+
+        return $user ? sprintf(' -u%s', $user) : '';
     }
 
     /**
@@ -166,7 +174,14 @@ class DatabaseService
     {
         $password = $this->database->getPassword();
 
-        return $password ? sprintf(' -p%s', escapeshellarg($password)) : '';
+        # Replace Docker Compose environment vars
+        if ($this->database->getType() === self::TYPE_DOCKER && in_array($password, self::MYSQL_PASSWORDS, true)) {
+            $password = '$' . $password;
+        } else {
+            $password = escapeshellarg($password);
+        }
+
+        return $password ? sprintf(' -p%s', $password) : '';
     }
 
     /**
@@ -181,7 +196,7 @@ class DatabaseService
                   FROM
                     information_schema.schemata
                   WHERE
-                    schema_name NOT IN ("%s")
+                    schema_name NOT IN (\"%s\")
                   ';
 
         $query = sprintf($query, implode('\",\"', self::EXCLUDED_SCHEMAS));
@@ -228,7 +243,7 @@ class DatabaseService
      */
     private function getSchemaDumpCmd(string $schema): string
     {
-        return $this->database->getType() === 'docker' ? $this->getDockerDumpCmd($schema) : $this->getHostDumpCmd($schema);
+        return $this->database->getType() === self::TYPE_DOCKER ? $this->getDockerDumpCmd($schema) : $this->getHostDumpCmd($schema);
     }
 
     /**
