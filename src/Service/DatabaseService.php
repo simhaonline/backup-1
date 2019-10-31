@@ -75,9 +75,15 @@ class DatabaseService
             throw new DatabaseException($msg, 0, $e);
         }
 
+        if ($this->database->getType() === 'docker') {
+            $cmd = $this->getDockerMySqlCmd($this->getSchemataQuery());
+        } else {
+            $cmd = $this->getHostMySqlCmd($this->getSchemataQuery());
+        }
+
         # Get all available database schemata
         try {
-            $schemata = $this->tool->execute($this->getMySqlCmd($this->getSchemataQuery()));
+            $schemata = $this->tool->execute($cmd);
         } catch (ToolException $e) {
             throw new DatabaseException('Failed to get database schemata.', 0, $e);
         }
@@ -96,16 +102,36 @@ class DatabaseService
     }
 
     /**
-     * Prepare MySQL command
+     * Prepare host MySQL command
      *
      * @param string $query
      * @return string
      */
-    private function getMySqlCmd(string $query): string
+    private function getHostMySqlCmd(string $query): string
     {
         $cmd = 'mysql%s%s%s --skip-column-names -e "%s;"';
 
         return sprintf($cmd, $this->prepareHost(), $this->prepareUser(), $this->preparePassword(), $query);
+    }
+
+    /**
+     * Prepare Docker MySQL command
+     *
+     * @param string $query
+     * @return string
+     */
+    private function getDockerMySqlCmd(string $query): string
+    {
+        $cmd = 'docker exec %s sh -c \'mysql%s%s%s --skip-column-names -e "%s;"\'';
+
+        return sprintf(
+            $cmd,
+            $this->database->getDockerContainer(),
+            $this->prepareHost(),
+            $this->prepareUser(),
+            $this->preparePassword(),
+            $query
+        );
     }
 
     /**
