@@ -88,10 +88,14 @@ class DatabaseModel implements Compressible
 
         # Required
         $this->setName($database['name']);
+        # Source has to be empty
+        $this->setSource('');
 
         # Optional
         $this->setTarget($database['target'] ?? $this->target);
         $this->setType($source['type'] ?? $this->type);
+        $this->setUser($source['user'] ?? $this->user);
+        $this->setPassword($source['password'] ?? $this->password);
 
         if (isset($database['disabled']) && $database['disabled']) {
             $this->disable();
@@ -104,11 +108,7 @@ class DatabaseModel implements Compressible
         } else {
             # Optional
             $this->setHost($source['host'] ?? $this->host);
-            $this->setUser($source['user'] ?? $this->user);
-            $this->setPassword($source['password'] ?? $this->password);
         }
-
-        $this->setSource('');
     }
 
     /**
