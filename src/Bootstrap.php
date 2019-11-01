@@ -52,7 +52,7 @@ class Bootstrap
      * Initialize the backup application
      *
      * @return Backup
-     * @throws ConfigurationException | Exception
+     * @throws Exception
      */
     public function init(): Backup
     {
@@ -107,11 +107,20 @@ class Bootstrap
 
         /** @var Configuration $config */
         $config = $this->container->get(Configuration::class);
-        $config->mount();
-        $config->load();
 
-        $tool->setTimezone($config->getTimezone());
-        $tool->setLanguage($config->getLanguage());
+        try {
+            $config->mount();
+            $config->load();
+
+            $tool->setTimezone($config->getTimezone());
+            $tool->setLanguage($config->getLanguage());
+        } catch (ConfigurationException $e) {
+            $logger->use('app')->error($e->getMessage(), [
+                'previous' => $e->getPrevious()->getMessage()
+            ]);
+
+            throw new Exception($e->getMessage(), 0, $e);
+        }
 
         switch ($config->getMode()) {
             case 'agent':
@@ -127,7 +136,11 @@ class Bootstrap
                 $logger->use('app')->info('Starting Manager');
                 break;
             default:
-                throw new ConfigurationException(sprintf('The mode "%s" is invalid.', $config->getMode()));
+                $msg = sprintf('The mode "%s" is invalid.', $config->getMode());
+
+                $logger->use('app')->error($msg);
+
+                throw new Exception($msg);
         }
 
         $tool->mountDirectory($config->getTargetDirectory());

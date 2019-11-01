@@ -26,7 +26,13 @@ require_once VENDOR_DIR . DIRECTORY_SEPARATOR . 'autoload.php';
 try {
     (new Bootstrap())->init()->run();
 } catch (Exception $e) {
-    echo $e->getMessage() . "\n";
+    echo 'Error: ' . $e->getMessage() . "\n";
+
+    $previous = $e->getPrevious()->getMessage();
+
+    if ($previous) {
+        echo 'Previous error: ' . $previous . "\n";
+    }
 
     exit();
 }
