@@ -115,9 +115,7 @@ class Bootstrap
             $tool->setTimezone($config->getTimezone());
             $tool->setLanguage($config->getLanguage());
         } catch (ConfigurationException $e) {
-            $logger->use('app')->error($e->getMessage(), [
-                'previous' => $e->getPrevious()->getMessage()
-            ]);
+            $logger->use('app')->error($e->getMessage());
 
             throw new Exception($e->getMessage(), 0, $e);
         }
