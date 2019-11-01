@@ -163,15 +163,15 @@
                   },
                   "container": {
                     "@type": "string"
-                  },
-                  "disabled": {
-                    "@type": "string",
-                    "@allowed": "yes|no"
                   }
                 }
               },
               "target": {
                 "@type": "string"
+              },
+              "disabled": {
+                "@type": "string",
+                "@allowed": "yes|no"
               }
             }
           }
