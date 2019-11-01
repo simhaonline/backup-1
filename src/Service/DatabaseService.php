@@ -37,7 +37,7 @@ class DatabaseService
 
     private const ENV = '\$';
     private const MYSQL_PASSWORDS = ['MYSQL_ROOT_PASSWORD', 'MYSQL_PASSWORD'];
-    private const EXCLUDED_SCHEMAS = ['information_schema', 'mysql', 'performance_schema'];
+    private const EXCLUDED_SCHEMATA = ['information_schema', 'mysql', 'performance_schema', 'sys'];
 
     public const TYPE_DOCKER = 'docker';
 
@@ -200,7 +200,7 @@ class DatabaseService
                     schema_name NOT IN (\"%s\")
                   ';
 
-        $query = sprintf($query, implode('\",\"', self::EXCLUDED_SCHEMAS));
+        $query = sprintf($query, implode('\",\"', self::EXCLUDED_SCHEMATA));
 
         return $query;
     }
