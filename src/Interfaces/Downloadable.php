@@ -14,7 +14,7 @@ declare(strict_types = 1);
 
 namespace Backup\Interfaces;
 
-use Backup\Model\SSH;
+use Backup\Model\SSHModel;
 
 /**
  * Interface Downloadable
@@ -57,7 +57,7 @@ interface Downloadable
     /**
      * Get the SSH settings
      *
-     * @return SSH
+     * @return SSHModel
      */
-    public function getSSH(): SSH;
+    public function getSSH(): SSHModel;
 }

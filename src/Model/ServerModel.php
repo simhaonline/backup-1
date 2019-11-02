@@ -47,7 +47,7 @@ class ServerModel implements Downloadable
     private $host;
 
     /**
-     * @var SSH
+     * @var SSHModel
      */
     private $ssh;
 
@@ -67,7 +67,7 @@ class ServerModel implements Downloadable
         $this->setName($server['name']);
         $this->setSource($server['source']);
         $this->setHost($server['host']);
-        $this->setSSH(new SSH($server['ssh']));
+        $this->setSSH(new SSHModel($server['ssh']));
 
         # Optional
         $this->setTarget($server['target'] ?? $this->target);
@@ -150,11 +150,11 @@ class ServerModel implements Downloadable
     }
 
     /**
-     * Set SSH
+     * Set SSH Model
      *
-     * @param SSH $ssh
+     * @param SSHModel $ssh
      */
-    public function setSSH(SSH $ssh): void
+    public function setSSH(SSHModel $ssh): void
     {
         $this->ssh = $ssh;
     }
@@ -162,7 +162,7 @@ class ServerModel implements Downloadable
     /**
      * @inheritDoc
      */
-    public function getSSH(): SSH
+    public function getSSH(): SSHModel
     {
         return $this->ssh;
     }

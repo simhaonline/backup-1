@@ -15,13 +15,13 @@ declare(strict_types = 1);
 namespace Backup\Model;
 
 /**
- * Class SSH
+ * Class SSH Model
  *
  * @package Backup\Model
  *
  * @author BloodhunterD <bloodhunterd@bloodhunterd.com>
  */
-class SSH
+class SSHModel
 {
 
     /**
@@ -45,7 +45,7 @@ class SSH
     private $passphrase = '';
 
     /**
-     * SSH constructor
+     * SSH Model constructor
      *
      * @param array $settings
      */
