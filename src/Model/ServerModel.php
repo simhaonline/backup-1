@@ -59,7 +59,7 @@ class ServerModel implements Downloadable
     /**
      * Server Model constructor
      *
-     * @param array $server
+     * @param mixed[] $server
      */
     public function __construct(array $server)
     {

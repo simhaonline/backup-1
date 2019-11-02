@@ -38,7 +38,7 @@ class Configuration
     use AnnotationInjection;
 
     /**
-     * @var array
+     * @var mixed[]
      */
     private $settings;
 
@@ -126,7 +126,7 @@ class Configuration
     /**
      * Get the sources
      *
-     * @return array
+     * @return mixed[]
      */
     public function getSources(): array
     {
@@ -136,7 +136,7 @@ class Configuration
     /**
      * Get the directories
      *
-     * @return array
+     * @return mixed[]
      */
     public function getDirectories(): array
     {
@@ -146,7 +146,7 @@ class Configuration
     /**
      * Get the databases
      *
-     * @return array
+     * @return mixed[]
      */
     public function getDatabases(): array
     {
@@ -156,7 +156,7 @@ class Configuration
     /**
      * Get the servers
      *
-     * @return array
+     * @return mixed[]
      */
     public function getServers(): array
     {

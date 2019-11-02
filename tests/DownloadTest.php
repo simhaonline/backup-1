@@ -45,7 +45,7 @@ class DownloadTest extends TestCase
     /**
      * Data download command
      *
-     * @return array
+     * @return array[]
      */
     public function dataDownloadCmd(): array
     {

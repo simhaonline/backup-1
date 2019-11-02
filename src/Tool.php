@@ -139,7 +139,7 @@ class Tool
      *
      * @param string $command
      *
-     * @return array
+     * @return string[]
      * @throws ToolException
      */
     public function execute(string $command): array

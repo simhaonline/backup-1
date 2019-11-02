@@ -80,7 +80,7 @@ class DatabaseModel implements Compressible
     /**
      * DatabaseModel constructor
      *
-     * @param array $database
+     * @param mixed[] $database
      *
      */
     public function __construct(array $database)

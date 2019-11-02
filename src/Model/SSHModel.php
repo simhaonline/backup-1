@@ -47,7 +47,7 @@ class SSHModel
     /**
      * SSH Model constructor
      *
-     * @param array $settings
+     * @param mixed[] $settings
      */
     public function __construct(array $settings)
     {

@@ -54,7 +54,7 @@ class DirectoryModel implements Compressible
     /**
      * Directory Model constructor
      *
-     * @param array $directory
+     * @param mixed[] $directory
      */
     public function __construct(array $directory)
     {

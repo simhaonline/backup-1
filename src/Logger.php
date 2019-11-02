@@ -33,7 +33,7 @@ class Logger
     private $lineFormatter;
 
     /**
-     * @var array
+     * @var MonologLogger[]
      */
     private $loggers = [];
 
