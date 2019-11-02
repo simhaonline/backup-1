@@ -37,6 +37,7 @@ class DatabaseService
 
     private const ENV = '\$';
     private const MYSQL_PASSWORDS = ['MYSQL_ROOT_PASSWORD', 'MYSQL_PASSWORD'];
+    private const MYSQL_NO_PASSWORD = 'MYSQL_ALLOW_EMPTY_PASSWORD';
     private const EXCLUDED_SCHEMATA = ['information_schema', 'mysql', 'performance_schema', 'sys'];
 
     public const TYPE_DOCKER = 'docker';
@@ -177,11 +178,17 @@ class DatabaseService
     {
         $password = $this->database->getPassword();
 
-        # Replace Docker Compose environment vars
-        if ($this->database->getType() === self::TYPE_DOCKER && in_array($password, self::MYSQL_PASSWORDS, true)) {
-            $password = self::ENV . $password;
+        if ($this->database->getType() === self::TYPE_DOCKER) {
+            # Handle Docker Compose environment vars
+            if (in_array($password, self::MYSQL_PASSWORDS, true)) {
+                $password = self::ENV . $password;
+            } else if ($password === self::MYSQL_NO_PASSWORD) {
+                $password = false;
+            } else {
+                $password = $password ? escapeshellarg($password) : false;
+            }
         } else {
-            $password = escapeshellarg($password);
+            $password = $password ? escapeshellarg($password) : false;
         }
 
         return $password ? sprintf(' -p%s', $password) : '';
