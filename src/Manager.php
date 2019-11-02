@@ -54,6 +54,12 @@ class Manager implements Backup
     private $tool;
 
     /**
+     * @var Report
+     * @Inject("Backup\Report")
+     */
+    private $report;
+
+    /**
      * @inheritDoc
      */
     public function run(): void
@@ -85,6 +91,8 @@ class Manager implements Backup
                 continue;
             }
         }
+
+        $this->report->send();
     }
 
     /**

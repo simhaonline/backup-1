@@ -10,7 +10,7 @@
  * file that was distributed with this source code.
  */
 
-declare(strict_types=1);
+declare(strict_types = 1);
 
 namespace Backup;
 
@@ -35,7 +35,7 @@ class Report
     private $subject;
 
     /**
-     * @var array
+     * @var mixed[]
      */
     private $recipients;
 
@@ -51,16 +51,6 @@ class Report
     }
 
     /**
-     * Get sender
-     *
-     * @return string
-     */
-    public function getSender(): string
-    {
-        return $this->sender;
-    }
-
-    /**
      * Add subject
      *
      * @param string $subject
@@ -71,32 +61,26 @@ class Report
     }
 
     /**
-     * Get subject
-     *
-     * @return string
-     */
-    public function getSubject(): string
-    {
-        return $this->subject;
-    }
-
-    /**
      * Add recipient
      *
-     * @param string $address
+     * @param string      $address
+     * @param string|null $name
+     * @param string|null $type
      */
-    public function addRecipient(string $address): void
+    public function addRecipient(string $address, string $name = null, string $type = null): void
     {
-        $this->recipients[] = $address;
+        $this->recipients[] = [
+          'address' => $address,
+          'name'    => $name,
+          'type'    => $type
+        ];
     }
 
     /**
-     * Get recipients
-     *
-     * @return array
+     * Send the report
      */
-    public function getRecipients(): array
+    public function send(): void
     {
-        return $this->recipients;
+
     }
 }

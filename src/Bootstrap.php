@@ -121,6 +121,15 @@ class Bootstrap
             throw new BackupException($e->getMessage(), 0, $e);
         }
 
+        /** @var Report $report */
+        $report = $this->container->get(Report::class);
+        $report->setSender($config->getReportSender());
+        $report->setSubject($config->getReportSubject());
+
+        foreach ($config->getReportRecipients() as $recipient) {
+            $report->addRecipient($recipient['address'], $recipient['name'], $recipient['type']);
+        }
+
         switch ($config->getMode()) {
             case 'agent':
                 /** @var Agent $backup */

@@ -124,6 +124,36 @@ class Configuration
     }
 
     /**
+     * Get the report sender
+     *
+     * @return string
+     */
+    public function getReportSender(): string
+    {
+        return $this->settings['report']['sender'];
+    }
+
+    /**
+     * Get report subject
+     *
+     * @return string
+     */
+    public function getReportSubject(): string
+    {
+        return $this->settings['report']['subject'];
+    }
+
+    /**
+     * Get the report recipients
+     *
+     * @return mixed[]
+     */
+    public function getReportRecipients(): array
+    {
+        return $this->settings['report']['recipients'];
+    }
+
+    /**
      * Get the sources
      *
      * @return mixed[]

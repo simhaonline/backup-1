@@ -56,6 +56,12 @@ class Agent implements Backup
     private $tool;
 
     /**
+     * @var Report
+     * @Inject("Backup\Report")
+     */
+    private $report;
+
+    /**
      * @var DatabaseService
      * @Inject("Backup\Service\DatabaseService")
      */
@@ -115,6 +121,8 @@ class Agent implements Backup
                 ]);
             }
         }
+
+        $this->report->send();
     }
 
     /**
