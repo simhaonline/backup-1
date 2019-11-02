@@ -16,7 +16,7 @@ namespace Backup\Tests;
 
 use Backup\Interfaces\Downloadable;
 use Backup\Model\ServerModel;
-use Backup\Service\Download as DownloadService;
+use Backup\Service\DownloadService;
 use PHPUnit\Framework\TestCase;
 
 /**

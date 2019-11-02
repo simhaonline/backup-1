@@ -17,13 +17,13 @@ namespace Backup\Service;
 use Backup\Interfaces\Downloadable;
 
 /**
- * Class Download
+ * Class DownloadService
  *
  * @package Backup\Service
  *
  * @author BloodhunterD
  */
-class Download
+class DownloadService
 {
 
     /**

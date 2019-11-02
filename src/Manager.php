@@ -19,7 +19,7 @@ use Backup\Exception\DirectoryException;
 use Backup\Exception\ToolException;
 use Backup\Interfaces\Backup;
 use Backup\Model\ServerModel;
-use Backup\Service\Download;
+use Backup\Service\DownloadService;
 use Vection\Component\DI\Annotations\Inject;
 use Vection\Component\DI\Traits\AnnotationInjection;
 
@@ -109,7 +109,7 @@ class Manager implements Backup
         $server->setTarget($this->config->getTargetDirectory() . $server->getTarget());
 
         try {
-            $this->tool->execute((new Download())->getCmd($server));
+            $this->tool->execute((new DownloadService())->getCmd($server));
         } catch (ToolException $e) {
             $msg = sprintf('Failed to download from server "%s".', $name);
 
