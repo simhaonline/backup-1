@@ -87,7 +87,9 @@ class DatabaseService
         try {
             $schemata = $this->tool->execute($cmd);
         } catch (ToolException $e) {
-            throw new DatabaseException('Failed to get database schemata.', 0, $e);
+            $msg = sprintf('Failed to get schemata for database backup "%s".',  $this->database->getName());
+
+            throw new DatabaseException($msg, 0, $e);
         }
 
         $schemata = explode(' ', $schemata[0]);
