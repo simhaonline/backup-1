@@ -14,6 +14,8 @@ declare(strict_types = 1);
 
 namespace Backup\Interfaces;
 
+use Backup\Exception\BackupException;
+
 /**
  * Interface Backup
  *
@@ -26,6 +28,8 @@ interface Backup
 
     /**
      * Run the backup
+     *
+     * @throws BackupException
      */
     public function run(): void;
 }

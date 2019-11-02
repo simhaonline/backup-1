@@ -94,6 +94,8 @@ class Agent implements Backup
             } catch (DirectoryException $e) {
                 $this->logger->use('app')->error($e->getMessage());
             }
+
+            $this->report->add(Report::RESULT_OK, $directoryModel);
         }
 
         $databases = $this->config->getDatabases();
@@ -120,6 +122,8 @@ class Agent implements Backup
                     'previous' => $e->getPrevious()->getMessage()
                 ]);
             }
+
+            $this->report->add(Report::RESULT_OK, $databaseModel);
         }
 
         $this->report->send();

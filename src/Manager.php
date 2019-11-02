@@ -90,6 +90,8 @@ class Manager implements Backup
 
                 continue;
             }
+
+            $this->report->add(Report::RESULT_OK, $serverModel);
         }
 
         $this->report->send();
