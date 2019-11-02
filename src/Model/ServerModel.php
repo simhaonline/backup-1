@@ -17,13 +17,13 @@ namespace Backup\Model;
 use Backup\Interfaces\Downloadable;
 
 /**
- * Class Server
+ * Class Server Model
  *
  * @package Backup\Model
  *
  * @author BloodhunterD <bloodhunterd@bloodhunterd.com>
  */
-class Server implements Downloadable
+class ServerModel implements Downloadable
 {
 
     /**
@@ -57,7 +57,7 @@ class Server implements Downloadable
     private $disabled = false;
 
     /**
-     * Server constructor
+     * Server Model constructor
      *
      * @param array $server
      */

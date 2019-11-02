@@ -15,7 +15,7 @@ declare(strict_types = 1);
 namespace Backup\Tests;
 
 use Backup\Interfaces\Downloadable;
-use Backup\Model\Server;
+use Backup\Model\ServerModel;
 use Backup\Service\Download as DownloadService;
 use PHPUnit\Framework\TestCase;
 
@@ -49,7 +49,7 @@ class DownloadTest extends TestCase
      */
     public function dataDownloadCmd(): array
     {
-        $download = new Server([
+        $download = new ServerModel([
             'name'   => '',
             'host'   => '127.0.0.1',
             'source' => '/backup',

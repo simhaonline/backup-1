@@ -18,7 +18,7 @@ use Backup\Exception\DownloadException;
 use Backup\Exception\DirectoryException;
 use Backup\Exception\ToolException;
 use Backup\Interfaces\Backup;
-use Backup\Model\Server;
+use Backup\Model\ServerModel;
 use Backup\Service\Download;
 use Vection\Component\DI\Annotations\Inject;
 use Vection\Component\DI\Traits\AnnotationInjection;
@@ -65,7 +65,7 @@ class Manager implements Backup
         }
 
         foreach ($servers as $server) {
-            $serverModel = new Server($server);
+            $serverModel = new ServerModel($server);
 
             if ($serverModel->isDisabled()) {
                 $this->logger->use('app')->debug(
@@ -90,11 +90,11 @@ class Manager implements Backup
     /**
      * Backup a directory
      *
-     * @param Server $server
+     * @param ServerModel $server
      *
      * @throws DownloadException | DirectoryException
      */
-    public function backupServer(Server $server): void
+    public function backupServer(ServerModel $server): void
     {
         $name = $server->getName();
 
