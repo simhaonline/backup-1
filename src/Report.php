@@ -37,7 +37,7 @@ class Report
     public const RESULT_ERROR = 'error';
 
     /**
-     * @var string
+     * @var string[]
      */
     private $sender;
 
@@ -107,9 +107,11 @@ class Report
      */
     public function send(): void
     {
+        $sender = $this->sender['name'] ? "{$this->sender['name']} <{$this->sender['address']}>" : $this->sender['address'];
+
         $headers = [
-            'From: ' . $this->sender,
-            'Reply-To: ' . $this->sender,
+            'From: ' . $sender,
+            'Reply-To: ' . $sender,
             'MIME-Version: 1.0',
             'Content-Type: text/html; charset=UTF-8',
             'X-Application: Backup'

@@ -126,9 +126,9 @@ class Configuration
     /**
      * Get the report sender
      *
-     * @return string
+     * @return string[]
      */
-    public function getReportSender(): string
+    public function getReportSender(): array
     {
         return $this->settings['report']['sender'];
     }
