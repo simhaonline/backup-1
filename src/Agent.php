@@ -19,7 +19,7 @@ use Backup\Exception\DirectoryException;
 use Backup\Exception\ToolException;
 use Backup\Interfaces\Backup;
 use Backup\Model\DatabaseModel;
-use Backup\Model\Directory;
+use Backup\Model\DirectoryModel;
 use Backup\Service\DatabaseService;
 use PharException;
 use Vection\Component\DI\Annotations\Inject;
@@ -73,7 +73,7 @@ class Agent implements Backup
         }
 
         foreach ($directories as $directory) {
-            $directoryModel = new Directory($directory);
+            $directoryModel = new DirectoryModel($directory);
 
             if ($directoryModel->isDisabled()) {
                 $this->logger->use('app')->debug(
@@ -120,11 +120,11 @@ class Agent implements Backup
     /**
      * Backup a directory
      *
-     * @param Directory $directory
+     * @param DirectoryModel $directory
      *
      * @throws DirectoryException
      */
-    public function backupDirectory(Directory $directory): void
+    public function backupDirectory(DirectoryModel $directory): void
     {
         $name = $directory->getName();
 

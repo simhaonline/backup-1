@@ -17,13 +17,13 @@ namespace Backup\Model;
 use Backup\Interfaces\Compressible;
 
 /**
- * Class Directory
+ * Class Directory Model
  *
  * @package Backup\Model
  *
  * @author BloodhunterD <bloodhunterd@bloodhunterd.com>
  */
-class Directory implements Compressible
+class DirectoryModel implements Compressible
 {
 
     /**
@@ -52,7 +52,7 @@ class Directory implements Compressible
     private $disabled = false;
 
     /**
-     * Directory constructor
+     * Directory Model constructor
      *
      * @param array $directory
      */
