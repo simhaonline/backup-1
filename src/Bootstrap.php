@@ -14,6 +14,7 @@ declare(strict_types = 1);
 
 namespace Backup;
 
+use Backup\Exception\BackupException;
 use Backup\Exception\ConfigurationException;
 use Backup\Interfaces\Backup;
 use Exception;
@@ -117,7 +118,7 @@ class Bootstrap
         } catch (ConfigurationException $e) {
             $logger->use('app')->error($e->getMessage());
 
-            throw new Exception($e->getMessage(), 0, $e);
+            throw new BackupException($e->getMessage(), 0, $e);
         }
 
         switch ($config->getMode()) {
@@ -138,7 +139,7 @@ class Bootstrap
 
                 $logger->use('app')->error($msg);
 
-                throw new Exception($msg);
+                throw new BackupException($msg);
         }
 
         $tool->mountDirectory($config->getTargetDirectory());
