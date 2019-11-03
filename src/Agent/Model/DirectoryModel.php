@@ -12,24 +12,29 @@
 
 declare(strict_types = 1);
 
-namespace Backup\Model;
+namespace Backup\Agent\Model;
 
-use Backup\Interfaces\Downloadable;
+use Backup\Interfaces\Compressible;
 
 /**
- * Class Server Model
+ * Class Directory Model
  *
- * @package Backup\Model
+ * @package Backup\Agent\Model
  *
  * @author BloodhunterD <bloodhunterd@bloodhunterd.com>
  */
-class ServerModel implements Downloadable
+class DirectoryModel implements Compressible
 {
 
     /**
      * @var string
      */
     private $name;
+
+    /**
+     * @var string
+     */
+    private $archive;
 
     /**
      * @var string
@@ -42,37 +47,25 @@ class ServerModel implements Downloadable
     private $target = DIRECTORY_SEPARATOR;
 
     /**
-     * @var string
-     */
-    private $host;
-
-    /**
-     * @var SSHModel
-     */
-    private $ssh;
-
-    /**
      * @var bool
      */
     private $disabled = false;
 
     /**
-     * Server Model constructor
+     * Directory Model constructor
      *
-     * @param mixed[] $server
+     * @param mixed[] $directory
      */
-    public function __construct(array $server)
+    public function __construct(array $directory)
     {
         # Required
-        $this->setName($server['name']);
-        $this->setSource($server['source']);
-        $this->setHost($server['host']);
-        $this->setSSH(new SSHModel($server['ssh']));
+        $this->setName($directory['name']);
+        $this->setSource($directory['source']);
 
         # Optional
-        $this->setTarget($server['target'] ?? $this->target);
+        $this->setTarget($directory['target'] ?? $this->target);
 
-        if (isset($server['disabled']) && $server['disabled']) {
+        if (isset($directory['disabled']) && $directory['disabled']) {
             $this->disable();
         }
     }
@@ -96,7 +89,7 @@ class ServerModel implements Downloadable
     }
 
     /**
-     * Set source path
+     * Set source
      *
      * @param string $path
      */
@@ -114,7 +107,7 @@ class ServerModel implements Downloadable
     }
 
     /**
-     * Set target path
+     * Set target
      *
      * @param string $path
      */
@@ -132,39 +125,23 @@ class ServerModel implements Downloadable
     }
 
     /**
-     * Set host
+     * Set archive
      *
-     * @param string $host
+     * @param string $name
      */
-    public function setHost(string $host): void
+    public function setArchive(string $name): void
     {
-        $this->host = $host;
+        $this->archive = $name . '.tar.bz2';
     }
 
     /**
-     * @inheritDoc
-     */
-    public function getHost(): string
-    {
-        return $this->host;
-    }
-
-    /**
-     * Set SSH Model
+     * Get archive
      *
-     * @param SSHModel $ssh
+     * @return string
      */
-    public function setSSH(SSHModel $ssh): void
+    public function getArchive(): string
     {
-        $this->ssh = $ssh;
-    }
-
-    /**
-     * @inheritDoc
-     */
-    public function getSSH(): SSHModel
-    {
-        return $this->ssh;
+        return $this->archive;
     }
 
     /**

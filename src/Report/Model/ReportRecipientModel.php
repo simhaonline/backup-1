@@ -12,12 +12,12 @@
 
 declare(strict_types = 1);
 
-namespace Backup\Model;
+namespace Backup\Report\Model;
 
 /**
  * Class Report Recipient Model
  *
- * @package Backup\Model
+ * @package Backup\Report\Model
  *
  * @author BloodhunterD <bloodhunterd@bloodhunterd.com>
  */

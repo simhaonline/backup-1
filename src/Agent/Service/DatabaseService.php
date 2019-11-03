@@ -12,12 +12,12 @@
 
 declare(strict_types = 1);
 
-namespace Backup\Service;
+namespace Backup\Agent\Service;
 
 use Backup\Exception\DatabaseException;
 use Backup\Exception\ToolException;
 use Backup\Logger;
-use Backup\Model\DatabaseModel;
+use Backup\Agent\Model\DatabaseModel;
 use Backup\Tool;
 use Vection\Component\DI\Annotations\Inject;
 use Vection\Component\DI\Traits\AnnotationInjection;
@@ -26,7 +26,7 @@ use function in_array;
 /**
  * Class DatabaseService
  *
- * @package Backup\Service
+ * @package Backup\Agent\Service
  *
  * @author BloodhunterD
  */

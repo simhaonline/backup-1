@@ -12,15 +12,15 @@
 
 declare(strict_types = 1);
 
-namespace Backup\Model;
+namespace Backup\Agent\Model;
 
 use Backup\Interfaces\Compressible;
-use Backup\Service\DatabaseService;
+use Backup\Agent\Service\DatabaseService;
 
 /**
  * Class DatabaseModel
  *
- * @package Backup\Model
+ * @package Backup\Agent\Model
  *
  * @author BloodhunterD <bloodhunterd@bloodhunterd.com>
  */

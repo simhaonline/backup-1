@@ -12,14 +12,14 @@
 
 declare(strict_types = 1);
 
-namespace Backup\Service;
+namespace Backup\Manager\Service;
 
-use Backup\Interfaces\Downloadable;
+use Backup\Manager\Interfaces\Downloadable;
 
 /**
  * Class DownloadService
  *
- * @package Backup\Service
+ * @package Backup\Manager\Service
  *
  * @author BloodhunterD
  */

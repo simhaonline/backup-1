@@ -12,16 +12,16 @@
 
 declare(strict_types = 1);
 
-namespace Backup;
+namespace Backup\Report;
 
 use Backup\Exception\BackupException;
-use Backup\Model\ReportRecipientModel;
-use Backup\Model\ReportSenderModel;
+use Backup\Report\Model\ReportRecipientModel;
+use Backup\Report\Model\ReportSenderModel;
 
 /**
  * Class Report
  *
- * @package Backup
+ * @package Backup\Report
  *
  * @author BloodhunterD <bloodhunterd@bloodhunterd.com>
  */
@@ -95,11 +95,7 @@ class Report
      */
     public function add(string $status, string $type, object $model): void
     {
-        $this->entries[] = [
-            'status' => $status,
-            'type' => $type,
-            'model' => $model
-        ];
+        $this->entries[] = compact('status', 'type', 'model');
     }
 
     /**

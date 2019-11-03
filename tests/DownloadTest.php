@@ -14,9 +14,9 @@ declare(strict_types = 1);
 
 namespace Backup\Tests;
 
-use Backup\Interfaces\Downloadable;
-use Backup\Model\ServerModel;
-use Backup\Service\DownloadService;
+use Backup\Manager\Interfaces\Downloadable;
+use Backup\Manager\Model\ServerModel;
+use Backup\Manager\Service\DownloadService;
 use PHPUnit\Framework\TestCase;
 
 /**

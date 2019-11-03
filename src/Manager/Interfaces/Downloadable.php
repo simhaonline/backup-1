@@ -12,14 +12,14 @@
 
 declare(strict_types = 1);
 
-namespace Backup\Interfaces;
+namespace Backup\Manager\Interfaces;
 
-use Backup\Model\SSHModel;
+use Backup\Manager\Model\SSHModel;
 
 /**
  * Interface Downloadable
  *
- * @package Backup\Interfaces
+ * @package Backup\Manager\Interfaces
  *
  * @author BloodhunterD <bloodhunterd@bloodhunterd.com>
  */

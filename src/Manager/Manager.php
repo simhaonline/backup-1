@@ -12,21 +12,25 @@
 
 declare(strict_types = 1);
 
-namespace Backup;
+namespace Backup\Manager;
 
+use Backup\Configuration;
 use Backup\Exception\DownloadException;
 use Backup\Exception\DirectoryException;
 use Backup\Exception\ToolException;
 use Backup\Interfaces\Backup;
-use Backup\Model\ServerModel;
-use Backup\Service\DownloadService;
+use Backup\Logger;
+use Backup\Manager\Model\ServerModel;
+use Backup\Manager\Service\DownloadService;
+use Backup\Report\Report;
+use Backup\Tool;
 use Vection\Component\DI\Annotations\Inject;
 use Vection\Component\DI\Traits\AnnotationInjection;
 
 /**
  * Class Manager
  *
- * @package Backup
+ * @package Backup\Manager
  *
  * @author BloodhunterD <bloodhunterd@bloodhunterd.com>
  */
@@ -57,7 +61,7 @@ class Manager implements Backup
 
     /**
      * @var Report
-     * @Inject("Backup\Report")
+     * @Inject("Backup\Report\Report")
      */
     private $report;
 

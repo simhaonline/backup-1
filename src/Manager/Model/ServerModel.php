@@ -12,29 +12,24 @@
 
 declare(strict_types = 1);
 
-namespace Backup\Model;
+namespace Backup\Manager\Model;
 
-use Backup\Interfaces\Compressible;
+use Backup\Manager\Interfaces\Downloadable;
 
 /**
- * Class Directory Model
+ * Class Server Model
  *
- * @package Backup\Model
+ * @package Backup\Manager\Model
  *
  * @author BloodhunterD <bloodhunterd@bloodhunterd.com>
  */
-class DirectoryModel implements Compressible
+class ServerModel implements Downloadable
 {
 
     /**
      * @var string
      */
     private $name;
-
-    /**
-     * @var string
-     */
-    private $archive;
 
     /**
      * @var string
@@ -47,25 +42,37 @@ class DirectoryModel implements Compressible
     private $target = DIRECTORY_SEPARATOR;
 
     /**
+     * @var string
+     */
+    private $host;
+
+    /**
+     * @var SSHModel
+     */
+    private $ssh;
+
+    /**
      * @var bool
      */
     private $disabled = false;
 
     /**
-     * Directory Model constructor
+     * Server Model constructor
      *
-     * @param mixed[] $directory
+     * @param mixed[] $server
      */
-    public function __construct(array $directory)
+    public function __construct(array $server)
     {
         # Required
-        $this->setName($directory['name']);
-        $this->setSource($directory['source']);
+        $this->setName($server['name']);
+        $this->setSource($server['source']);
+        $this->setHost($server['host']);
+        $this->setSSH(new SSHModel($server['ssh']));
 
         # Optional
-        $this->setTarget($directory['target'] ?? $this->target);
+        $this->setTarget($server['target'] ?? $this->target);
 
-        if (isset($directory['disabled']) && $directory['disabled']) {
+        if (isset($server['disabled']) && $server['disabled']) {
             $this->disable();
         }
     }
@@ -89,7 +96,7 @@ class DirectoryModel implements Compressible
     }
 
     /**
-     * Set source
+     * Set source path
      *
      * @param string $path
      */
@@ -107,7 +114,7 @@ class DirectoryModel implements Compressible
     }
 
     /**
-     * Set target
+     * Set target path
      *
      * @param string $path
      */
@@ -125,23 +132,39 @@ class DirectoryModel implements Compressible
     }
 
     /**
-     * Set archive
+     * Set host
      *
-     * @param string $name
+     * @param string $host
      */
-    public function setArchive(string $name): void
+    public function setHost(string $host): void
     {
-        $this->archive = $name . '.tar.bz2';
+        $this->host = $host;
     }
 
     /**
-     * Get archive
-     *
-     * @return string
+     * @inheritDoc
      */
-    public function getArchive(): string
+    public function getHost(): string
     {
-        return $this->archive;
+        return $this->host;
+    }
+
+    /**
+     * Set SSH Model
+     *
+     * @param SSHModel $ssh
+     */
+    public function setSSH(SSHModel $ssh): void
+    {
+        $this->ssh = $ssh;
+    }
+
+    /**
+     * @inheritDoc
+     */
+    public function getSSH(): SSHModel
+    {
+        return $this->ssh;
     }
 
     /**

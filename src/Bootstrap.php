@@ -14,9 +14,12 @@ declare(strict_types = 1);
 
 namespace Backup;
 
+use Backup\Agent\Agent;
 use Backup\Exception\BackupException;
 use Backup\Exception\ConfigurationException;
 use Backup\Interfaces\Backup;
+use Backup\Manager\Manager;
+use Backup\Report\Report;
 use Exception;
 use Monolog\Handler\StreamHandler;
 use Monolog\Logger as MonologLogger;

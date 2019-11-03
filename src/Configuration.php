@@ -15,8 +15,8 @@ declare(strict_types = 1);
 namespace Backup;
 
 use Backup\Exception\ConfigurationException;
-use Backup\Model\ReportRecipientModel;
-use Backup\Model\ReportSenderModel;
+use Backup\Report\Model\ReportRecipientModel;
+use Backup\Report\Model\ReportSenderModel;
 use Phar;
 use PharException;
 use TypeError;

@@ -12,12 +12,12 @@
 
 declare(strict_types = 1);
 
-namespace Backup\Model;
+namespace Backup\Manager\Model;
 
 /**
  * Class SSH Model
  *
- * @package Backup\Model
+ * @package Backup\Manager\Model
  *
  * @author BloodhunterD <bloodhunterd@bloodhunterd.com>
  */

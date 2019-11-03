@@ -12,15 +12,19 @@
 
 declare(strict_types = 1);
 
-namespace Backup;
+namespace Backup\Agent;
 
+use Backup\Configuration;
 use Backup\Exception\DatabaseException;
 use Backup\Exception\DirectoryException;
 use Backup\Exception\ToolException;
 use Backup\Interfaces\Backup;
-use Backup\Model\DatabaseModel;
-use Backup\Model\DirectoryModel;
-use Backup\Service\DatabaseService;
+use Backup\Agent\Model\DatabaseModel;
+use Backup\Agent\Model\DirectoryModel;
+use Backup\Agent\Service\DatabaseService;
+use Backup\Logger;
+use Backup\Report\Report;
+use Backup\Tool;
 use PharException;
 use Vection\Component\DI\Annotations\Inject;
 use Vection\Component\DI\Traits\AnnotationInjection;
@@ -28,7 +32,7 @@ use Vection\Component\DI\Traits\AnnotationInjection;
 /**
  * Class Agent
  *
- * @package Backup
+ * @package Backup\Agent
  *
  * @author BloodhunterD <bloodhunterd@bloodhunterd.com>
  */
@@ -60,7 +64,7 @@ class Agent implements Backup
 
     /**
      * @var Report
-     * @Inject("Backup\Report")
+     * @Inject("Backup\Report\Report")
      */
     private $report;
 
