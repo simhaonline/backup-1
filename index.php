@@ -28,7 +28,7 @@ try {
 } catch (Exception $e) {
     echo 'Error: ' . $e->getMessage() . "\n";
 
-    $previous = $e->getPrevious()->getMessage();
+    $previous = $e->getPrevious()->getMessage() ?? false;
 
     if ($previous) {
         echo 'Previous error: ' . $previous . "\n";

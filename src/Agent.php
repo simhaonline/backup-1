@@ -126,7 +126,11 @@ class Agent implements Backup
             $this->report->add(Report::RESULT_OK, $databaseModel);
         }
 
-        $this->report->send();
+        if (!$this->report->send()) {
+            $this->logger->use('app')->error('Failed to sent report.');
+        }
+
+        $this->logger->use('app')->debug('Report successfully sent.');
     }
 
     /**

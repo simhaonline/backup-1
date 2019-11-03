@@ -15,6 +15,8 @@ declare(strict_types = 1);
 namespace Backup;
 
 use Backup\Exception\ConfigurationException;
+use Backup\Model\ReportRecipientModel;
+use Backup\Model\ReportSenderModel;
 use Phar;
 use PharException;
 use TypeError;
@@ -126,11 +128,11 @@ class Configuration
     /**
      * Get the report sender
      *
-     * @return string[]
+     * @return ReportSenderModel
      */
     public function getReportSender(): array
     {
-        return $this->settings['report']['sender'];
+        return new ReportSenderModel($this->settings['report']['sender']);
     }
 
     /**
@@ -140,17 +142,25 @@ class Configuration
      */
     public function getReportSubject(): string
     {
-        return $this->settings['report']['subject'];
+        return $this->settings['report']['subject'] ?? '';
     }
 
     /**
      * Get the report recipients
      *
-     * @return mixed[]
+     * @return ReportRecipientModel[]
      */
     public function getReportRecipients(): array
     {
-        return $this->settings['report']['recipients'];
+        $recipients = $this->settings['report']['recipients'] ?? [];
+
+        $recipientModels = [];
+        foreach ($recipients as $recipient) {
+
+            $recipientModels[] = new ReportRecipientModel($recipient);
+        }
+
+        return $recipientModels;
     }
 
     /**

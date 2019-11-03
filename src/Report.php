@@ -17,6 +17,8 @@ namespace Backup;
 use Backup\Exception\BackupException;
 use Backup\Interfaces\Compressible;
 use Backup\Interfaces\Downloadable;
+use Backup\Model\ReportRecipientModel;
+use Backup\Model\ReportSenderModel;
 
 /**
  * Class Report
@@ -37,7 +39,7 @@ class Report
     public const RESULT_ERROR = 'error';
 
     /**
-     * @var string[]
+     * @var ReportSenderModel
      */
     private $sender;
 
@@ -47,28 +49,27 @@ class Report
     private $subject;
 
     /**
-     * @var mixed[]
+     * @var ReportRecipientModel[]
      */
     private $recipients;
 
     /**
      * @var Compressible[]|Downloadable[]
      */
-    private $logs;
+    private $entries;
 
     /**
-     * Add sender
+     * Set the sender
      *
-     * @param string      $address
-     * @param string|null $name
+     * @param ReportSenderModel $sender
      */
-    public function setSender(string $address, string $name = null): void
+    public function setSender(ReportSenderModel $sender): void
     {
-        $this->sender = $name ? "{$name} <{$address}>" : $address;
+        $this->sender = $sender;
     }
 
     /**
-     * Add subject
+     * Set the subject
      *
      * @param string $subject
      */
@@ -78,15 +79,13 @@ class Report
     }
 
     /**
-     * Add recipient
+     * Add a recipient
      *
-     * @param string      $address
-     * @param string|null $name
-     * @param string|null $type
+     * @param ReportRecipientModel $recipient
      */
-    public function addRecipient(string $address, string $name = null, string $type = null): void
+    public function addRecipient(ReportRecipientModel $recipient): void
     {
-        $this->recipients[] = compact('address', 'name', 'type');
+        $this->recipients[] = $recipient;
     }
 
     /**
@@ -97,7 +96,7 @@ class Report
      */
     public function add(string $status, object $model): void
     {
-        $this->logs[][$status] = $model;
+        $this->entries[][$status] = $model;
     }
 
     /**
@@ -105,9 +104,9 @@ class Report
      *
      * @throws BackupException
      */
-    public function send(): void
+    public function send(): bool
     {
-        $sender = $this->sender['name'] ? "{$this->sender['name']} <{$this->sender['address']}>" : $this->sender['address'];
+        $sender = $this->sender->getName() ? "{$this->sender->getName()} <{$this->sender->getAddress()}>" : $this->sender->getAddress();
 
         $headers = [
             'From: ' . $sender,
@@ -121,9 +120,9 @@ class Report
         $cc = [];
         $bcc = [];
         foreach ($this->recipients as $recipient) {
-            $address = $recipient['name'] ? "{$recipient['name']} <{$recipient['address']}>" : $recipient['address'];
+            $address = $recipient->getName() ? "{$recipient->getName()} <{$recipient->getAddress()}>" : $recipient->getAddress();
 
-            switch ($recipient['type']) {
+            switch ($recipient->getType()) {
                 default:
                 case self::MAIL_TO:
                     $to[] = $address;
@@ -146,7 +145,7 @@ class Report
         }
 
         $report = '';
-        foreach ($this->logs as $status => $model) {
+        foreach ($this->entries as $status => $model) {
             switch ($status) {
                 case self::RESULT_OK:
                     $color = '#4CAF50';
@@ -179,7 +178,7 @@ out;
 
         # The subject is a header and headers are only allowed to contain ASCII chars,
         # so we need to encode the subject like described in RFC 1342
-        mail(
+        return mail(
             implode(',', $to),
             '=?utf-8?B?' . base64_encode($this->subject) . '?=',
             $body,
