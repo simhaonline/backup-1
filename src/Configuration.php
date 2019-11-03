@@ -130,7 +130,7 @@ class Configuration
      *
      * @return ReportSenderModel
      */
-    public function getReportSender(): array
+    public function getReportSender(): ReportSenderModel
     {
         return new ReportSenderModel($this->settings['report']['sender']);
     }

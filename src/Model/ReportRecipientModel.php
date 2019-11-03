@@ -55,7 +55,7 @@ class ReportRecipientModel
     /**
      * Set the address
      *
-     * @param int $address
+     * @param string $address
      */
     public function setAddress(string $address): void
     {
