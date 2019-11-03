@@ -10,7 +10,7 @@
  * file that was distributed with this source code.
  */
 
-declare(strict_types = 1);
+declare(strict_types=1);
 
 namespace Backup;
 
@@ -69,7 +69,7 @@ class Bootstrap
                 ->pushHandler(
                     (new StreamHandler('php://stdout'))
                         ->setFormatter($logger->getLineFormatter())
-            )
+                )
         );
 
         $logger->use('app')->info('Backup preparing');

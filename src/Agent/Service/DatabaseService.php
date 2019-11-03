@@ -10,7 +10,7 @@
  * file that was distributed with this source code.
  */
 
-declare(strict_types = 1);
+declare(strict_types=1);
 
 namespace Backup\Agent\Service;
 
@@ -88,7 +88,7 @@ class DatabaseService
         try {
             $schemata = $this->tool->execute($cmd);
         } catch (ToolException $e) {
-            $msg = sprintf('Failed to get schemata for database backup "%s".',  $this->database->getName());
+            $msg = sprintf('Failed to get schemata for database backup "%s".', $this->database->getName());
 
             throw new DatabaseException($msg, 0, $e);
         }
@@ -182,10 +182,12 @@ class DatabaseService
             # Handle Docker Compose environment vars
             if (in_array($password, self::MYSQL_PASSWORDS, true)) {
                 $password = self::ENV . $password;
-            } else if ($password === self::MYSQL_NO_PASSWORD) {
-                $password = false;
             } else {
-                $password = $password ? escapeshellarg($password) : false;
+                if ($password === self::MYSQL_NO_PASSWORD) {
+                    $password = false;
+                } else {
+                    $password = $password ? escapeshellarg($password) : false;
+                }
             }
         } else {
             $password = $password ? escapeshellarg($password) : false;

@@ -10,7 +10,7 @@
  * file that was distributed with this source code.
  */
 
-declare(strict_types = 1);
+declare(strict_types=1);
 
 namespace Backup\Tests;
 
@@ -50,14 +50,14 @@ class DownloadTest extends TestCase
     public function dataDownloadCmd(): array
     {
         $download = new ServerModel([
-            'name'   => '',
-            'host'   => '127.0.0.1',
+            'name' => '',
+            'host' => '127.0.0.1',
             'source' => '/backup',
             'target' => '/backup/My/Target/Folder No-1',
-            'ssh'    => [
+            'ssh' => [
                 'port' => 2222,
                 'user' => 'backupuser',
-                'key'  => '/root/.ssh/id_rsa'
+                'key' => '/root/.ssh/id_rsa'
             ]
         ]);
 
