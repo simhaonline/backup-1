@@ -12,5 +12,6 @@
 declare(strict_types = 1);
 
 define('ROOT_DIR', __DIR__ . DIRECTORY_SEPARATOR . '..');
+define('RES_DIR', ROOT_DIR . DIRECTORY_SEPARATOR . 'res');
 define('VENDOR_DIR', ROOT_DIR . DIRECTORY_SEPARATOR . 'vendor');
 define('LOG_DIR', '/var/log');

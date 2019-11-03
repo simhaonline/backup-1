@@ -169,7 +169,7 @@ class Report
 out;
         }
 
-        $template = file_get_contents(ROOT_DIR . DIRECTORY_SEPARATOR . 'report.html');
+        $template = file_get_contents(RES_DIR . DIRECTORY_SEPARATOR . 'report.html');
 
         if ($template === false) {
             throw new BackupException('Failed to load the report mail template.');
