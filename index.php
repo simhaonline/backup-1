@@ -28,10 +28,8 @@ try {
 } catch (Exception $e) {
     echo 'Error: ' . $e->getMessage() . "\n";
 
-    $previous = $e->getPrevious()->getMessage() ?? false;
-
-    if ($previous) {
-        echo 'Previous error: ' . $previous . "\n";
+    if ($e->getPrevious()) {
+        echo 'Previous error: ' . $e->getPrevious()->getMessage() . "\n";
     }
 
     exit();
