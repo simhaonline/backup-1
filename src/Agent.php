@@ -37,6 +37,9 @@ class Agent implements Backup
 
     use AnnotationInjection;
 
+    private const TYPE_DIRECTORY = 'DIRECTORY';
+    private const TYPE_DATABASE = 'DATABASE';
+
     /**
      * @var Configuration
      * @Inject("Backup\Configuration")
@@ -95,7 +98,7 @@ class Agent implements Backup
                 $this->logger->use('app')->error($e->getMessage());
             }
 
-            $this->report->add(Report::RESULT_OK, $directoryModel);
+            $this->report->add(Report::RESULT_OK, self::TYPE_DIRECTORY, $directoryModel);
         }
 
         $databases = $this->config->getDatabases();
@@ -123,7 +126,7 @@ class Agent implements Backup
                 ]);
             }
 
-            $this->report->add(Report::RESULT_OK, $databaseModel);
+            $this->report->add(Report::RESULT_OK, self::TYPE_DATABASE, $databaseModel);
         }
 
         if (!$this->report->send()) {

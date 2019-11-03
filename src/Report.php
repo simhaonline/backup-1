@@ -15,8 +15,6 @@ declare(strict_types = 1);
 namespace Backup;
 
 use Backup\Exception\BackupException;
-use Backup\Interfaces\Compressible;
-use Backup\Interfaces\Downloadable;
 use Backup\Model\ReportRecipientModel;
 use Backup\Model\ReportSenderModel;
 
@@ -92,12 +90,14 @@ class Report
      * Add a report entry
      *
      * @param string $status
-     * @param Compressible|Downloadable $model
+     * @param string $type
+     * @param object $model
      */
-    public function add(string $status, object $model): void
+    public function add(string $status, string $type, object $model): void
     {
         $this->entries[] = [
             'status' => $status,
+            'type' => $type,
             'model' => $model
         ];
     }
@@ -166,6 +166,7 @@ class Report
             $report .= <<<out
 <tr>
     <td>{$entry['model']->getName()}</td>
+    <td>{$entry['type']}</td>
     <td style="text-align:center;background-color:{$color};">{$entry['status']}</td>
 </tr>
 out;

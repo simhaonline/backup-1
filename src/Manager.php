@@ -35,6 +35,8 @@ class Manager implements Backup
 
     use AnnotationInjection;
 
+    private const TYPE_SERVER = 'SERVER';
+
     /**
      * @var Configuration
      * @Inject("Backup\Configuration")
@@ -91,7 +93,7 @@ class Manager implements Backup
                 continue;
             }
 
-            $this->report->add(Report::RESULT_OK, $serverModel);
+            $this->report->add(Report::RESULT_OK, self::TYPE_SERVER, $serverModel);
         }
 
         if (!$this->report->send()) {
