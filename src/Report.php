@@ -54,9 +54,9 @@ class Report
     private $recipients;
 
     /**
-     * @var Compressible[]|Downloadable[]
+     * @var mixed[]
      */
-    private $entries;
+    private $entries = [];
 
     /**
      * Set the sender
@@ -96,7 +96,10 @@ class Report
      */
     public function add(string $status, object $model): void
     {
-        $this->entries[][$status] = $model;
+        $this->entries[] = [
+            'status' => $status,
+            'model' => $model
+        ];
     }
 
     /**
@@ -145,8 +148,8 @@ class Report
         }
 
         $report = '';
-        foreach ($this->entries as $status => $model) {
-            switch ($status) {
+        foreach ($this->entries as $entry) {
+            switch ($entry['status']) {
                 case self::RESULT_OK:
                     $color = '#4CAF50';
                     break;
@@ -162,8 +165,8 @@ class Report
 
             $report .= <<<out
 <tr>
-    <td>{$model->getName()}</td>
-    <td style="text-align:center;background-color:{$color};">{$status}</td>
+    <td>{$entry['model']->getName()}</td>
+    <td style="text-align:center;background-color:{$color};">{$entry['status']}</td>
 </tr>
 out;
         }
