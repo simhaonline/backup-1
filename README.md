@@ -14,20 +14,20 @@ See deployment for notes on how to deploy the project on a live system.
 
 ### Prerequisites
 
-* Composer
+* [Composer](https://getcomposer.org/)
 
-PHP version **7.2** or greater is required, including the following modules. 
+[PHP](https://www.php.net/) version **7.2** or greater is required, including the following modules. 
 
 * php-bz2
 * php-cli
 * php-intl
 * php-json
 
-The server should also have a working MTA to send backup reports.
+*Optional:* A working [MTA](https://de.wikipedia.org/wiki/Mail_Transfer_Agent) to send reports.
 
 ### Installing
 
-Install the dependencies simply with Composer.
+Install the dependencies simply by using Composer.
 
 ```bash
 composer install
@@ -35,10 +35,10 @@ composer install
 
 ## Deployment
 
-This repository isn't meant to be deployed anywhere.
+**This repository isn't meant to be deployed anywhere!**
 
-For production use the compiled Phar file of the [Backup Tool Repository](https://github.com/bloodhunterd/backup-tool) or
-the Docker image of the [Backup Tool Docker Repository](https://github.com/bloodhunterd/backup-tool-docker).
+For production purposes use the compiled Phar file from the [Backup Tool Repository](https://github.com/bloodhunterd/backup-tool) or
+the [Docker](https://www.docker.com/) image from the [Backup Tool Docker Repository](https://github.com/bloodhunterd/backup-tool-docker).
 
 ## Build With
 
