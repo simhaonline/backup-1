@@ -1,6 +1,10 @@
 {
   "@type": "object",
   "@properties": {
+    "debug": {
+      "@type": "string",
+      "@allowed": "yes|no"
+    },
     "mode": {
       "@type": "string",
       "@required": true,

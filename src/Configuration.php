@@ -116,6 +116,26 @@ class Configuration
     }
 
     /**
+     * Is debug enabled
+     *
+     * @return bool
+     */
+    public function isDebugEnabled(): bool
+    {
+        return isset($this->settings['debug']) && $this->settings['debug'] === 'yes';
+    }
+
+    /**
+     * Is debug disabled
+     *
+     * @return bool
+     */
+    public function isDebugDisabled(): bool
+    {
+        return !$this->isDebugEnabled();
+    }
+
+    /**
      * Get the mode
      *
      * @return string

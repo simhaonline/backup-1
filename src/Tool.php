@@ -144,14 +144,12 @@ class Tool
      */
     public function execute(string $command): array
     {
-        unset($output);
-
         $this->logger->use('app')->debug(sprintf('Execute command: %s', $command));
 
         exec($command, $output, $return);
 
         foreach ($output as $line) {
-            $this->logger->use('shell')->debug($line);
+            $this->logger->use('console')->debug($line);
         }
 
         $this->logger->use('app')->debug(sprintf('Return status: %d', $return));

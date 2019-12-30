@@ -63,14 +63,19 @@ class Bootstrap
         /** @var Logger $logger */
         $logger = $this->container->get(Logger::class);
 
-        # Initialize application logging
-        $logger->set(
-            (new MonologLogger('app'))
-                ->pushHandler(
-                    (new StreamHandler('php://stdout'))
-                        ->setFormatter($logger->getLineFormatter())
-                )
-        );
+        # Logging channels
+        $channels = ['app', 'console'];
+
+        # Initialize logger channels
+        foreach ($channels as $channel) {
+            $logger->set(
+                (new MonologLogger($channel))
+                    ->pushHandler(
+                        (new StreamHandler('php://stdout'))
+                            ->setFormatter($logger->getLineFormatter())
+                    )
+            );
+        }
 
         $logger->use('app')->info('Backup preparing');
 
@@ -79,35 +84,16 @@ class Bootstrap
 
         $tool->mountDirectory(LOG_DIR);
 
-        # Update application logging
-        $logger->use('app')
-            ->pushHandler(
-                (new StreamHandler(LOG_DIR . DIRECTORY_SEPARATOR . 'backup.app.log'))
-                    ->setFormatter($logger->getLineFormatter())
-            );
+        # Extend logger channels by log file
+        foreach ($channels as $channel) {
+            $logger->use($channel)
+                ->pushHandler(
+                    (new StreamHandler(LOG_DIR . DIRECTORY_SEPARATOR . 'backup.log'))
+                        ->setFormatter($logger->getLineFormatter())
+                );
+        }
 
         $logger->use('app')->info('Backup initializing');
-
-        # Initialize RSYNC logging
-        $logger->set(
-            (new MonologLogger('shell'))
-                ->pushHandler(
-                    (new StreamHandler('php://stdout'))
-                        ->setFormatter($logger->getLineFormatter())
-                )
-                ->pushHandler(
-                    (new StreamHandler(LOG_DIR . DIRECTORY_SEPARATOR . 'backup.shell.log'))
-                        ->setFormatter($logger->getLineFormatter())
-                )
-        );
-
-        # Initialize report logging
-        $logger->set((new MonologLogger('report'))
-            ->pushHandler(
-                (new StreamHandler(LOG_DIR . DIRECTORY_SEPARATOR . 'backup.report.log', MonologLogger::INFO))
-                    ->setFormatter($logger->getLineFormatter())
-            )
-        );
 
         /** @var Configuration $config */
         $config = $this->container->get(Configuration::class);
@@ -122,6 +108,19 @@ class Bootstrap
             $logger->use('app')->error($e->getMessage());
 
             throw new BackupException($e->getMessage(), 0, $e);
+        }
+
+        # Set log level from configuration
+        foreach ($channels as $channel) {
+            /** @var StreamHandler[] $handlers */
+            $handlers = $logger->use($channel)->getHandlers();
+
+            foreach ($handlers as &$handler) {
+                $handler->setLevel($config->isDebugEnabled() ? MonologLogger::DEBUG : MonologLogger::WARNING);
+            }
+            unset($handler);
+
+            $logger->use('app')->setHandlers($handlers);
         }
 
         /** @var Report $report */
