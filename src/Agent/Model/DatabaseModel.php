@@ -98,7 +98,7 @@ class DatabaseModel implements Compressible
         $this->setUser($source['user'] ?? $this->user);
         $this->setPassword($source['password'] ?? $this->password);
 
-        if (isset($database['disabled']) && $database['disabled']) {
+        if (isset($database['disabled']) && $database['disabled'] === 'yes') {
             $this->disable();
         }
 

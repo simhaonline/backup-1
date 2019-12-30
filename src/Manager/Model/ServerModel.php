@@ -72,7 +72,7 @@ class ServerModel implements Downloadable
         # Optional
         $this->setTarget($server['target'] ?? $this->target);
 
-        if (isset($server['disabled']) && $server['disabled']) {
+        if (isset($server['disabled']) && $server['disabled'] === 'yes') {
             $this->disable();
         }
     }
