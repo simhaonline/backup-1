@@ -164,6 +164,26 @@ class Configuration
     }
 
     /**
+     * Is report enabled
+     *
+     * @return bool
+     */
+    public function isReportEnabled(): bool
+    {
+        return !$this->isReportDisabled();
+    }
+
+    /**
+     * Is report disabled
+     *
+     * @return bool
+     */
+    public function isReportDisabled(): bool
+    {
+        return isset($this->settings['report']['disabled']) && $this->settings['report']['disabled'] === 'yes';
+    }
+
+    /**
      * Get the sources
      *
      * @return mixed[]
