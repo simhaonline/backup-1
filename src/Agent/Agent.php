@@ -70,7 +70,7 @@ class Agent implements Backup
 
     /**
      * @var DatabaseService
-     * @Inject("Backup\Service\DatabaseService")
+     * @Inject("Backup\Agent\Service\DatabaseService")
      */
     private $databaseService;
 
