@@ -7,23 +7,21 @@
 
 A simple backup application who creates backups of files and databases (incl. Docker container).
 
-## Getting Started
-
-These instructions will get you a copy of the project up and running on your local machine for development and testing purposes.
-See deployment for notes on how to deploy the project on a live system.
-
 ### Prerequisites
 
 * [Composer](https://getcomposer.org/)
 
-[PHP](https://www.php.net/) version **7.2** or greater is required, including the following modules. 
+* [PHP](https://www.php.net/) >= **7.3**
 
-* php-bz2
-* php-cli
-* php-intl
-* php-json
+* PHP Extensions
+  * php-bz2
+  * php-cli
+  * php-intl
+  * php-json
 
-*Optional:* A working [MTA](https://de.wikipedia.org/wiki/Mail_Transfer_Agent) to send reports.
+#### Optional:
+
+* [MTA](https://de.wikipedia.org/wiki/Mail_Transfer_Agent) (to send reports)
 
 ### Installing
 

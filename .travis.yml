@@ -3,10 +3,10 @@ install:
   - travis_retry composer update --prefer-dist
 jobs:
   include:
-    - script: phpunit --configuration phpunit.php72.xml
-      php: 7.2
-    - script: phpunit --configuration phpunit.xml
+    - script: phpunit --configuration phpunit.7.3.xml
       php: 7.3
+    - script: phpunit --configuration phpunit.xml
+      php: 7.4
       env:
         - CODECOV_TOKEN="93c522f5-d270-41be-8135-d9b2d7ac7da2"
       after_success:
