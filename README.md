@@ -1,5 +1,4 @@
 [![Release](https://img.shields.io/github/v/release/bloodhunterd/backup?include_prereleases&style=for-the-badge)](https://github.com/bloodhunterd/backup/releases)
-[![Build Status](https://img.shields.io/travis/bloodhunterd/backup?style=for-the-badge)](https://travis-ci.com/bloodhunterd/backup)
 [![PHPStan](https://img.shields.io/badge/PHPStan-Level%207-blueviolet?style=for-the-badge)](https://github.com/phpstan/phpstan)
 [![License](https://img.shields.io/github/license/bloodhunterd/backup?style=for-the-badge)](https://github.com/bloodhunterd/backup/blob/master/LICENSE)
 
@@ -7,7 +6,7 @@
 
 A simple backup application who creates backups of files and databases (incl. Docker container).
 
-### Prerequisites
+## Prerequisites
 
 * [Composer](https://getcomposer.org/)
 
@@ -19,11 +18,11 @@ A simple backup application who creates backups of files and databases (incl. Do
   * php-intl
   * php-json
 
-#### Optional:
+**To send reports** *(optional)* :
 
-* [MTA](https://de.wikipedia.org/wiki/Mail_Transfer_Agent) (to send reports)
+* [MTA](https://de.wikipedia.org/wiki/Mail_Transfer_Agent)
 
-### Installing
+## Installation
 
 Install the dependencies simply by using Composer.
 
@@ -38,11 +37,15 @@ composer install
 For production purposes use the compiled Phar file from the [Backup Tool Repository](https://github.com/bloodhunterd/backup-tool) or
 the [Docker](https://www.docker.com/) image from the [Backup Tool Docker Repository](https://github.com/bloodhunterd/backup-tool-docker).
 
+## Update
+
+Please note the [changelog](https://github.com/bloodhunterd/backup/blob/master/CHANGELOG.md) to check for configuration changes before updating.
+
 ## Build With
 
 * [PHP](https://www.php.net/)
 * [Monolog](https://github.com/Seldaek/monolog)
-* [Vection Framework](https://github.com/Vection-Framework/Vection)'s
+* [Vection Framework](https://github.com/Vection-Framework/Vection)
   * [DI-Container](https://github.com/Vection-Framework/DI-Container)
   * [Validator](https://github.com/Vection-Framework/Validator)
 

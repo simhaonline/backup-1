@@ -17,8 +17,7 @@
     },
     "language": {
       "@type": "string",
-      "@required": true,
-      "@allowed": "de-DE|en-GB|en-US"
+      "@required": true
     },
     "report": {
       "@type": "object",
