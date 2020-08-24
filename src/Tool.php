@@ -71,8 +71,8 @@ class Tool
      */
     public function setLanguage(string $language): void
     {
-        if (!Locale::setDefault($language)) {
-            $msg = 'The language "%s" is not supported or not installed.';
+        if (setlocale(LC_ALL, $language) !== $language) {
+            $msg = 'The language "%s" is not supported.';
 
             throw new ConfigurationException(sprintf($msg, $language));
         }
