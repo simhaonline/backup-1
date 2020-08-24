@@ -2,6 +2,10 @@
 
 All notable changes to this project will be documented in this file.
 
+## <a name="v0-4-1"></a> [0.4.2](https://github.com/bloodhunterd/backup/releases/tag/0.4.2) - 24.08.2020
+
+* Fix language utilization
+
 ## <a name="v0-4-1"></a> [0.4.1](https://github.com/bloodhunterd/backup/releases/tag/0.4.1) - 20.08.2020
 
 * Fix language settings due removing allowed values in configuration schema.
