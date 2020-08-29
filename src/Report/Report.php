@@ -32,9 +32,9 @@ class Report
     private const MAIL_CC = 'cc';
     private const MAIL_BCC = 'bcc';
 
-    public const RESULT_OK = 'ok';
-    public const RESULT_WARNING = 'warning';
-    public const RESULT_ERROR = 'error';
+    public const RESULT_OK = 'OK';
+    public const RESULT_WARNING = 'WARNING';
+    public const RESULT_ERROR = 'ERROR';
 
     /**
      * @var ReportSenderModel
