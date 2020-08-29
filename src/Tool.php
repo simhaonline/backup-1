@@ -17,7 +17,6 @@ namespace Backup;
 use Backup\Exception\ConfigurationException;
 use Backup\Exception\ToolException;
 use Backup\Interfaces\Compressible;
-use Locale;
 use Phar;
 use Vection\Component\DI\Annotations\Inject;
 use Vection\Component\DI\Traits\AnnotationInjection;
@@ -54,13 +53,17 @@ class Tool
      */
     public function setTimezone(string $timezone): void
     {
-        if (!date_default_timezone_set($timezone)) {
-            $msg = 'The timezone "%s" is invalid.';
+        if (date_default_timezone_set($timezone)) {
+            $this->logger->use('app')->info(sprintf('Timezone set to "%s".', $timezone));
 
-            throw new ConfigurationException(sprintf($msg, $timezone));
+            return;
         }
 
-        $this->logger->use('app')->debug('Timezone successfully set');
+        $this->logger->use('app')->warning(sprintf(
+            'The timezone "%s" is either not supported or installed. Use fallback timezone "%s" instead.',
+            $timezone,
+            date_default_timezone_get()
+        ));
     }
 
     /**
@@ -71,13 +74,17 @@ class Tool
      */
     public function setLanguage(string $language): void
     {
-        if (setlocale(LC_ALL, $language) !== $language) {
-            $msg = 'The language "%s" is not supported.';
+        if (setlocale(LC_ALL, $language) === $language) {
+            $this->logger->use('app')->info(sprintf('Language set to "%s".', $language));
 
-            throw new ConfigurationException(sprintf($msg, $language));
+            return;
         }
 
-        $this->logger->use('app')->debug('Language successfully set');
+        $this->logger->use('app')->warning(sprintf(
+            'The language "%s" is either not supported or installed. Use fallback language "%s" instead.',
+            $language,
+            setlocale(LC_ALL, 0)
+        ));
     }
 
     /**
@@ -89,7 +96,7 @@ class Tool
     {
         Phar::mount($path, $path);
 
-        $this->logger->use('app')->debug(sprintf('Directory "%s" successfully mounted', $path));
+        $this->logger->use('app')->info(sprintf('Directory "%s" successfully mounted', $path));
     }
 
     /**
@@ -109,7 +116,7 @@ class Tool
             $this->execute($cmd);
         }
 
-        $this->logger->use('app')->debug(sprintf('Directory "%s" successfully created', $absolutePath));
+        $this->logger->use('app')->info(sprintf('Directory "%s" successfully created', $absolutePath));
     }
 
     /**
@@ -131,7 +138,7 @@ class Tool
 
         $this->execute($cmd);
 
-        $this->logger->use('app')->debug(sprintf('Archive "%s" successfully created', $target));
+        $this->logger->use('app')->info(sprintf('Archive "%s" successfully created', $target));
     }
 
     /**
