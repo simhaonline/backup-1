@@ -2,7 +2,7 @@
 
 All notable changes to this project will be documented in this file.
 
-## <a name="v0-4-1"></a> [0.4.2](https://github.com/bloodhunterd/backup/releases/tag/0.4.2) - 24.08.2020
+## <a name="v0-4-2"></a> [0.4.2](https://github.com/bloodhunterd/backup/releases/tag/0.4.2) - 24.08.2020
 
 * Fix language utilization
 
