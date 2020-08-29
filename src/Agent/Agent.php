@@ -88,21 +88,31 @@ class Agent implements Backup
         foreach ($directories as $directory) {
             $directoryModel = new DirectoryModel($directory);
 
+            $status = Report::RESULT_OK;
+
+            $message = '';
+
             if ($directoryModel->isDisabled()) {
-                $this->logger->use('app')->debug(
-                    sprintf('Backup of directory "%s" is disabled.', $directoryModel->getName())
-                );
+                $status = Report::RESULT_INFO;
 
-                continue;
+                $message = sprintf('Backup of directory "%s" is disabled.', $directoryModel->getName());
+
+                $this->logger->use('app')->info($message);
+            } else {
+                try {
+                    $this->backupDirectory($directoryModel);
+                } catch (DirectoryException $e) {
+                    $status = Report::RESULT_ERROR;
+
+                    $message = $e->getMessage();
+
+                    $this->logger->use('app')->error($message, [
+                        'previous' => $e->getPrevious()->getMessage()
+                    ]);
+                }
             }
 
-            try {
-                $this->backupDirectory($directoryModel);
-            } catch (DirectoryException $e) {
-                $this->logger->use('app')->error($e->getMessage());
-            }
-
-            $this->report->add(Report::RESULT_OK, self::TYPE_DIRECTORY, $directoryModel);
+            $this->report->add($status, self::TYPE_DATABASE, $directoryModel, $message);
         }
 
         $databases = $this->config->getDatabases();
@@ -114,23 +124,31 @@ class Agent implements Backup
         foreach ($databases as $database) {
             $databaseModel = new DatabaseModel($database);
 
+            $status = Report::RESULT_OK;
+
+            $message = '';
+
             if ($databaseModel->isDisabled()) {
-                $this->logger->use('app')->debug(
-                    sprintf('Backup of database "%s" is disabled.', $databaseModel->getName())
-                );
+                $status = Report::RESULT_INFO;
 
-                continue;
+                $message = sprintf('Backup of database "%s" is disabled.', $databaseModel->getName());
+
+                $this->logger->use('app')->info($message);
+            } else {
+                try {
+                    $this->databaseService->backupDatabase($databaseModel);
+                } catch (DatabaseException $e) {
+                    $status = Report::RESULT_ERROR;
+
+                    $message = $e->getMessage();
+
+                    $this->logger->use('app')->error($message, [
+                        'previous' => $e->getPrevious()->getMessage()
+                    ]);
+                }
             }
 
-            try {
-                $this->databaseService->backupDatabase($databaseModel);
-            } catch (DatabaseException $e) {
-                $this->logger->use('app')->error($e->getMessage(), [
-                    'previous' => $e->getPrevious()->getMessage()
-                ]);
-            }
-
-            $this->report->add(Report::RESULT_OK, self::TYPE_DATABASE, $databaseModel);
+            $this->report->add($status, self::TYPE_DATABASE, $databaseModel, $message);
         }
 
         // Send report

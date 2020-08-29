@@ -27,12 +27,12 @@ use Backup\Report\Model\ReportSenderModel;
  */
 class Report
 {
-
     private const MAIL_TO = 'to';
     private const MAIL_CC = 'cc';
     private const MAIL_BCC = 'bcc';
 
     public const RESULT_OK = 'OK';
+    public const RESULT_INFO = 'INFO';
     public const RESULT_WARNING = 'WARNING';
     public const RESULT_ERROR = 'ERROR';
 
@@ -93,9 +93,9 @@ class Report
      * @param string $type
      * @param object $model
      */
-    public function add(string $status, string $type, object $model): void
+    public function add(string $status, string $type, object $model, string $message = ''): void
     {
-        $this->entries[] = compact('status', 'type', 'model');
+        $this->entries[] = compact('status', 'type', 'model', 'message');
     }
 
     /**
@@ -161,8 +161,9 @@ class Report
 
             $report .= <<<out
 <tr>
-    <td>{$entry['model']->getName()}</td>
     <td>{$entry['type']}</td>
+    <td>{$entry['model']->getName()}</td>
+    <td>{$entry['message']}</td>
     <td style="text-align:center;background-color:{$color};">{$entry['status']}</td>
 </tr>
 out;
