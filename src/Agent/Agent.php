@@ -38,7 +38,6 @@ use Vection\Component\DI\Traits\AnnotationInjection;
  */
 class Agent implements Backup
 {
-
     use AnnotationInjection;
 
     private const TYPE_DIRECTORY = 'DIRECTORY';

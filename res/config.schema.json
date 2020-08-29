@@ -11,9 +11,7 @@
       "@allowed": "agent|manager"
     },
     "timezone": {
-      "@type": "string",
-      "@required": true,
-      "@allowed": "Europe/Berlin"
+      "@type": "string"
     },
     "language": {
       "@type": "string",

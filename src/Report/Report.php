@@ -146,17 +146,20 @@ class Report
         $report = '';
         foreach ($this->entries as $entry) {
             switch ($entry['status']) {
+                case self::RESULT_INFO:
+                    $backgroundColor = '#2962FF';
+                    break;
                 case self::RESULT_OK:
-                    $color = '#4CAF50';
+                    $backgroundColor = '#00C853';
                     break;
                 case self::RESULT_WARNING:
-                    $color = '#F4AF50';
+                    $backgroundColor = '#FFAB00';
                     break;
                 case self::RESULT_ERROR:
-                    $color = '#F44336';
+                    $backgroundColor = '#D50000';
                     break;
                 default:
-                    $color = '#CCCCCC';
+                    $backgroundColor = '#212121';
             }
 
             $report .= <<<out
@@ -164,7 +167,7 @@ class Report
     <td>{$entry['type']}</td>
     <td>{$entry['model']->getName()}</td>
     <td>{$entry['message']}</td>
-    <td style="text-align:center;background-color:{$color};">{$entry['status']}</td>
+    <td style="background-color:{$backgroundColor};text-align:center;">{$entry['status']}</td>
 </tr>
 out;
         }
