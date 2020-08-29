@@ -4,44 +4,19 @@
 
 # Backup
 
-A simple backup application who creates backups of files and databases (incl. Docker container).
-
-## Prerequisites
-
-* [Composer](https://getcomposer.org/)
-
-* [PHP](https://www.php.net/) >= **7.3**
-
-* PHP Extensions
-  * php-bz2
-  * php-cli
-  * php-intl
-  * php-json
-
-**To send reports** *(optional)* :
-
-* [MTA](https://de.wikipedia.org/wiki/Mail_Transfer_Agent)
-
-## Installation
-
-Install the dependencies simply by using Composer.
-
-```bash
-composer install
-```
+A simple script to back up files and databases (incl. Docker container) and download them securely.
 
 ## Deployment
 
-**This repository isn't meant to be deployed anywhere!**
+**This repository shouldn't be deployed anywhere!**
 
-For production purposes use the compiled Phar file from the [Backup Tool Repository](https://github.com/bloodhunterd/backup-tool) or
-the [Docker](https://www.docker.com/) image from the [Backup Tool Docker Repository](https://github.com/bloodhunterd/backup-tool-docker).
+For production purposes use the compiled Phar from the [Backup Tool](https://github.com/bloodhunterd/backup-tool) Repository, or the Docker image from the [Backup Tool Docker](https://github.com/bloodhunterd/backup-tool-docker) Repository.
 
 ## Update
 
 Please note the [changelog](https://github.com/bloodhunterd/backup/blob/master/CHANGELOG.md) to check for configuration changes before updating.
 
-## Build With
+## Build with
 
 * [PHP](https://www.php.net/)
 * [Monolog](https://github.com/Seldaek/monolog)
