@@ -166,8 +166,8 @@ class Report
 <tr>
     <td>{$entry['type']}</td>
     <td>{$entry['model']->getName()}</td>
+    <td style="font-weight:bold;background-color:{$backgroundColor};text-align:center;">{$entry['status']}</td>
     <td>{$entry['message']}</td>
-    <td style="background-color:{$backgroundColor};text-align:center;">{$entry['status']}</td>
 </tr>
 out;
         }

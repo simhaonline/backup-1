@@ -79,31 +79,37 @@ class Manager implements Backup
         foreach ($servers as $server) {
             $serverModel = new ServerModel($server);
 
+            $status = Report::RESULT_OK;
+
+            $message = '';
+
             if ($serverModel->isDisabled()) {
-                $this->logger->use('app')->debug(
-                    sprintf('Backup of server "%s" is disabled.', $serverModel->getName())
-                );
+                $status = Report::RESULT_INFO;
 
-                continue;
+                $message = sprintf('Backup of server "%s" is disabled.', $serverModel->getName());
+
+                $this->logger->use('app')->info($message);
+            } else {
+                try {
+                    $this->backupServer($serverModel);
+                } catch (DownloadException | DirectoryException $e) {
+                    $status = Report::RESULT_ERROR;
+
+                    $message = $e->getMessage();
+
+                    $this->logger->use('app')->error($message, [
+                        'previous' => $e->getPrevious()->getMessage()
+                    ]);
+                }
             }
 
-            try {
-                $this->backupServer($serverModel);
-            } catch (DownloadException | DirectoryException $e) {
-                $this->logger->use('app')->error($e->getMessage(), [
-                    'previous' => $e->getPrevious()->getMessage()
-                ]);
-
-                continue;
-            }
-
-            $this->report->add(Report::RESULT_OK, self::TYPE_SERVER, $serverModel);
+            $this->report->add($status, self::TYPE_SERVER, $serverModel, $message);
         }
 
         // Send report
         if ($this->config->isReportEnabled()) {
             if ($this->report->send()) {
-                $this->logger->use('app')->debug('Report successfully sent.');
+                $this->logger->use('app')->info('Report sent.');
             } else {
                 $this->logger->use('app')->error('Failed to sent report.');
             }
@@ -124,7 +130,7 @@ class Manager implements Backup
         try {
             $this->tool->createDirectory($server->getTarget());
         } catch (ToolException $e) {
-            $msg = sprintf('Failed to create target directory for directory backup "%s".', $name);
+            $msg = sprintf('Failed to create target directory for directory "%s".', $name);
 
             throw new DirectoryException($msg, 0, $e);
         }
@@ -139,6 +145,6 @@ class Manager implements Backup
             throw new DownloadException($msg, 0, $e);
         }
 
-        $this->logger->use('app')->info(sprintf('Download from server "%s" successfully.', $name));
+        $this->logger->use('app')->info(sprintf('Archive "%s" downloaded from server.', $name));
     }
 }

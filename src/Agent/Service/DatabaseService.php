@@ -21,7 +21,6 @@ use Backup\Agent\Model\DatabaseModel;
 use Backup\Tool;
 use Vection\Component\DI\Annotations\Inject;
 use Vection\Component\DI\Traits\AnnotationInjection;
-use function in_array;
 
 /**
  * Class DatabaseService

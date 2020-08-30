@@ -111,7 +111,7 @@ class Agent implements Backup
                 }
             }
 
-            $this->report->add($status, self::TYPE_DATABASE, $directoryModel, $message);
+            $this->report->add($status, self::TYPE_DIRECTORY, $directoryModel, $message);
         }
 
         $databases = $this->config->getDatabases();
@@ -153,7 +153,7 @@ class Agent implements Backup
         // Send report
         if ($this->config->isReportEnabled()) {
             if ($this->report->send()) {
-                $this->logger->use('app')->debug('Report successfully sent.');
+                $this->logger->use('app')->debug('Report sent.');
             } else {
                 $this->logger->use('app')->error('Failed to sent report.');
             }
@@ -174,7 +174,7 @@ class Agent implements Backup
         try {
             $this->tool->createDirectory($directory->getTarget());
         } catch (ToolException $e) {
-            $msg = sprintf('Failed to create target directory for directory backup "%s".', $name);
+            $msg = sprintf('Failed to create target directory for directory "%s".', $name);
 
             throw new DirectoryException($msg, 0, $e);
         }
@@ -182,7 +182,7 @@ class Agent implements Backup
         try {
             $this->tool->mountDirectory($directory->getSource());
         } catch (PharException $e) {
-            $msg = sprintf('Failed to mount source directory for directory backup "%s"', $name);
+            $msg = sprintf('Failed to mount source directory for directory "%s"', $name);
 
             throw new DirectoryException($msg, 0, $e);
         }
@@ -192,11 +192,11 @@ class Agent implements Backup
         try {
             $this->tool->createArchive($directory);
         } catch (ToolException $e) {
-            $msg = sprintf('Failed to create archive for directory backup "%s".', $name);
+            $msg = sprintf('Failed to create archive for directory "%s".', $name);
 
             throw new DirectoryException($msg, 0, $e);
         }
 
-        $this->logger->use('app')->info(sprintf('Archive of directory "%s" successfully created.', $name));
+        $this->logger->use('app')->info(sprintf('Archive of directory "%s" created.', $name));
     }
 }

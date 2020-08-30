@@ -96,7 +96,7 @@ class Tool
     {
         Phar::mount($path, $path);
 
-        $this->logger->use('app')->info(sprintf('Directory "%s" successfully mounted', $path));
+        $this->logger->use('app')->info(sprintf('Directory "%s" mounted.', $path));
     }
 
     /**
@@ -116,7 +116,7 @@ class Tool
             $this->execute($cmd);
         }
 
-        $this->logger->use('app')->info(sprintf('Directory "%s" successfully created', $absolutePath));
+        $this->logger->use('app')->info(sprintf('Directory "%s" created.', $absolutePath));
     }
 
     /**
@@ -138,7 +138,7 @@ class Tool
 
         $this->execute($cmd);
 
-        $this->logger->use('app')->info(sprintf('Archive "%s" successfully created', $target));
+        $this->logger->use('app')->info(sprintf('Archive "%s" created.', $target));
     }
 
     /**

@@ -65,7 +65,7 @@ class Configuration
             throw new ConfigurationException(sprintf($msg, $e->getMessage()));
         }
 
-        $this->logger->use('app')->debug('Configuration successfully mounted');
+        $this->logger->use('app')->info('Configuration mounted.');
     }
 
     /**
@@ -92,7 +92,7 @@ class Configuration
 
         $this->settings = json_decode($json, true);
 
-        $this->logger->use('app')->debug('Configuration successfully loaded');
+        $this->logger->use('app')->info('Configuration loaded.');
     }
 
     /**

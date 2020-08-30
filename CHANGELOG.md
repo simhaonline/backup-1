@@ -2,10 +2,16 @@
 
 All notable changes to this project will be documented in this file.
 
+## <a name="v0-5-1"></a> [0.5.1](https://github.com/bloodhunterd/backup/releases/tag/0.5.1) - 30.08.2020
+
+* Log and report messages adjusted
+* Column order in report adjusted
+* Wrong type in report fixed
+
 ## <a name="v0-5-0"></a> [0.5.0](https://github.com/bloodhunterd/backup/releases/tag/0.5.0) - 29.08.2020
 
 * Info status and message for log and report added
-* Colors of backup report updated
+* Colors of report updated
 * Issue #5 Backup breaks on not supported language fixed
 * Issue #4 No error in backup report on failure fixed
 
