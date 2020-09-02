@@ -40,9 +40,6 @@ class Agent implements Backup
 {
     use AnnotationInjection;
 
-    private const TYPE_DIRECTORY = 'DIRECTORY';
-    private const TYPE_DATABASE = 'DATABASE';
-
     /**
      * @var Configuration
      * @Inject("Backup\Configuration")
@@ -153,7 +150,7 @@ class Agent implements Backup
         // Send report
         if ($this->config->isReportEnabled()) {
             if ($this->report->send()) {
-                $this->logger->use('app')->debug('Report sent.');
+                $this->logger->use('app')->info('Report sent.');
             } else {
                 $this->logger->use('app')->error('Failed to sent report.');
             }

@@ -25,6 +25,9 @@ use Backup\Exception\BackupException;
  */
 interface Backup
 {
+    public const TYPE_DIRECTORY = 'DIRECTORY';
+    public const TYPE_DATABASE = 'DATABASE';
+    public const TYPE_SERVER = 'SERVER';
 
     /**
      * Run the backup

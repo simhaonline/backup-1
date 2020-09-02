@@ -36,10 +36,7 @@ use Vection\Component\DI\Traits\AnnotationInjection;
  */
 class Manager implements Backup
 {
-
     use AnnotationInjection;
-
-    private const TYPE_SERVER = 'SERVER';
 
     /**
      * @var Configuration
