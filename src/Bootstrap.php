@@ -77,8 +77,6 @@ class Bootstrap
             );
         }
 
-        $logger->use('app')->info('Backup preparing');
-
         /** @var Tool $tool */
         $tool = $this->container->get(Tool::class);
 
@@ -92,8 +90,6 @@ class Bootstrap
                         ->setFormatter($logger->getLineFormatter())
                 );
         }
-
-        $logger->use('app')->info('Backup initializing');
 
         /** @var Configuration $config */
         $config = $this->container->get(Configuration::class);
@@ -116,7 +112,7 @@ class Bootstrap
             $handlers = $logger->use($channel)->getHandlers();
 
             foreach ($handlers as &$handler) {
-                $handler->setLevel($config->isDebugEnabled() ? MonologLogger::DEBUG : MonologLogger::WARNING);
+                $handler->setLevel($config->isDebugEnabled() ? MonologLogger::DEBUG : MonologLogger::INFO);
             }
             unset($handler);
 
@@ -132,21 +128,22 @@ class Bootstrap
             $report->addRecipient($recipient);
         }
 
-        switch ($config->getMode()) {
+        $mode = $config->getMode();
+        switch ($mode) {
             case 'agent':
                 /** @var Agent $backup */
                 $backup = $this->container->get(Agent::class);
 
-                $logger->use('app')->info('Starting Agent');
+                $logger->use('app')->info(sprintf('Mode set to "%s".', $mode));
                 break;
             case 'manager':
                 /** @var Manager $backup */
                 $backup = $this->container->get(Manager::class);
 
-                $logger->use('app')->info('Starting Manager');
+                $logger->use('app')->info(sprintf('Mode set to "%s".', $mode));
                 break;
             default:
-                $msg = sprintf('The mode "%s" is invalid.', $config->getMode());
+                $msg = sprintf('The mode "%s" is not supported. Valid modes are "agent" or "manager".', $mode);
 
                 $logger->use('app')->error($msg);
 
@@ -155,7 +152,7 @@ class Bootstrap
 
         $tool->mountDirectory($config->getTargetDirectory());
 
-        $logger->use('app')->info('Backup initialized');
+        $logger->use('app')->info('Backup initialized.');
 
         return $backup;
     }

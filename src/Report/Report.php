@@ -15,6 +15,7 @@ declare(strict_types=1);
 namespace Backup\Report;
 
 use Backup\Exception\BackupException;
+use Backup\Interfaces\Backup;
 use Backup\Report\Model\ReportRecipientModel;
 use Backup\Report\Model\ReportSenderModel;
 
@@ -112,7 +113,7 @@ class Report
             'Reply-To: ' . $sender,
             'MIME-Version: 1.0',
             'Content-Type: text/html; charset=UTF-8',
-            'X-Application: Backup'
+            'X-Application: Backup Report'
         ];
 
         $to = [];
@@ -162,11 +163,26 @@ class Report
                     $backgroundColor = '#212121';
             }
 
+            // Replace type by emoji
+            switch ($entry['type']) {
+                case Backup::TYPE_DIRECTORY:
+                    $type = '\xF0\x9F\x93\x81';
+                    break;
+                case Backup::TYPE_DATABASE:
+                    $type = '\xF0\x9F\x92\xBF';
+                    break;
+                case Backup::TYPE_SERVER:
+                    $type = '\xF0\x9F\x92\xBB';
+                    break;
+                default:
+                    $type = '\xE2\x9D\x93';
+            }
+
             $report .= <<<out
 <tr>
-    <td>{$entry['type']}</td>
-    <td>{$entry['model']->getName()}</td>
     <td style="font-weight:bold;background-color:{$backgroundColor};text-align:center;">{$entry['status']}</td>
+    <td>{$type}</td>
+    <td>{$entry['model']->getName()}</td>
     <td>{$entry['message']}</td>
 </tr>
 out;
