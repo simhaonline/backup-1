@@ -44,7 +44,7 @@ class DirectoryModel implements Compressible
     /**
      * @var string
      */
-    private $target = DIRECTORY_SEPARATOR;
+    private $target;
 
     /**
      * @var bool
@@ -63,7 +63,7 @@ class DirectoryModel implements Compressible
         $this->setSource($directory['source']);
 
         # Optional
-        $this->setTarget($directory['target'] ?? $this->target);
+        $this->setTarget($directory['target'] ?? '');
 
         if (isset($directory['disabled']) && $directory['disabled'] === 'yes') {
             $this->disable();
