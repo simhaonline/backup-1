@@ -113,8 +113,8 @@ class Report
             'From: ' . $sender,
             'Reply-To: ' . $sender,
             'MIME-Version: 1.0',
-            'Content-Type: text/html; charset=UTF-8',
-            'X-Application: Backup Report'
+            'Content-Type: text/html; charset=utf-8',
+            'X-Application: Backup'
         ];
 
         $to = [];
@@ -160,15 +160,18 @@ class Report
 
         $report = '';
         foreach ($entries as $type => $backups) {
+            if (empty($backups)) {
+                continue;
+            }
+
             $report .= <<<report
-            <tr>
-                <td>
-                    {$this->getEmoji($type)}
-                </td>
-                <td colspan="2" style="font-weight:bold;">
-                    {$type}
-                </td>
-            </tr>
+            <p>{$this->getEmoji($type)} <b>{$type}</b></p>
+            <table cellpadding="0" cellspacing="0" border="0">
+                <tr>
+                    <th>Status</th>
+                    <th>Name</th>
+                    <th>Message</th>
+                </tr>
             report;
 
             foreach ($backups as $backup) {
@@ -188,6 +191,10 @@ class Report
                 </tr>
                 report;
             }
+
+            $report .= <<<report
+            </table>
+            report;
         }
 
         $template = file_get_contents(RES_DIR . DIRECTORY_SEPARATOR . 'report.html');
@@ -202,7 +209,7 @@ class Report
         # so we need to encode the subject like described in RFC 1342
         return mail(
             implode(',', $to),
-            '=?utf-8?B?' . base64_encode($this->subject) . '?=',
+            '=?UTF-8?B?' . base64_encode($this->subject) . '?=',
             $body,
             implode(PHP_EOL, $headers)
         );
@@ -247,16 +254,16 @@ class Report
         // Replace type by emoji
         switch ($type) {
             case Backup::TYPE_DIRECTORY:
-                $emoji = '\xF0\x9F\x93\x81';
+                $emoji = '📁';
                 break;
             case Backup::TYPE_DATABASE:
-                $emoji = '\xF0\x9F\x92\xBF';
+                $emoji = '💿';
                 break;
             case Backup::TYPE_SERVER:
-                $emoji = '\xF0\x9F\x92\xBB';
+                $emoji = '🖥';
                 break;
             default:
-                $emoji = '\xE2\x9D\x93';
+                $emoji = '❓';
         }
 
         return $emoji;
