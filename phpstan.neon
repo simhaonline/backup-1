@@ -2,6 +2,6 @@ parameters:
     paths:
         - src
         - tests
-    autoload_files:
+    bootstrapFiles:
         - %rootDir%/../../../config/path.php
     level: 7

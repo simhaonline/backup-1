@@ -61,7 +61,15 @@ class DownloadTest extends TestCase
             ]
         ]);
 
-        $cmd = 'rsync -r -t -e "ssh -t -q -o "StrictHostKeyChecking=no" -p 2222 -i \'/root/.ssh/id_rsa\'" backupuser@127.0.0.1:\'/backup/\' \'/backup/My/Target/Folder No-1/\'';
+        $cmd = sprintf(
+            'rsync -r -t -e "ssh -t -q -o "StrictHostKeyChecking=no" -p %d -i %s" %s@%s:%s %s',
+            2222,
+            escapeshellarg('/root/.ssh/id_rsa'),
+            'backupuser',
+            '127.0.0.1',
+            escapeshellarg('/backup' . DIRECTORY_SEPARATOR),
+            escapeshellarg('/backup/My/Target/Folder No-1' . DIRECTORY_SEPARATOR)
+        );
 
         return [
             [$download, $cmd]
