@@ -151,6 +151,7 @@ class Report
             Backup::TYPE_SERVER
         ];
 
+        $entries = [];
         foreach ($types as $type) {
             $entries[$type] = array_filter($this->entries, static function ($entry) use ($type) {
                 return $entry['type'] === $type;
@@ -158,7 +159,7 @@ class Report
         }
 
         $report = '';
-        foreach ($entries as $type => $entry) {
+        foreach ($entries as $type => $backups) {
             $report .= <<<report
             <tr>
                 <td>
@@ -170,19 +171,19 @@ class Report
             </tr>
             report;
 
-            foreach ($entry as $e) {
+            foreach ($backups as $backup) {
                 $report .= <<<report
                 <tr>
                     <td style="font-weight:bold;
-                               background-color:{$this->getBackgroundColor($entry['status'])};
+                               background-color:{$this->getBackgroundColor($backup['status'])};
                                text-align:center;">
-                        {$e['status']}
+                        {$backup['status']}
                     </td>
                     <td>
-                        {$e['model']->getName()}
+                        {$backup['model']->getName()}
                     </td>
                     <td>
-                        {$e['message']}
+                        {$backup['message']}
                     </td>
                 </tr>
                 report;

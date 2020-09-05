@@ -83,7 +83,7 @@ class Tool
         $this->logger->use('app')->warning(sprintf(
             'The language "%s" is either not supported or installed. Use fallback language "%s" instead.',
             $language,
-            setlocale(LC_ALL, 0)
+            setlocale(LC_ALL, '0')
         ));
     }
 

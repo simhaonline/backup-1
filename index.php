@@ -14,12 +14,6 @@ declare(strict_types=1);
 
 use Backup\Bootstrap;
 
-/**
- * Backup AgentException
- *
- * @author BloodhunterD <bloodhunterd@bloodhunterd.com>
- */
-
 require_once __DIR__ . '/config/path.php';
 require_once VENDOR_DIR . DIRECTORY_SEPARATOR . 'autoload.php';
 
