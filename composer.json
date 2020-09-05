@@ -11,8 +11,8 @@
     },
     "require-dev": {
         "roave/security-advisories": "dev-master",
-        "phpunit/phpunit": "^8.5@dev",
-        "phpstan/phpstan": "^0.12.0@dev"
+        "phpunit/phpunit": "^9.3",
+        "phpstan/phpstan": "^0.12"
     },
     "license": "MIT",
     "authors": [
@@ -32,5 +32,20 @@
         "source": "https://github.com/bloodhunterd/backup",
         "issues": "https://github.com/bloodhunterd/backup/issues"
     },
-    "keywords": ["backup", "php", "phar"]
+    "keywords": [
+        "backup",
+        "backup-agent",
+        "backup-application",
+        "backup-manager",
+        "backup-script",
+        "backup-tool",
+        "database",
+        "database-backup",
+        "database-dump",
+        "docker",
+        "docker-backup",
+        "files",
+        "file-backup",
+        "php"
+    ]
 }

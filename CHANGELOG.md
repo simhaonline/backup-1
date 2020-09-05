@@ -2,6 +2,13 @@
 
 All notable changes to this project will be documented in this file.
 
+## <a name="v0-6-0"></a> [0.6.0](https://github.com/bloodhunterd/backup/releases/tag/0.6.0) - 05.09.2020
+
+* Report layout overworked *(sections and emojis included)*
+* Log messages overworked
+* Backup type in report fixed
+* Merged with compiled version repository *(fka Backup Tool)*
+
 ## <a name="v0-5-1"></a> [0.5.1](https://github.com/bloodhunterd/backup/releases/tag/0.5.1) - 30.08.2020
 
 * Log and report messages adjusted
