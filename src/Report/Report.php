@@ -93,6 +93,7 @@ class Report
      * @param string $status
      * @param string $type
      * @param object $model
+     * @param string $message
      */
     public function add(string $status, string $type, object $model, string $message = ''): void
     {
@@ -144,48 +145,48 @@ class Report
             $headers[] = 'Bcc: ' . implode($bcc);
         }
 
+        $types = [
+            Backup::TYPE_DIRECTORY,
+            Backup::TYPE_DATABASE,
+            Backup::TYPE_SERVER
+        ];
+
+        foreach ($types as $type) {
+            $entries[$type] = array_filter($this->entries, static function ($entry) use ($type) {
+                return $entry['type'] === $type;
+            });
+        }
+
         $report = '';
-        foreach ($this->entries as $entry) {
-            switch ($entry['status']) {
-                case self::RESULT_INFO:
-                    $backgroundColor = '#2962FF';
-                    break;
-                case self::RESULT_OK:
-                    $backgroundColor = '#00C853';
-                    break;
-                case self::RESULT_WARNING:
-                    $backgroundColor = '#FFAB00';
-                    break;
-                case self::RESULT_ERROR:
-                    $backgroundColor = '#D50000';
-                    break;
-                default:
-                    $backgroundColor = '#212121';
-            }
+        foreach ($entries as $type => $entry) {
+            $report .= <<<report
+            <tr>
+                <td>
+                    {$this->getEmoji($type)}
+                </td>
+                <td colspan="2" style="font-weight:bold;">
+                    {$type}
+                </td>
+            </tr>
+            report;
 
-            // Replace type by emoji
-            switch ($entry['type']) {
-                case Backup::TYPE_DIRECTORY:
-                    $type = '\xF0\x9F\x93\x81';
-                    break;
-                case Backup::TYPE_DATABASE:
-                    $type = '\xF0\x9F\x92\xBF';
-                    break;
-                case Backup::TYPE_SERVER:
-                    $type = '\xF0\x9F\x92\xBB';
-                    break;
-                default:
-                    $type = '\xE2\x9D\x93';
+            foreach ($entry as $e) {
+                $report .= <<<report
+                <tr>
+                    <td style="font-weight:bold;
+                               background-color:{$this->getBackgroundColor($entry['status'])};
+                               text-align:center;">
+                        {$e['status']}
+                    </td>
+                    <td>
+                        {$e['model']->getName()}
+                    </td>
+                    <td>
+                        {$e['message']}
+                    </td>
+                </tr>
+                report;
             }
-
-            $report .= <<<out
-<tr>
-    <td style="font-weight:bold;background-color:{$backgroundColor};text-align:center;">{$entry['status']}</td>
-    <td>{$type}</td>
-    <td>{$entry['model']->getName()}</td>
-    <td>{$entry['message']}</td>
-</tr>
-out;
         }
 
         $template = file_get_contents(RES_DIR . DIRECTORY_SEPARATOR . 'report.html');
@@ -204,5 +205,59 @@ out;
             $body,
             implode(PHP_EOL, $headers)
         );
+    }
+
+    /**
+     * Get background color by status
+     *
+     * @param string $status
+     * @return string
+     */
+    private function getBackgroundColor(string $status): string
+    {
+        switch ($status) {
+            case self::RESULT_INFO:
+                $backgroundColor = '#2962FF';
+                break;
+            case self::RESULT_OK:
+                $backgroundColor = '#00C853';
+                break;
+            case self::RESULT_WARNING:
+                $backgroundColor = '#FFAB00';
+                break;
+            case self::RESULT_ERROR:
+                $backgroundColor = '#D50000';
+                break;
+            default:
+                $backgroundColor = '#212121';
+        }
+
+        return $backgroundColor;
+    }
+
+    /**
+     * Get emoji by type
+     *
+     * @param string $type
+     * @return string
+     */
+    private function getEmoji(string $type): string
+    {
+        // Replace type by emoji
+        switch ($type) {
+            case Backup::TYPE_DIRECTORY:
+                $emoji = '\xF0\x9F\x93\x81';
+                break;
+            case Backup::TYPE_DATABASE:
+                $emoji = '\xF0\x9F\x92\xBF';
+                break;
+            case Backup::TYPE_SERVER:
+                $emoji = '\xF0\x9F\x92\xBB';
+                break;
+            default:
+                $emoji = '\xE2\x9D\x93';
+        }
+
+        return $emoji;
     }
 }
