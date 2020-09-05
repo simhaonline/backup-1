@@ -84,31 +84,44 @@ class Agent implements Backup
         foreach ($directories as $directory) {
             $directoryModel = new DirectoryModel($directory);
 
-            $status = Report::RESULT_OK;
-
-            $message = '';
-
             if ($directoryModel->isDisabled()) {
-                $status = Report::RESULT_INFO;
+                $this->logger->use('app')->info(
+                    sprintf('Backup of directory "%s" is disabled.', $directoryModel->getName())
+                );
 
-                $message = sprintf('Backup of directory "%s" is disabled.', $directoryModel->getName());
+                $this->report->add(
+                    Report::RESULT_INFO,
+                    self::TYPE_DIRECTORY,
+                    $directoryModel,
+                    'Backup disabled.'
+                );
 
-                $this->logger->use('app')->info($message);
-            } else {
-                try {
-                    $this->backupDirectory($directoryModel);
-                } catch (DirectoryException $e) {
-                    $status = Report::RESULT_ERROR;
-
-                    $message = $e->getMessage();
-
-                    $this->logger->use('app')->error($message, [
-                        'previous' => $e->getPrevious()->getMessage()
-                    ]);
-                }
+                continue;
             }
 
-            $this->report->add($status, self::TYPE_DIRECTORY, $directoryModel, $message);
+            try {
+                $this->backupDirectory($directoryModel);
+            } catch (DirectoryException $e) {
+                $this->logger->use('app')->error($message, [
+                    'previous' => $e->getPrevious()->getMessage()
+                ]);
+
+                $this->report->add(
+                    Report::RESULT_ERROR,
+                    self::TYPE_DIRECTORY,
+                    $directoryModel,
+                    $e->getMessage()
+                );
+
+                continue;
+            }
+
+            $this->report->add(
+                Report::RESULT_OK,
+                self::TYPE_DIRECTORY,
+                $directoryModel,
+                'Backup created.'
+            );
         }
 
         $databases = $this->config->getDatabases();
@@ -120,31 +133,44 @@ class Agent implements Backup
         foreach ($databases as $database) {
             $databaseModel = new DatabaseModel($database);
 
-            $status = Report::RESULT_OK;
-
-            $message = '';
-
             if ($databaseModel->isDisabled()) {
-                $status = Report::RESULT_INFO;
+                $this->logger->use('app')->info(
+                    sprintf('Backup of database "%s" is disabled.', $databaseModel->getName())
+                );
 
-                $message = sprintf('Backup of database "%s" is disabled.', $databaseModel->getName());
+                $this->report->add(
+                    Report::RESULT_INFO,
+                    self::TYPE_DATABASE,
+                    $databaseModel,
+                    'Backup disabled.'
+                );
 
-                $this->logger->use('app')->info($message);
-            } else {
-                try {
-                    $this->databaseService->backupDatabase($databaseModel);
-                } catch (DatabaseException $e) {
-                    $status = Report::RESULT_ERROR;
-
-                    $message = $e->getMessage();
-
-                    $this->logger->use('app')->error($message, [
-                        'previous' => $e->getPrevious()->getMessage()
-                    ]);
-                }
+                continue;
             }
 
-            $this->report->add($status, self::TYPE_DATABASE, $databaseModel, $message);
+            try {
+                $this->databaseService->backupDatabase($databaseModel);
+            } catch (DatabaseException $e) {
+                $this->logger->use('app')->error($message, [
+                    'previous' => $e->getPrevious()->getMessage()
+                ]);
+
+                $this->report->add(
+                    Report::RESULT_ERROR,
+                    self::TYPE_DATABASE,
+                    $databaseModel,
+                    $e->getMessage()
+                );
+
+                continue;
+            }
+
+            $this->report->add(
+                Report::RESULT_OK,
+                self::TYPE_DATABASE,
+                $databaseModel,
+                'Backup created.'
+            );
         }
 
         // Send report

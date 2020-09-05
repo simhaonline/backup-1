@@ -76,31 +76,44 @@ class Manager implements Backup
         foreach ($servers as $server) {
             $serverModel = new ServerModel($server);
 
-            $status = Report::RESULT_OK;
-
-            $message = '';
-
             if ($serverModel->isDisabled()) {
-                $status = Report::RESULT_INFO;
+                $this->logger->use('app')->info(
+                    sprintf('Backup of server "%s" is disabled.', $serverModel->getName())
+                );
 
-                $message = sprintf('Backup of server "%s" is disabled.', $serverModel->getName());
+                $this->report->add(
+                    Report::RESULT_INFO,
+                    self::TYPE_SERVER,
+                    $serverModel,
+                    'Backup disabled.'
+                );
 
-                $this->logger->use('app')->info($message);
-            } else {
-                try {
-                    $this->backupServer($serverModel);
-                } catch (DownloadException | DirectoryException $e) {
-                    $status = Report::RESULT_ERROR;
-
-                    $message = $e->getMessage();
-
-                    $this->logger->use('app')->error($message, [
-                        'previous' => $e->getPrevious()->getMessage()
-                    ]);
-                }
+                continue;
             }
 
-            $this->report->add($status, self::TYPE_SERVER, $serverModel, $message);
+            try {
+                $this->backupServer($serverModel);
+            } catch (DownloadException | DirectoryException $e) {
+                $this->logger->use('app')->error($message, [
+                    'previous' => $e->getPrevious()->getMessage()
+                ]);
+
+                $this->report->add(
+                    Report::RESULT_ERROR,
+                    self::TYPE_SERVER,
+                    $serverModel,
+                    $e->getMessage()
+                );
+
+                continue;
+            }
+
+            $this->report->add(
+                Report::RESULT_OK,
+                self::TYPE_SERVER,
+                $serverModel,
+                'Downloaded.'
+            );
         }
 
         // Send report
