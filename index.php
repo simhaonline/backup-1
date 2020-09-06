@@ -20,11 +20,17 @@ require_once VENDOR_DIR . DIRECTORY_SEPARATOR . 'autoload.php';
 try {
     (new Bootstrap())->init()->run();
 } catch (Exception $e) {
-    echo 'Error: ' . $e->getMessage() . "\n";
+    echo '- - - ERROR - - -' . "\n";
+    echo 'Message: ' . $e->getMessage() . "\n";
+    echo 'Code:' . $e->getCode() . "\n";
 
     if ($e->getPrevious()) {
-        echo 'Previous error: ' . $e->getPrevious()->getMessage() . "\n";
+        echo 'Previous message: ' . $e->getPrevious()->getMessage() . "\n";
+        echo 'Previous code: ' . $e->getPrevious()->getCode() . "\n";
     }
 
-    exit();
+    echo 'Trace: ' . "\n";
+    echo $e->getTraceAsString() . "\n";
+
+    exit('- - - END - - -');
 }

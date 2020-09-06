@@ -175,6 +175,11 @@ class Report
             report;
 
             foreach ($backups as $backup) {
+                // Notify for additional information on error messages
+                if ($backup['status'] === self::RESULT_ERROR) {
+                    $backup['message'] .= ' *';
+                }
+
                 $report .= <<<report
                 <tr>
                     <td style="font-weight:bold;

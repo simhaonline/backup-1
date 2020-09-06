@@ -13,7 +13,8 @@ A simple application to back up files, databases and download them securely.
 * Simple configuration
 * Dump docker databases
 * Strong compression
-* Encrypted download
+* Encrypted downloads
+* Shows backup size and duration
 
 ## Prerequisites
 
@@ -56,6 +57,8 @@ Adjust the configuration file for your needs and add an entry into the Cron tabl
 ```
 
 *In this example the backup runs every night at 4am.*
+
+A good start is to enable the debugging mode in configuration and run the backup manually to ensure everything works fine.
 
 ## Update
 

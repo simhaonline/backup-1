@@ -14,7 +14,6 @@ declare(strict_types=1);
 
 namespace Backup;
 
-use Backup\Exception\ConfigurationException;
 use Backup\Exception\ToolException;
 use Backup\Interfaces\Compressible;
 use Phar;
@@ -30,7 +29,6 @@ use Vection\Component\DI\Traits\AnnotationInjection;
  */
 class Tool
 {
-
     use AnnotationInjection;
 
     /**
@@ -49,7 +47,6 @@ class Tool
      * Set the timezone
      *
      * @param string $timezone
-     * @throws ConfigurationException
      */
     public function setTimezone(string $timezone): void
     {
@@ -70,7 +67,6 @@ class Tool
      * Set the language
      *
      * @param string $language
-     * @throws ConfigurationException
      */
     public function setLanguage(string $language): void
     {
@@ -179,5 +175,27 @@ class Tool
     public function sanitize(string $string): string
     {
         return preg_replace('/[^a-zA-Z0-9_-]/', '-', preg_replace('/\s/', '_', $string));
+    }
+
+    /**
+     * Get file size in Megabyte
+     *
+     * @param string $path
+     * @return float
+     */
+    public function getFileSize(string $path): float
+    {
+        return round(filesize($path) / (1024 ** 2), 3);
+    }
+
+    /**
+     * Get duration in milliseconds
+     *
+     * @param float $start
+     * @return float
+     */
+    public function getDuration(float $start): float
+    {
+        return round(microtime(true ) - $start, 3);
     }
 }

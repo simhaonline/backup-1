@@ -92,17 +92,22 @@ class Manager implements Backup
             }
 
             try {
+                $startTime = microtime(true);
+
                 $this->backupServer($serverModel);
+
+                $duration = $this->tool->getDuration($startTime);
             } catch (DownloadException | DirectoryException $e) {
-                $this->logger->use('app')->error($message, [
-                    'previous' => $e->getPrevious()->getMessage()
+                $this->logger->use('app')->error($e->getMessage(), [
+                    'previous' => $e->getPrevious()->getMessage(),
                 ]);
+                $this->logger->use('app')->debug($e->getTraceAsString());
 
                 $this->report->add(
                     Report::RESULT_ERROR,
                     self::TYPE_SERVER,
                     $serverModel,
-                    $e->getMessage()
+                    $e->getPrevious()->getMessage()
                 );
 
                 continue;
@@ -112,7 +117,7 @@ class Manager implements Backup
                 Report::RESULT_OK,
                 self::TYPE_SERVER,
                 $serverModel,
-                'Downloaded.'
+                sprintf('Downloaded in %s seconds.', $duration)
             );
         }
 

@@ -100,27 +100,39 @@ class Agent implements Backup
             }
 
             try {
+                $startTime = microtime(true);
+
                 $this->backupDirectory($directoryModel);
+
+                $duration = $this->tool->getDuration($startTime);
             } catch (DirectoryException $e) {
-                $this->logger->use('app')->error($message, [
+                $this->logger->use('app')->error($e->getMessage(), [
                     'previous' => $e->getPrevious()->getMessage()
                 ]);
+                $this->logger->use('app')->debug($e->getTraceAsString());
 
                 $this->report->add(
                     Report::RESULT_ERROR,
                     self::TYPE_DIRECTORY,
                     $directoryModel,
-                    $e->getMessage()
+                    $e->getPrevious()->getMessage()
                 );
 
                 continue;
             }
 
+            $fileSize = $this->tool->getFileSize(
+                $this->config->getTargetDirectory() .
+                $directoryModel->getTarget() .
+                DIRECTORY_SEPARATOR .
+                $directoryModel->getArchive()
+            );
+
             $this->report->add(
                 Report::RESULT_OK,
                 self::TYPE_DIRECTORY,
                 $directoryModel,
-                'Backup created.'
+                sprintf('Backup of %s MB created in %s seconds.', $fileSize, $duration)
             );
         }
 
@@ -149,27 +161,39 @@ class Agent implements Backup
             }
 
             try {
+                $startTime = microtime(true);
+
                 $this->databaseService->backupDatabase($databaseModel);
+
+                $duration = $this->tool->getDuration($startTime);
             } catch (DatabaseException $e) {
-                $this->logger->use('app')->error($message, [
+                $this->logger->use('app')->error($e->getMessage(), [
                     'previous' => $e->getPrevious()->getMessage()
                 ]);
+                $this->logger->use('app')->debug($e->getTraceAsString());
 
                 $this->report->add(
                     Report::RESULT_ERROR,
                     self::TYPE_DATABASE,
                     $databaseModel,
-                    $e->getMessage()
+                    $e->getPrevious()->getMessage()
                 );
 
                 continue;
             }
 
+            $fileSize = $this->tool->getFileSize(
+                $this->config->getTargetDirectory() .
+                $databaseModel->getTarget() .
+                DIRECTORY_SEPARATOR .
+                $databaseModel->getArchive()
+            );
+
             $this->report->add(
                 Report::RESULT_OK,
                 self::TYPE_DATABASE,
                 $databaseModel,
-                'Backup created.'
+                sprintf('Backup of %s MB created in %s seconds.', $fileSize, $duration)
             );
         }
 

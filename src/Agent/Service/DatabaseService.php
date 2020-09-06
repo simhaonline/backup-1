@@ -31,7 +31,6 @@ use Vection\Component\DI\Traits\AnnotationInjection;
  */
 class DatabaseService
 {
-
     use AnnotationInjection;
 
     private const ENV = '\$';

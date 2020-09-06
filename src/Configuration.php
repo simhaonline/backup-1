@@ -36,7 +36,6 @@ use Vection\Contracts\Validator\Schema\SchemaExceptionInterface;
  */
 class Configuration
 {
-
     use AnnotationInjection;
 
     /**

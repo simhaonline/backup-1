@@ -26,7 +26,6 @@ use Monolog\Logger as MonologLogger;
  */
 class Logger
 {
-
     /**
      * @var LineFormatter
      */

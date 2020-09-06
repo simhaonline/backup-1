@@ -20,15 +20,17 @@ if (is_file(PHAR_FILE)) {
     unlink(PHAR_FILE);
 }
 
-// Cleanup composer
+// Before compiling, install composer packages without development dependencies
 exec('composer install --no-dev');
 
-$phar = new Phar(PHAR_FILE);
-$phar->buildFromDirectory(__DIR__, '/config|res|src|vendor|composer|index/');
+// Include only necessary folders and files
+$regex = '/\bconfig\b|\bres\b|\bsrc\b|\bvendor\b|\bcomposer\.(json|lock)\b|\bindex\.php\b/';
 
+$phar = new Phar(PHAR_FILE);
+$phar->buildFromDirectory(__DIR__, $regex);
 $phar->setDefaultStub('index.php');
 
-// Reset composer to dev mode
+// After compiling, install composer packages with development dependencies
 exec('composer install');
 
 $duration = round(microtime(true ) - $start, 3);
