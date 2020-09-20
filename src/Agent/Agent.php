@@ -132,7 +132,7 @@ class Agent implements Backup
                 Report::RESULT_OK,
                 self::TYPE_DIRECTORY,
                 $directoryModel,
-                sprintf('Backup of %s MB created in %s seconds.', $fileSize, $duration)
+                sprintf('Backup of %s created in %s seconds.', $fileSize, $duration)
             );
         }
 
@@ -193,7 +193,7 @@ class Agent implements Backup
                 Report::RESULT_OK,
                 self::TYPE_DATABASE,
                 $databaseModel,
-                sprintf('Backup of %s MB created in %s seconds.', $fileSize, $duration)
+                sprintf('Backup of %s created in %s seconds.', $fileSize, $duration)
             );
         }
 

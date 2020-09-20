@@ -178,14 +178,20 @@ class Tool
     }
 
     /**
-     * Get file size in Megabyte
+     * Get human readable file size
      *
      * @param string $path
-     * @return float
+     * @param int $factor
+     * @param string[] $units
+     * @return string
      */
-    public function getFileSize(string $path): float
+    public function getFileSize(string $path, int $factor = 1024, $units = ['B', 'KB', 'MB', 'GB', 'TB']): string
     {
-        return round(filesize($path) / (1024 ** 2), 3);
+        $bytes = filesize($path);
+        $exponent = (int) floor(log($bytes) / log($factor));
+        $converted = $bytes / ($factor ** $exponent);
+
+        return sprintf('%.3f ' . $units[$exponent], $converted);
     }
 
     /**
