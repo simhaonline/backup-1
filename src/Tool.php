@@ -16,6 +16,7 @@ namespace Backup;
 
 use Backup\Exception\ToolException;
 use Backup\Interfaces\Compressible;
+use DateTime;
 use Phar;
 use Vection\Component\DI\Annotations\Inject;
 use Vection\Component\DI\Traits\AnnotationInjection;
@@ -30,6 +31,11 @@ use Vection\Component\DI\Traits\AnnotationInjection;
 class Tool
 {
     use AnnotationInjection;
+
+    /**
+     * @var int
+     */
+    private $durationStart = 0;
 
     /**
      * @var Configuration
@@ -178,14 +184,14 @@ class Tool
     }
 
     /**
-     * Get human readable file size
+     * Get file size
      *
      * @param string $path
      * @param int $factor
      * @param string[] $units
      * @return string
      */
-    public function getFileSize(string $path, int $factor = 1024, $units = ['B', 'KB', 'MB', 'GB', 'TB']): string
+    public function getFileSize(string $path, int $factor = 1024, array $units = ['B', 'KB', 'MB', 'GB', 'TB']): string
     {
         $bytes = filesize($path);
         $exponent = (int) floor(log($bytes) / log($factor));
@@ -195,13 +201,25 @@ class Tool
     }
 
     /**
-     * Get duration in milliseconds
-     *
-     * @param float $start
-     * @return float
+     * Set start time for duration calculation
      */
-    public function getDuration(float $start): float
+    public function setDurationStart(): void {
+        $this->durationStart = microtime(true);
+    }
+
+    /**
+     * Get duration
+     *
+     * @return string
+     */
+    public function getDuration(): string
     {
-        return round(microtime(true ) - $start, 3);
+        $duration = DateTime::createFromFormat(
+            'U.u',
+            // Need to round precision to 6, otherwise createFromFormat will return false
+            round(microtime(true), 6) - round($this->durationStart, 6)
+        );
+
+        return $duration->format('H:i:s.v');
     }
 }

@@ -100,11 +100,11 @@ class Agent implements Backup
             }
 
             try {
-                $startTime = microtime(true);
+                $this->tool->setDurationStart();
 
                 $this->backupDirectory($directoryModel);
 
-                $duration = $this->tool->getDuration($startTime);
+                $duration = $this->tool->getDuration();
             } catch (DirectoryException $e) {
                 $this->logger->use('app')->error($e->getMessage(), [
                     'previous' => $e->getPrevious()->getMessage()
@@ -161,11 +161,11 @@ class Agent implements Backup
             }
 
             try {
-                $startTime = microtime(true);
+                $this->tool->setDurationStart();
 
                 $this->databaseService->backupDatabase($databaseModel);
 
-                $duration = $this->tool->getDuration($startTime);
+                $duration = $this->tool->getDuration();
             } catch (DatabaseException $e) {
                 $this->logger->use('app')->error($e->getMessage(), [
                     'previous' => $e->getPrevious()->getMessage()
@@ -193,7 +193,7 @@ class Agent implements Backup
                 Report::RESULT_OK,
                 self::TYPE_DATABASE,
                 $databaseModel,
-                sprintf('Backup of %s created in %s seconds.', $fileSize, $duration)
+                sprintf('Backup of %s created in %s.', $fileSize, $duration)
             );
         }
 
