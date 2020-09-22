@@ -7,7 +7,8 @@
         "ext-json": "*",
         "monolog/monolog": "^2.0",
         "vection-framework/di-container": "^0.2",
-        "vection-framework/validator": "^0.2"
+        "vection-framework/validator": "^0.2",
+        "twig/twig": "^3.0"
     },
     "require-dev": {
         "roave/security-advisories": "dev-master",
@@ -35,6 +36,7 @@
     "keywords": [
         "backup",
         "backup-agent",
+        "backup-app",
         "backup-application",
         "backup-manager",
         "backup-script",
@@ -46,6 +48,8 @@
         "docker-backup",
         "files",
         "file-backup",
-        "php"
+        "php",
+        "rsync",
+        "ssh"
     ]
 }

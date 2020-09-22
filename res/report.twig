@@ -1,0 +1,56 @@
+<html lang="en">
+    <head>
+        <style>
+            table {
+                border: none;
+                border-spacing: 0;
+                background-color: #212121;
+            }
+            table tr th,
+            table tr td {
+                padding: 5px 8px;
+                border-bottom: 1px solid #FFFFFF;
+                color: #FFFFFF;
+                text-align: left;
+            }
+        </style>
+        <title>BACKUP REPORT {{ dateTime }}</title>
+    </head>
+    <body>
+        <p><b>BACKUP REPORT {{ dateTime }}</b></p>
+        {% for backup in backups %}
+        <p>{{ backup.emoji }} <b>{{ backup.name }}</b></p>
+        <table>
+            <tr>
+                <th>Status</th>
+                <th>Name</th>
+                <th>Message</th>
+                <th>File size</th>
+                <th>Duration</th>
+            </tr>
+            {% for task in backup.tasks %}
+            <tr>
+                <td style="font-weight:bold; background-color:{{ task.color }}; text-align:center;">
+                    {{ task.status }}
+                </td>
+                <td>
+                    {{ task.name }}
+                </td>
+                <td>
+                    {{ task.message }}
+                </td>
+                <td style="text-align: right;">
+                    {{ task.fileSize }}
+                </td>
+                <td style="text-align: right;">
+                    {{ task.duration }}
+                </td>
+            </tr>
+            {% endfor %}
+        </table>
+        {% endfor %}
+        {% if errorOccurred %}
+        <p>* Please enable debugging mode and look at the log file for more information about this error.</p>
+        {% endif %}
+    </body>
+</html>

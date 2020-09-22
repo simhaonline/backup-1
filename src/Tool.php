@@ -31,6 +31,18 @@ class Tool
 {
     use AnnotationInjection;
 
+    private const TIME_NANOSECONDS = 8;
+    private const TIME_MICROSECONDS = 16;
+    private const TIME_MILLISECONDS = 32;
+    private const TIME_SECONDS = 64;
+    private const TIME_MINUTES = 128;
+    private const TIME_HOURS = 256;
+
+    /**
+     * @var int
+     */
+    private $durationStart = 0;
+
     /**
      * @var Configuration
      * @Inject("Backup\Configuration")
@@ -64,35 +76,48 @@ class Tool
     }
 
     /**
+     * Set a locale for a category
+     *
+     * @param int $category
+     * @param string $locale
+     * @return bool
+     */
+    private function setLocale(int $category, string $locale): bool
+    {
+        return setlocale($category, $locale) === $locale;
+    }
+
+    /**
      * Set the language
      *
-     * @param string $language
+     * @param string $locale
      */
-    public function setLanguage(string $language): void
+    public function setLanguage(string $locale): void
     {
-        if (setlocale(LC_ALL, $language) === $language) {
-            $this->logger->use('app')->info(sprintf('Language set to "%s".', $language));
+        if ($this->setLocale(LC_ALL, $locale)) {
+            $this->logger->use('app')->info(sprintf('Language set to "%s".', $locale));
 
             return;
         }
 
         $this->logger->use('app')->warning(sprintf(
-            'The language "%s" is either not supported or installed. Use fallback language "%s" instead.',
-            $language,
-            setlocale(LC_ALL, '0')
+            'The language "%s" is either not supported or installed. Fallback to "%s".',
+            $locale,
+            $this->setLocale(LC_ALL, '0')
         ));
     }
 
     /**
      * Mount a directory
      *
-     * @param string $path
+     * @param string $internalPath
+     * @param string $externalPath
      */
-    public function mountDirectory(string $path): void
+    public function mountDirectory(string $internalPath, string $externalPath): void
     {
-        Phar::mount($path, $path);
+        Phar::mount($internalPath, $externalPath);
 
-        $this->logger->use('app')->info(sprintf('Directory "%s" mounted.', $path));
+        $this->logger->use('app')->info(sprintf('Directory "%s" is mounted as "%s".', $externalPath, $internalPath));
     }
 
     /**
@@ -166,42 +191,92 @@ class Tool
     }
 
     /**
+     * Set start time for duration calculation
+     */
+    public function setDurationStart(): void {
+        $this->durationStart = hrtime(true);
+    }
+
+    /**
+     * Get duration in nanoseconds
+     *
+     * @return int
+     */
+    public function getDuration(): int
+    {
+        return hrtime(true) - $this->durationStart;
+    }
+
+    /**
      * Sanitize a string
      *
      * @param string $string
      *
      * @return string
      */
-    public function sanitize(string $string): string
+    public static function sanitize(string $string): string
     {
         return preg_replace('/[^a-zA-Z0-9_-]/', '-', preg_replace('/\s/', '_', $string));
     }
 
     /**
-     * Get human readable file size
+     * Convert bytes into a suitable human readable unit
      *
-     * @param string $path
-     * @param int $factor
-     * @param string[] $units
+     * @param int $bytes
+     * @param int $precision
+     *
      * @return string
      */
-    public function getFileSize(string $path, int $factor = 1024, $units = ['B', 'KB', 'MB', 'GB', 'TB']): string
+    public static function convertBytes(int $bytes, int $precision = 2): string
     {
-        $bytes = filesize($path);
-        $exponent = (int) floor(log($bytes) / log($factor));
-        $converted = $bytes / ($factor ** $exponent);
+        $units = ['Bytes', 'KB', 'MB', 'GB', 'TB'];
+        $exponent = (int) floor(log($bytes) / log(1024));
+        $converted = $bytes / (1024 ** $exponent);
 
-        return sprintf('%.3f ' . $units[$exponent], $converted);
+        return sprintf('%s ' . $units[$exponent], round($converted, $precision));
     }
 
     /**
-     * Get duration in milliseconds
+     * Convert nanoseconds into a suitable human readable unit
      *
-     * @param float $start
-     * @return float
+     * @param int $nanoseconds
+     * @param int $precision
+     *
+     * @return string
      */
-    public function getDuration(float $start): float
+    public static function convertNanoseconds(int $nanoseconds, int $precision = self::TIME_MILLISECONDS): string
     {
-        return round(microtime(true ) - $start, 3);
+        $hours = (int) ($nanoseconds / 3600000000000);
+        $hoursRest = $nanoseconds % 3600000000000;
+        $minutes = (int) ($hoursRest / 60000000000);
+        $minutesRest = $hoursRest % 60000000000;
+        $seconds = (int) ($minutesRest / 60000000);
+        $secondsRest = $minutesRest % 60000000;
+        $milliseconds = (int) ($secondsRest / 1000000);
+        $millisecondsRest = $secondsRest % 1000000;
+        $microseconds = (int) ($millisecondsRest / 1000);
+        $microsecondsRest = $millisecondsRest % 1000;
+
+        $time = [];
+        if ($precision <= self::TIME_HOURS && $hours) {
+            $time[] = $hours . 'h';
+        }
+        if ($precision <= self::TIME_MINUTES && $minutes) {
+            $time[] = $minutes . 'm';
+        }
+        if ($precision <= self::TIME_SECONDS && $seconds) {
+            $time[] = $seconds . 's';
+        }
+        if ($precision <= self::TIME_MILLISECONDS && $milliseconds) {
+            $time[] = $milliseconds . 'ms';
+        }
+        if ($precision <= self::TIME_MICROSECONDS && $microseconds) {
+            $time[] = $microseconds . 'µs';
+        }
+        if ($precision === self::TIME_NANOSECONDS) {
+            $time[] = $microsecondsRest . 'ns';
+        }
+
+        return implode(' ', $time);
     }
 }

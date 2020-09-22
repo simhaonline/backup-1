@@ -14,10 +14,18 @@ declare(strict_types=1);
 
 namespace Backup\Report;
 
-use Backup\Exception\BackupException;
+use Backup\Configuration;
 use Backup\Interfaces\Backup;
 use Backup\Report\Model\ReportRecipientModel;
 use Backup\Report\Model\ReportSenderModel;
+use Backup\Tool;
+use Twig\Environment;
+use Twig\Error\LoaderError;
+use Twig\Error\RuntimeError;
+use Twig\Error\SyntaxError;
+use Twig\Loader\FilesystemLoader;
+use Vection\Component\DI\Annotations\Inject;
+use Vection\Component\DI\Traits\AnnotationInjection;
 
 /**
  * Class Report
@@ -28,6 +36,8 @@ use Backup\Report\Model\ReportSenderModel;
  */
 class Report
 {
+    use AnnotationInjection;
+
     private const MAIL_TO = 'to';
     private const MAIL_CC = 'cc';
     private const MAIL_BCC = 'bcc';
@@ -36,6 +46,21 @@ class Report
     public const RESULT_INFO = 'INFO';
     public const RESULT_WARNING = 'WARNING';
     public const RESULT_ERROR = 'ERROR';
+
+    private const COLORS = [
+        self::RESULT_INFO => '#2962FF',
+        self::RESULT_OK => '#00C853',
+        self::RESULT_WARNING => '#FFAB00',
+        self::RESULT_ERROR => '#D50000',
+        'DEFAULT' => '#212121'
+    ];
+
+    private const EMOJIS = [
+        Backup::TYPE_DIRECTORY => '📁',
+        Backup::TYPE_DATABASE => '💿',
+        Backup::TYPE_SERVER => '🖥',
+        'DEFAULT' => '❓'
+    ];
 
     /**
      * @var ReportSenderModel
@@ -55,7 +80,19 @@ class Report
     /**
      * @var mixed[]
      */
-    private $entries = [];
+    private $tasks = [];
+
+    /**
+     * @var Configuration
+     * @Inject("Backup\Configuration")
+     */
+    private $config;
+
+    /**
+     * @var Tool
+     * @Inject("Backup\Tool")
+     */
+    private $tool;
 
     /**
      * Set the sender
@@ -88,26 +125,38 @@ class Report
     }
 
     /**
-     * Add a report entry
+     * Add a backup task status to the report
      *
      * @param string $status
      * @param string $type
-     * @param object $model
      * @param string $message
+     * @param object $model
+     * @param int|null $fileSize
+     * @param int|null $duration
      */
-    public function add(string $status, string $type, object $model, string $message = ''): void
+    public function add(
+        string $status,
+        string $type,
+        string $message,
+        object $model,
+        int $fileSize = null,
+        int $duration = null
+
+    ): void
     {
-        $this->entries[] = compact('status', 'type', 'model', 'message');
+        $this->tasks[] = compact('status', 'type', 'message', 'model', 'fileSize', 'duration');
     }
 
     /**
      * Send the report
      *
-     * @throws BackupException
+     * @throws LoaderError|SyntaxError|RuntimeError
      */
     public function send(): bool
     {
-        $sender = $this->sender->getName() ? "{$this->sender->getName()} <{$this->sender->getAddress()}>" : $this->sender->getAddress();
+        $name = $this->sender->getName();
+        $address = $this->sender->getAddress();
+        $sender = $name ? "{$name} <{$address}>" : $address;
 
         $headers = [
             'From: ' . $sender,
@@ -121,7 +170,9 @@ class Report
         $cc = [];
         $bcc = [];
         foreach ($this->recipients as $recipient) {
-            $address = $recipient->getName() ? "{$recipient->getName()} <{$recipient->getAddress()}>" : $recipient->getAddress();
+            $name = $recipient->getName();
+            $address = $recipient->getAddress();
+            $address = $name ? "{$name} <{$address}>" : $address;
 
             switch ($recipient->getType()) {
                 default:
@@ -138,84 +189,70 @@ class Report
         }
 
         if ($cc) {
-            $headers[] = 'Cc: ' . implode($cc);
+            $headers[] = 'Cc: ' . implode(', ', $cc);
         }
 
         if ($bcc) {
-            $headers[] = 'Bcc: ' . implode($bcc);
+            $headers[] = 'Bcc: ' . implode(', ', $bcc);
         }
 
         $types = [
-            Backup::TYPE_DIRECTORY,
-            Backup::TYPE_DATABASE,
-            Backup::TYPE_SERVER
+            Backup::TYPE_DIRECTORY => 'Directories',
+            Backup::TYPE_DATABASE => 'Databases',
+            Backup::TYPE_SERVER => 'Servers'
         ];
 
-        $entries = [];
-        foreach ($types as $type) {
-            $entries[$type] = array_filter($this->entries, static function ($entry) use ($type) {
-                return $entry['type'] === $type;
-            });
-        }
+        $errorOccurred = false;
 
-        $report = '';
-        foreach ($entries as $type => $backups) {
-            if (empty($backups)) {
+        $this->tool->setLanguage($this->config->getLanguage());
+
+        $backups = [];
+        foreach ($types as $type => $name) {
+            $tasks[$type] = array_filter($this->tasks, static function ($task) use ($type) {
+                return $task['type'] === $type;
+            });
+
+            // Skip if backup type has no tasks
+            if (!$tasks[$type]) {
                 continue;
             }
 
-            $report .= <<<report
-            <p>{$this->getEmoji($type)} <b>{$type}</b></p>
-            <table cellpadding="0" cellspacing="0" border="0">
-                <tr>
-                    <th>Status</th>
-                    <th>Name</th>
-                    <th>Message</th>
-                </tr>
-            report;
+            array_walk($tasks[$type], static function (&$task) use (&$errorOccurred) {
+                $task['name'] = $task['model']->getName();
+                $task['color'] = self::getBackgroundColor($task['status']);
+                $task['fileSize'] = isset($task['fileSize']) ? Tool::convertBytes($task['fileSize']) : '';
+                $task['duration'] = isset($task['duration']) ? Tool::convertNanoseconds($task['duration']) : '';
 
-            foreach ($backups as $backup) {
-                // Notify for additional information on error messages
-                if ($backup['status'] === self::RESULT_ERROR) {
-                    $backup['message'] .= ' *';
+                // Mark error messages for additional information
+                if ($task['status'] === self::RESULT_ERROR) {
+                    $task['message'] .= ' *';
+
+                    $errorOccurred = true;
                 }
 
-                $report .= <<<report
-                <tr>
-                    <td style="font-weight:bold;
-                               background-color:{$this->getBackgroundColor($backup['status'])};
-                               text-align:center;">
-                        {$backup['status']}
-                    </td>
-                    <td>
-                        {$backup['model']->getName()}
-                    </td>
-                    <td>
-                        {$backup['message']}
-                    </td>
-                </tr>
-                report;
-            }
+                // Remove model, it's not needed
+                unset($task['model']);
 
-            $report .= <<<report
-            </table>
-            report;
+                return $task;
+            });
+
+            $backups[$type]['name'] = $name;
+            $backups[$type]['emoji'] = self::getEmoji($type);
+            $backups[$type]['tasks'] = $tasks[$type];
         }
 
-        $template = file_get_contents(RES_DIR . DIRECTORY_SEPARATOR . 'report.html');
+        $twig = new Environment(new FilesystemLoader(RES_DIR));
 
-        if ($template === false) {
-            throw new BackupException('Failed to load the report mail template.');
-        }
+        $dateTime = strftime('%x %X');
 
-        $body = str_replace(['###date###', '###report###'], [strftime('%x %X'), $report], $template);
+        $mail = $twig->render('report.twig', compact('backups', 'errorOccurred', 'dateTime'));
 
         # The subject is a header and headers are only allowed to contain ASCII chars,
         # so we need to encode the subject like described in RFC 1342
         return mail(
-            implode(',', $to),
+            implode(', ', $to),
             '=?UTF-8?B?' . base64_encode($this->subject) . '?=',
-            $body,
+            $mail,
             implode(PHP_EOL, $headers)
         );
     }
@@ -226,26 +263,9 @@ class Report
      * @param string $status
      * @return string
      */
-    private function getBackgroundColor(string $status): string
+    public static function getBackgroundColor(string $status): string
     {
-        switch ($status) {
-            case self::RESULT_INFO:
-                $backgroundColor = '#2962FF';
-                break;
-            case self::RESULT_OK:
-                $backgroundColor = '#00C853';
-                break;
-            case self::RESULT_WARNING:
-                $backgroundColor = '#FFAB00';
-                break;
-            case self::RESULT_ERROR:
-                $backgroundColor = '#D50000';
-                break;
-            default:
-                $backgroundColor = '#212121';
-        }
-
-        return $backgroundColor;
+        return self::COLORS[$status] ?? self::COLORS['DEFAULT'];
     }
 
     /**
@@ -254,23 +274,8 @@ class Report
      * @param string $type
      * @return string
      */
-    private function getEmoji(string $type): string
+    private static function getEmoji(string $type): string
     {
-        // Replace type by emoji
-        switch ($type) {
-            case Backup::TYPE_DIRECTORY:
-                $emoji = '📁';
-                break;
-            case Backup::TYPE_DATABASE:
-                $emoji = '💿';
-                break;
-            case Backup::TYPE_SERVER:
-                $emoji = '🖥';
-                break;
-            default:
-                $emoji = '❓';
-        }
-
-        return $emoji;
+        return self::EMOJIS[$type] ?? self::EMOJIS['DEFAULT'];
     }
 }

@@ -2,6 +2,13 @@
 
 All notable changes to this project will be documented in this file.
 
+## <a name="v0-7-0"></a> [0.7.0](https://github.com/bloodhunterd/backup/releases/tag/0.7.0) - 11.10.2020
+
+* Issue #7 Convert size and duration in a unit which fit best fixed
+* Issue #6 Report: Show debugging info only if at least one error occurred fixed
+* Template engine Twig implemented to render report mail
+* File logging removed (see [README.md](https://github.com/bloodhunterd/backup/blob/master/README.md) for alternative)
+
 ## <a name="v0-6-1"></a> [0.6.1](https://github.com/bloodhunterd/backup/releases/tag/0.6.1) - 06.09.2020
 
 * Archive size and backup time added

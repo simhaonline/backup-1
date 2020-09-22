@@ -80,41 +80,28 @@ class Bootstrap
         /** @var Tool $tool */
         $tool = $this->container->get(Tool::class);
 
-        $tool->mountDirectory(LOG_DIR);
-
-        # Extend logger channels by log file
-        foreach ($channels as $channel) {
-            $logger->use($channel)
-                ->pushHandler(
-                    (new StreamHandler(LOG_DIR . DIRECTORY_SEPARATOR . 'backup.log'))
-                        ->setFormatter($logger->getLineFormatter())
-                );
-        }
-
         /** @var Configuration $config */
         $config = $this->container->get(Configuration::class);
 
         try {
             $config->mount();
             $config->load();
-
-            $tool->setTimezone($config->getTimezone());
-            $tool->setLanguage($config->getLanguage());
         } catch (ConfigurationException $e) {
             $logger->use('app')->error($e->getMessage());
 
             throw new BackupException($e->getMessage(), 0, $e);
         }
 
+        $tool->setTimezone($config->getTimezone());
+
         # Set log level from configuration
         foreach ($channels as $channel) {
             /** @var StreamHandler[] $handlers */
             $handlers = $logger->use($channel)->getHandlers();
 
-            foreach ($handlers as &$handler) {
+            foreach ($handlers as $handler) {
                 $handler->setLevel($config->isDebugEnabled() ? MonologLogger::DEBUG : MonologLogger::INFO);
             }
-            unset($handler);
 
             $logger->use('app')->setHandlers($handlers);
         }
@@ -150,7 +137,7 @@ class Bootstrap
                 throw new BackupException($msg);
         }
 
-        $tool->mountDirectory($config->getTargetDirectory());
+        $tool->mountDirectory('/backup', $config->getTargetDirectory());
 
         $logger->use('app')->info('Backup initialized.');
 

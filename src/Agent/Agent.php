@@ -92,19 +92,19 @@ class Agent implements Backup
                 $this->report->add(
                     Report::RESULT_INFO,
                     self::TYPE_DIRECTORY,
-                    $directoryModel,
-                    'Backup disabled.'
+                    'Backup disabled.',
+                    $directoryModel
                 );
 
                 continue;
             }
 
             try {
-                $startTime = microtime(true);
+                $this->tool->setDurationStart();
 
                 $this->backupDirectory($directoryModel);
 
-                $duration = $this->tool->getDuration($startTime);
+                $duration = $this->tool->getDuration();
             } catch (DirectoryException $e) {
                 $this->logger->use('app')->error($e->getMessage(), [
                     'previous' => $e->getPrevious()->getMessage()
@@ -114,14 +114,14 @@ class Agent implements Backup
                 $this->report->add(
                     Report::RESULT_ERROR,
                     self::TYPE_DIRECTORY,
-                    $directoryModel,
-                    $e->getPrevious()->getMessage()
+                    $e->getPrevious()->getMessage(),
+                    $directoryModel
                 );
 
                 continue;
             }
 
-            $fileSize = $this->tool->getFileSize(
+            $fileSize = filesize(
                 $this->config->getTargetDirectory() .
                 $directoryModel->getTarget() .
                 DIRECTORY_SEPARATOR .
@@ -131,8 +131,10 @@ class Agent implements Backup
             $this->report->add(
                 Report::RESULT_OK,
                 self::TYPE_DIRECTORY,
+                'Files archived.',
                 $directoryModel,
-                sprintf('Backup of %s created in %s seconds.', $fileSize, $duration)
+                $fileSize,
+                $duration
             );
         }
 
@@ -153,19 +155,19 @@ class Agent implements Backup
                 $this->report->add(
                     Report::RESULT_INFO,
                     self::TYPE_DATABASE,
-                    $databaseModel,
-                    'Backup disabled.'
+                    'Backup disabled.',
+                    $databaseModel
                 );
 
                 continue;
             }
 
             try {
-                $startTime = microtime(true);
+                $this->tool->setDurationStart();
 
                 $this->databaseService->backupDatabase($databaseModel);
 
-                $duration = $this->tool->getDuration($startTime);
+                $duration = $this->tool->getDuration();
             } catch (DatabaseException $e) {
                 $this->logger->use('app')->error($e->getMessage(), [
                     'previous' => $e->getPrevious()->getMessage()
@@ -175,14 +177,14 @@ class Agent implements Backup
                 $this->report->add(
                     Report::RESULT_ERROR,
                     self::TYPE_DATABASE,
-                    $databaseModel,
-                    $e->getPrevious()->getMessage()
+                    $e->getPrevious()->getMessage(),
+                    $databaseModel
                 );
 
                 continue;
             }
 
-            $fileSize = $this->tool->getFileSize(
+            $fileSize = filesize(
                 $this->config->getTargetDirectory() .
                 $databaseModel->getTarget() .
                 DIRECTORY_SEPARATOR .
@@ -192,8 +194,10 @@ class Agent implements Backup
             $this->report->add(
                 Report::RESULT_OK,
                 self::TYPE_DATABASE,
+                'Files archived.',
                 $databaseModel,
-                sprintf('Backup of %s created in %s seconds.', $fileSize, $duration)
+                $fileSize,
+                $duration
             );
         }
 
@@ -227,14 +231,14 @@ class Agent implements Backup
         }
 
         try {
-            $this->tool->mountDirectory($directory->getSource());
+            $this->tool->mountDirectory($directory->getSource(), $directory->getSource());
         } catch (PharException $e) {
             $msg = sprintf('Failed to mount source directory for directory "%s"', $name);
 
             throw new DirectoryException($msg, 0, $e);
         }
 
-        $directory->setArchive($this->tool->sanitize($name));
+        $directory->setArchive(Tool::sanitize($name));
 
         try {
             $this->tool->createArchive($directory);

@@ -1,6 +1,6 @@
 [![Release](https://img.shields.io/github/v/release/bloodhunterd/backup?include_prereleases&style=for-the-badge)](https://github.com/bloodhunterd/backup/releases)
 [![Build](https://img.shields.io/travis/bloodhunterd/backup?style=for-the-badge)](https://travis-ci.com/github/bloodhunterd/backup)
-[![PHP](https://img.shields.io/badge/PHP-%5E7.3-blue?style=for-the-badge)](https://github.com/bloodhunterd/backup-tool/blob/master/build/backup.phar)
+[![PHP](https://img.shields.io/badge/PHP-%5E7.3-blue?style=for-the-badge)](https://www.php.net/)
 [![PHPStan](https://img.shields.io/badge/PHPStan-Level%207-blueviolet?style=for-the-badge)](https://github.com/phpstan/phpstan)
 [![License](https://img.shields.io/github/license/bloodhunterd/backup?style=for-the-badge)](https://github.com/bloodhunterd/backup/blob/master/LICENSE)
 
@@ -20,8 +20,8 @@ A simple application to back up files, databases and download them securely.
 
 ### Agent
 
-* A Linux distribution
-* PHP >= **7.3**
+* Linux *(eventually macOS)*
+* [PHP](https://www.php.net/) >= **7.3**
 * PHP extensions
   * BZ2
   * CLI
@@ -53,7 +53,7 @@ Download the distributed agent and manager configuration files and place it some
 Adjust the configuration file for your needs and add an entry into the Cron table to execute this application periodically.
 
 ```bash
-0 4 * * * php /srv/backup.phar /srv/configuration.json
+0 4 * * * php /srv/backup.phar /srv/configuration.json >> /var/log/backup.log
 ```
 
 *In this example the backup runs every night at 4am.*
