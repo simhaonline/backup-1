@@ -16,6 +16,7 @@ namespace Backup;
 
 use Backup\Exception\ToolException;
 use Backup\Interfaces\Compressible;
+use DateTime;
 use Phar;
 use Vection\Component\DI\Annotations\Inject;
 use Vection\Component\DI\Traits\AnnotationInjection;
