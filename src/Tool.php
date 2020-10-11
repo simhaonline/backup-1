@@ -16,7 +16,6 @@ namespace Backup;
 
 use Backup\Exception\ToolException;
 use Backup\Interfaces\Compressible;
-use DateTime;
 use Phar;
 use Vection\Component\DI\Annotations\Inject;
 use Vection\Component\DI\Traits\AnnotationInjection;
@@ -32,12 +31,12 @@ class Tool
 {
     use AnnotationInjection;
 
-    private const TIME_NANOSECONDS = 8;
-    private const TIME_MICROSECONDS = 16;
-    private const TIME_MILLISECONDS = 32;
-    private const TIME_SECONDS = 64;
-    private const TIME_MINUTES = 128;
-    private const TIME_HOURS = 256;
+    public const TIME_NANOSECONDS = 8;
+    public const TIME_MICROSECONDS = 16;
+    public const TIME_MILLISECONDS = 32;
+    public const TIME_SECONDS = 64;
+    public const TIME_MINUTES = 128;
+    public const TIME_HOURS = 256;
 
     /**
      * @var int
@@ -249,12 +248,16 @@ class Tool
     {
         $hours = (int) ($nanoseconds / 3600000000000);
         $hoursRest = $nanoseconds % 3600000000000;
+
         $minutes = (int) ($hoursRest / 60000000000);
         $minutesRest = $hoursRest % 60000000000;
-        $seconds = (int) ($minutesRest / 60000000);
-        $secondsRest = $minutesRest % 60000000;
+
+        $seconds = (int) ($minutesRest / 1000000000);
+        $secondsRest = $minutesRest % 1000000000;
+
         $milliseconds = (int) ($secondsRest / 1000000);
         $millisecondsRest = $secondsRest % 1000000;
+
         $microseconds = (int) ($millisecondsRest / 1000);
         $microsecondsRest = $millisecondsRest % 1000;
 
