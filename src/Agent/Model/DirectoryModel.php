@@ -47,6 +47,11 @@ class DirectoryModel implements Compressible
     private $target;
 
     /**
+     * @var string[]
+     */
+    private $commands;
+
+    /**
      * @var bool
      */
     private $disabled = false;
@@ -64,6 +69,7 @@ class DirectoryModel implements Compressible
 
         # Optional
         $this->setTarget($directory['target'] ?? '');
+        $this->setCommands($directory['commands'] ?? []);
 
         if (isset($directory['disabled']) && $directory['disabled'] === 'yes') {
             $this->disable();
@@ -142,6 +148,36 @@ class DirectoryModel implements Compressible
     public function getArchive(): string
     {
         return $this->archive;
+    }
+
+    /**
+     * Set commands
+     *
+     * @param array $commands
+     */
+    public function setCommands(array $commands): void
+    {
+        $this->commands = $commands;
+    }
+
+    /**
+     * Get command to execute before backup process starts
+     *
+     * @return string|null
+     */
+    public function getCommandBefore(): ?string
+    {
+        return $this->commands['before'] ?? null;
+    }
+
+    /**
+     * Get command to execute after backup process ended
+     *
+     * @return string|null
+     */
+    public function getCommandAfter(): ?string
+    {
+        return $this->commands['after'] ?? null;
     }
 
     /**

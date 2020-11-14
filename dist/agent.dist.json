@@ -25,7 +25,11 @@
       {
         "name": "First directory",
         "source": "/path/to/first/directory",
-        "target": "/first/directory"
+        "target": "/first/directory",
+        "commands": {
+          "before": "run this command BEFORE directory backup process starts",
+          "after": "run this command AFTER directory backup process ended"
+        }
       }, {
         "name": "Second directory",
         "source": "/path/to/second/directory",

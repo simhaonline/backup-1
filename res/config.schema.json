@@ -135,6 +135,17 @@
               "disabled": {
                 "@type": "string",
                 "@allowed": "yes|no"
+              },
+              "commands": {
+                "@type": "object",
+                "@properties": {
+                  "before": {
+                    "@type": "string"
+                  },
+                  "after": {
+                    "@type": "string"
+                  }
+                }
               }
             }
           }
