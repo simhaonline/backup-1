@@ -24,7 +24,6 @@ A simple application to back up files, databases and download them securely.
 
 * Linux *(eventually macOS)*
 * [PHP](https://www.php.net/) >= **7.3**
-* PHP extensions
   * BZ2
   * CLI
   * INTL
@@ -42,15 +41,16 @@ A simple application to back up files, databases and download them securely.
 
 ## Deployment
 
-Download the Phar file and place it somewhere on your server.
+Download the Phar file and place it somewhere on your server.  
 For example at **/srv/**.
 
-[![Backup App](https://img.shields.io/badge/Download-Backup%20App-blue?style=for-the-badge)](https://github.com/bloodhunterd/backup-tool/blob/master/build/backup.phar)
+[![Backup App](https://img.shields.io/badge/Download-Backup%20App-blue?style=for-the-badge)](https://github.com/bloodhunterd/backup/blob/master/build/backup.phar)
 
-Download the distributed agent and manager configuration files and place it somewhere on your server. For example also at **/srv/**.
+Download the distributed agent and manager configuration files and place it somewhere on your server.  
+For example also at **/srv/**.
 
-[![Agent Configuration](https://img.shields.io/badge/Download-Agent%20Configuration-blue?style=for-the-badge)](https://github.com/bloodhunterd/backup-tool/blob/master/dist/agent.dist.json)
-[![Manager Configuration](https://img.shields.io/badge/Download-Manager%20Configuration-blue?style=for-the-badge)](https://github.com/bloodhunterd/backup-tool/blob/master/dist/manager.dist.json)
+[![Agent Configuration](https://img.shields.io/badge/Download-Agent%20Configuration-blue?style=for-the-badge)](https://github.com/bloodhunterd/backup/blob/master/dist/agent.dist.json)
+[![Manager Configuration](https://img.shields.io/badge/Download-Manager%20Configuration-blue?style=for-the-badge)](https://github.com/bloodhunterd/backup/blob/master/dist/manager.dist.json)
 
 Adjust the configuration file for your needs and add an entry into the Cron table to execute this application periodically.
 
@@ -69,10 +69,11 @@ Please note the [changelog](https://github.com/bloodhunterd/backup/blob/master/C
 ## Build with
 
 * [PHP](https://www.php.net/)
-* [Monolog](https://github.com/Seldaek/monolog)
 * [Vection Framework](https://github.com/Vection-Framework/Vection)
   * [DI-Container](https://github.com/Vection-Framework/DI-Container)
   * [Validator](https://github.com/Vection-Framework/Validator)
+* [Monolog](https://github.com/Seldaek/monolog)
+* [Twig](https://twig.symfony.com/)
 
 ## Authors
 
