@@ -27,7 +27,8 @@
           "@properties": {
             "address": {
               "@type": "string",
-              "@required": true
+              "@required": true,
+              "@validator": "email"
             },
             "name": {
               "@type": "string"
@@ -47,7 +48,8 @@
             "@properties": {
               "address": {
                 "@type": "string",
-                "@required": true
+                "@required": true,
+                "@validator": "email"
               },
               "name": {
                 "@type": "string"
