@@ -28,9 +28,6 @@ jobs:
           # Strip git ref prefix from version
           VERSION=$(echo "${{ github.ref }}" | sed -e 's,.*/\(.*\),\1,')
 
-          # Use Docker `latest` tag convention
-          [ "$VERSION" == "master" ] && VERSION=latest
-          
           docker build . --file Dockerfile --build-arg APP_VERSION=$VERSION
 
   # Push image to GitHub Packages
@@ -50,9 +47,6 @@ jobs:
           # Strip git ref prefix from version
           VERSION=$(echo "${{ github.ref }}" | sed -e 's,.*/\(.*\),\1,')
 
-          # Use Docker `latest` tag convention
-          [ "$VERSION" == "master" ] && VERSION=latest
-          
           docker build . --file Dockerfile --tag $IMAGE_NAME --build-arg APP_VERSION=$VERSION
 
       - name: Log into registry
