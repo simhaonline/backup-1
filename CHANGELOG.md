@@ -2,6 +2,14 @@
 
 All notable changes to this project will be documented in this file.
 
+## [Master](https://github.com/bloodhunterd/backup) - 18.11.2020
+
+* Merged together with docker repository
+* Added email validation
+* Resolved issue #8 Execute command before and after backup
+* Added Ko-fi link
+* Fixed issue #11 Wrong display of seconds in duration time
+
 ## <a name="v0-7-0"></a> [0.7.0](https://github.com/bloodhunterd/backup/releases/tag/0.7.0) - 11.10.2020
 
 * Issue #7 Convert size and duration in a unit which fit best fixed
