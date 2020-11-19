@@ -49,10 +49,10 @@ jobs:
 
           docker build . --file Dockerfile --tag $IMAGE_NAME --build-arg APP_VERSION=$VERSION
 
-      - name: Log into registry
+      - name: Log into GitHub package registry
         run: echo "${{ secrets.GITHUB_TOKEN }}" | docker login docker.pkg.github.com -u $GITHUB_ACTOR --password-stdin
 
-      - name: Push image
+      - name: Push image to GitHub package registry
         run: |
           IMAGE_ID=docker.pkg.github.com/$GITHUB_REPOSITORY/$IMAGE_NAME
 
@@ -70,3 +70,18 @@ jobs:
 
           docker tag $IMAGE_NAME $IMAGE_ID:$VERSION
           docker push $IMAGE_ID:$VERSION
+
+      - name: Log into Docker Hub registry
+        run: echo "${{ secrets.DOCKER_HUB_ACCESS_TOKEN }}" | docker login -u ${{ secrets.DOCKER_HUB_USER }} --password-stdin
+
+      - name: Push image to Docker Hub registry
+        run: |
+          # Strip git ref prefix from version
+          VERSION=$(echo "$GITHUB_REF" | sed -e 's,.*/\(.*\),\1,')
+
+          # Use Docker `latest` tag convention
+          [ "$VERSION" == "master" ] && VERSION=latest
+
+          echo VERSION=$VERSION
+
+          docker push $IMAGE_NAME:$VERSION
